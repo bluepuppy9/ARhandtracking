@@ -39,7 +39,7 @@
         position="0 0 0.1"
         scale="0.1 0.1 0.1"
         src="#avatarModel"
-        animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate; property: rotation; to: 0 360 0;"
       ></a-gltf-model>
     </a-entity>
   </a-scene>
