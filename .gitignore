@@ -23,3 +23,5 @@ bin/                    # Custom build outputs
 *.pdb
 *.so
 *.dylib
+vuear/src/views/.../AboutView.vue
+vuear/src/views/.../HomeView.vue
