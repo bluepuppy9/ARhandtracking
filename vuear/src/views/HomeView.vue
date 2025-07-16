@@ -10,7 +10,7 @@
       device-orientation-permission-ui="enabled: true">
 
       <a-assets>
-        <a-asset-item id="duckModel" src="./Duck.glb"></a-asset-item>
+        <a-asset-item id="duckModel" src="../../public/Duck.glb"></a-asset-item>
         <audio id="hitSound" src="./quack.mp3"></audio>
       </a-assets>
 
