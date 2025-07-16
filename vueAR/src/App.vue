@@ -24,11 +24,6 @@
 
 <template>
   <div class="app">
-    <h1>
-      Example Vue 3 with
-      <a href="https://github.com/hiukim/mind-ar-js" target="_blank">MindAR</a>
-    </h1>
-
     <div>
       <button @click="handleARSystems()">{{ title }}</button>
     </div>
