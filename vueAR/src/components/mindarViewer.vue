@@ -16,16 +16,12 @@
     device-orientation-permission-ui="enabled: false"
   >
     <a-assets>
-      <img
-        id="card"
-        src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/examples/image-tracking/assets/card-example/card.png"
-        crossorigin="anonymous"
-      />
+
       <a-asset-item
         id="avatarModel"
-        src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/examples/image-tracking/assets/card-example/softmind/scene.gltf"
+        src="/rat.glb"
         crossorigin
-      ></a-asset-item>
+            ></a-asset-item>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -41,7 +37,7 @@
       <a-gltf-model
         rotation="0 0 0 "
         position="0 0 0.1"
-        scale="0.005 0.005 0.005"
+        scale="0.1 0.1 0.1"
         src="#avatarModel"
         animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
       ></a-gltf-model>
