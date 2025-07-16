@@ -8,7 +8,7 @@
 <template>
   <a-scene
     ref="sceneRef"
-    mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/examples/image-tracking/assets/card-example/card.mind; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /targetsRAT.mind; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;" 
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
