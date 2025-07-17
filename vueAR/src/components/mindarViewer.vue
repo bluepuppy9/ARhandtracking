@@ -1,9 +1,3 @@
-<script setup>  
-  import { ref, defineExpose } from 'vue'
-
-  const sceneRef = ref(null)
-  defineExpose({ sceneRef })
-</script>
 
 <template>
   <a-scene
@@ -38,3 +32,9 @@
     </a-entity>
   </a-scene>
 </template>
+
+<script setup>  
+  import { ref } from 'vue'
+
+  const sceneRef = ref(null)
+</script>
