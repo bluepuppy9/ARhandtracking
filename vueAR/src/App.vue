@@ -16,10 +16,8 @@
 }
 
 .container {
-  margin: 20px auto;
-  position: relative;
-  height: 400px;
-  width: 600px;
+  height: 100vh;
+  width: 100vw;
   overflow: hidden;
 }
 </style>
