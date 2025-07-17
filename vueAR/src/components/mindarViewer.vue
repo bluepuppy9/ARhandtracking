@@ -4,11 +4,11 @@ import { ref, defineExpose } from 'vue'
 const sceneRef = ref(null)
 defineExpose({ sceneRef })
 
-// function handleModelClick() {
-//   console.log('Model clicked!'); // Log to confirm the click event
-//   const clickedEl = ratModel.value;
-//   clickedEl.setAttribute('scale', '0.1 0.1 0.1'); // Shrink the model
-// }
+function handleModelClick() {
+  console.log('Model clicked!'); // Log to confirm the click event
+  const clickedEl = ratModel.value;
+  clickedEl.setAttribute('scale', '0.1 0.1 0.1'); // Shrink the model
+}
 
 AFRAME.registerComponent('change-color-on-hover', {
     schema: {
@@ -54,9 +54,8 @@ AFRAME.registerComponent('change-color-on-hover', {
 
     <a-entity mindar-image-target="targetIndex: 0">
       
-      <!-- <a-gltf-model
-        @click="handleModelClick"
-        @mousedown="handleModelClick"
+      <a-gltf-model
+        @click="handleModelClick()"
         class="clickable"
         ref="ratModel"
         rotation="0 0 0"
@@ -65,11 +64,11 @@ AFRAME.registerComponent('change-color-on-hover', {
         src="#avatarModel"
         animation="property: rotation; to: 0 360 0; dur: 1000; easing: linear; loop: true;"
       >
-    </a-gltf-model> -->
+    </a-gltf-model>
     <a-box
         position="0 0 -2"
         scale=".5 .5 .5"
-        opacity="1"
+        opacity="0"
         class="clickable"
         color="red"
         change-color-on-hover="color: blue"
