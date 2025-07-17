@@ -8,7 +8,11 @@ import path from 'path';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('a-'),
+        }}}),
     vueDevTools(),
   ],
   resolve: {
