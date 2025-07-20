@@ -22,7 +22,6 @@
     <a-entity mindar-image-target="targetIndex: 0">
       <a-gltf-model rotation="90 0 0" position="0 0 0.1" scale="0.5 0.5 0.5" src="#avatarModel">
       </a-gltf-model>
-      <a-sphere radius="0.01" color="red" scale="20 20 20"></a-sphere>
     </a-entity>
   </a-scene>
 </template>
