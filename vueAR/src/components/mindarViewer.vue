@@ -4,15 +4,17 @@ import { ref, defineExpose, onMounted } from 'vue'
 const sceneRef = ref(null)
 defineExpose({ sceneRef })
 
-const ratModel = ref(null)
+//Rat Model down below
+const ratModel = ref(null) //set the stuff first
 
+//Down here is where you add clicky stuff
 onMounted(()=> {
   window.addEventListener('DOMContentLoaded', ()=>{
-    const model = ratModel.value;
-    if (model){
-      model.addEventListener("click", ()=> {
+    const rat = ratModel.value;
+    if (rat){ //if model is loaded do the following
+      rat.addEventListener("click", ()=> { //if model clicked do the bottom
         console.log("Rat was clicked!");
-        model.setAttribute("scale", "0.5 0.5 0.5");
+        rat.setAttribute("scale", "0.5 0.5 0.5");
       })
     }
   })
