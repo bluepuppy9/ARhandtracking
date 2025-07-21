@@ -6,6 +6,7 @@ defineExpose({ sceneRef })
 
 //Rat Model down below
 const ratModel = ref(null) //set the stuff first
+const isBig = ref(true)
 
 //Down here is where you add clicky stuff
 onMounted(()=> {
@@ -14,9 +15,18 @@ onMounted(()=> {
     if (rat){ //if model is loaded do the following
       rat.addEventListener("click", ()=> { //if model clicked do the bottom
         console.log("Rat was clicked!");
-        rat.setAttribute("scale", "0.5 0.5 0.5");
+
+        if (isBig.value){
+          rat.setAttribute("scale", "0.5 0.5 0.5"); //Set to smaller size
+          isBig.value = false;
+        }
+        else if (!isBig.value){
+          rat.setAttribute("scale", "1 1 1"); //Set to larger size
+          isBig.value = true;
+        }
       })
     }
+    //Additional event listeners for different models can go down below
   })
 })
 
