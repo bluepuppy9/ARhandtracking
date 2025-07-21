@@ -1,29 +1,23 @@
 <script setup>
-import { ref, defineExpose } from 'vue'
+import { ref, defineExpose, onMounted } from 'vue'
 
 const sceneRef = ref(null)
 defineExpose({ sceneRef })
 
-function handleModelClick() {
-  console.log('Model clicked!'); // Log to confirm the click event
-  const clickedEl = ratModel.value;
-  clickedEl.setAttribute('scale', '0.1 0.1 0.1'); // Shrink the model
-}
+const ratModel = ref(null)
 
-AFRAME.registerComponent('change-color-on-hover', {
-    schema: {
-      color: {default: 'red'}
-    },
-
-    init: function () {
-      var data = this.data;
-      var el = this.el;  // <a-box>
-
-      el.addEventListener('click', function () {
-        el.setAttribute('color', data.color);
-      });
+onMounted(()=> {
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const model = ratModel.value;
+    if (model){
+      model.addEventListener("click", ()=> {
+        console.log("Rat was clicked!");
+        model.setAttribute("scale", "0.5 0.5 0.5");
+      })
     }
-  });
+  })
+})
+
 
 </script>
 
@@ -45,17 +39,15 @@ AFRAME.registerComponent('change-color-on-hover', {
       ></a-asset-item>
     </a-assets>
 
-<a-camera 
-  position="0 0 0"
-  cursor="rayOrigin: mouse; fuse: false;"
-  raycaster="objects: .clickable; interval: 50; near: 0.1; far: 100;"
-  look-controls="enabled: false">
-</a-camera>
+    <a-camera 
+      position="0 0 0" 
+      look-controls="enabled: false" 
+      cursor="fuse: false; rayOrigin: mouse;"
+      raycaster="far: 100000; objects: .clickable">
+    </a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
-      
       <a-gltf-model
-        @click="handleModelClick()"
         class="clickable"
         ref="ratModel"
         rotation="0 0 0"
@@ -65,14 +57,6 @@ AFRAME.registerComponent('change-color-on-hover', {
         animation="property: rotation; to: 0 360 0; dur: 1000; easing: linear; loop: true;"
       >
     </a-gltf-model>
-    <a-box
-        position="0 0 -2"
-        scale=".5 .5 .5"
-        opacity="0"
-        class="clickable"
-        color="red"
-        change-color-on-hover="color: blue"
-      ></a-box>
     </a-entity>
   </a-scene>
 </template>
