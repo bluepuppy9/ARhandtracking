@@ -23,25 +23,24 @@
 </style>
 
 <script setup>
-  import './libs/mindar/mindar-image.prod.js'
-  import 'aframe'
-  import './libs/mindar/mindar-image-aframe.prod.js'
-  import MindarViewer from './components/mindarViewer.vue'
-  import { ref } from 'vue'
+import './libs/mindar/mindar-image.prod.js'
+import 'aframe'
+import './libs/mindar/mindar-image-aframe.prod.js'
+import MindarViewer from './components/mindarViewer.vue'
+import { ref } from 'vue'
 
-  const mindarViewerRef = ref(null)
-  const title = ref('START')
+const mindarViewerRef = ref(null)
+const title = ref('START')
 
-  function handleARSystems() {    
-    const sceneEl = mindarViewerRef.value.sceneRef
-    const arSystem = sceneEl.systems['mindar-image-system']
-    if(title.value == 'START') {
-      arSystem.start()
-      title.value = 'STOP'
-    } else {
-      arSystem.stop()
-      title.value = 'START'
-    }
-
+function handleARSystems() {
+  const sceneEl = mindarViewerRef.value.sceneRef
+  const arSystem = sceneEl.systems['mindar-image-system']
+  if (title.value == 'START') {
+    arSystem.start()
+    title.value = 'STOP'
+  } else {
+    arSystem.stop()
+    title.value = 'START'
   }
+}
 </script>
