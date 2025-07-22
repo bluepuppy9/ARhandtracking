@@ -28,4 +28,6 @@ const sceneRef = ref(null)
 defineExpose({
   sceneRef,
 })
+
+const rats = ref({})
 </script>
