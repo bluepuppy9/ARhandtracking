@@ -29,5 +29,10 @@ defineExpose({
   sceneRef,
 })
 
-const rats = ref({ 0: null, 1: null, 2: null, 3: null })
+const UserRats = ref({
+  0: { type: 'normal', scale: 2, caught: false },
+  1: { type: 'party', scale: 2, caught: false },
+  2: { type: 'party2', scale: 1, caught: false },
+  3: { type: 'normal', scale: 2, caught: false },
+})
 </script>
