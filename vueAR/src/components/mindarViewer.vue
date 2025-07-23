@@ -14,7 +14,10 @@
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity v-for="i in 4" :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)">
+    <a-entity 
+      v-for="i in 4" 
+      :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)"
+      ref="ratModels">
       <a-gltf-model 
         class="clickable"
         rotation="90 0 0" 

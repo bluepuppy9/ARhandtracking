@@ -17,21 +17,17 @@
     movingBar = new component(5, 50, "white", canvas.value.width / 2 - 50, canvas.value.height / 2)
 
     function createTargetZone(){
-        ctx.fillStyle = "#ff0000" // Red color for the target zone
+        const red = "#ff0000"
+        ctx.fillStyle = red
         if (rat.rarity === 1){
-            //Big ish zone
             ctx.fillRect(canvas.value.width / 2 - 30, canvas.value.height /2, 65, 50)
         } else if (rat.rarity === 2){
-            //smaller zone
             ctx.fillRect(canvas.value.width / 2 - 20, canvas.value.height /2, 55, 50)
         } else if (rat.rarity === 3){
-            //even smaller zone
             ctx.fillRect(canvas.value.width / 2 - 10, canvas.value.height /2, 50, 50)
         } else if (rat.rarity === 4){
-            //even smaller zone
             ctx.fillRect(canvas.value.width / 2, canvas.value.height /2, 35, 50)
         } else if (rat.rarity === 5){
-            //smallest zone
             ctx.fillRect(canvas.value.width / 2, canvas.value.height /2, 20, 50)
         }
     }
