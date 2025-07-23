@@ -4,9 +4,10 @@
       <button @click="handleARSystems()">{{ title }}</button>
     </div>
 
-    <div class="container">
+    <div v-show="started" class="container">
       <mindar-viewer ref="mindarViewerRef" />
     </div>
+    <RouterView v-show="!started" />
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import 'aframe'
 import './libs/mindar/mindar-image-aframe.prod.js'
 import MindarViewer from './components/mindarViewer.vue'
 import { ref } from 'vue'
+import { RouterView } from 'vue-router'
 
 const mindarViewerRef = ref(null)
 const title = ref('START')
@@ -23,6 +25,7 @@ const title = ref('START')
 function handleARSystems() {
   const sceneEl = mindarViewerRef.value.sceneRef
   const arSystem = sceneEl.systems['mindar-image-system']
+  started.value = !started.value
   if (title.value == 'START') {
     arSystem.start()
     title.value = 'STOP'
@@ -31,6 +34,8 @@ function handleARSystems() {
     title.value = 'START'
   }
 }
+
+const started = ref(false)
 </script>
 
 <style scoped>
