@@ -9,13 +9,20 @@
     device-orientation-permission-ui="enabled: false"
   >
     <a-assets>
-      <a-asset-item id="avatarModel" src="/rat.glb" crossorigin></a-asset-item>
+      <a-asset-item id="ratModel" src="/rat.glb" crossorigin></a-asset-item>
     </a-assets>
 
+    <a-assets>
+      <a-asset-item id="shinyModel" src="/shinyRat.glb" crossorigin></a-asset-item>
+    </a-assets>
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity v-for="i in 4" :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)">
-      <a-gltf-model rotation="90 0 0" position="0 0 0.1" scale="0.5 0.5 0.5" src="#avatarModel">
+    <a-entity v-for="i in 2" :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)">
+      <a-gltf-model rotation="90 0 0" position="0 0 0.1" scale="0.5 0.5 0.5" src="#ratModel">
+      </a-gltf-model>
+    </a-entity>
+    <a-entity :mindar-image-target="'targetIndex: 2'">
+      <a-gltf-model rotation="90 0 0" position="0 0 0.1" scale="0.3 0.3 0.3" src="#shinyModel">
       </a-gltf-model>
     </a-entity>
   </a-scene>
@@ -32,7 +39,7 @@ defineExpose({
 const UserRats = ref({
   0: { type: 'normal', scale: 2, caught: false },
   1: { type: 'party', scale: 2, caught: false },
-  2: { type: 'party2', scale: 1, caught: false },
+  2: { type: 'shiny', scale: 1, caught: false },
   3: { type: 'normal', scale: 2, caught: false },
 })
 </script>
