@@ -14,7 +14,7 @@
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity v-for="i in 4" :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)" :ref="el => setRatModelRef(el, i-1)">
+    <a-entity v-for="i in 4" :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)" :ref="el => ratModels[i - 1] = el">
       <a-gltf-model 
         rotation="90 0 0" 
         position="0 0 0.1" 
@@ -23,30 +23,31 @@
       </a-gltf-model>
     </a-entity>
   </a-scene>
-  <TimingMinigame 
-    v-if="ratFound" 
-    :rat="UserRats[Math.floor(Math.random()*UserRats.length)]" />
+  <div>
+    <TimingMinigame v-if="ratFound" />
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import TimingMinigame from './TimingMinigame.vue'
 
 //RatModel reference here
+const ratModels = ref([])
 const ratFound = ref(false)
-const ratModel = ref([])
-const setRatModelRef = (el, index) => {
-  ratModel.value[index] = el
-}
 
-ratModel.value.forEach((model) =>{
-  model.value.addEventListener("clicked", (event)=>{
-    console.log("Rat was clicked", event.target)
-    // Trigger the minigame when the rat is clicked
-    ratFound.value = true
+onMounted(()=> {
+  window.addEventListener("DOMContentLoaded", () =>{
+    ratModels.value.forEach((model) => {
+    model.value.addEventListener("targetFound", event =>{
+      console.log("Found the rat")
+      model.setAttribute("scale", "2 2 2")
+      ratFound.value = true
+    })
   })
+  })
+  
 })
-
 
 const sceneRef = ref(null)
 defineExpose({
