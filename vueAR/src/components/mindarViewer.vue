@@ -33,10 +33,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 
 //RatModel reference here
-const ratModels = ref([])
+const ratModels = useTemplateRef('ratModels')
 const ratFound = ref(false)
 const targets = ref([])
 
