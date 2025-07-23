@@ -16,10 +16,10 @@
 
     <a-entity 
       v-for="i in 4" 
-      :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)"
-      ref="ratModels">
+      :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)">
       <a-gltf-model 
         class="clickable"
+        ref="ratModels"
         rotation="90 0 0" 
         position="0 0 0.1" 
         scale="0.5 0.5 0.5"
@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import TimingMinigame from './TimingMinigame.vue'
 
 //RatModel reference here
@@ -42,10 +42,10 @@ const ratFound = ref(false)
 
 onMounted(() =>{
   window.addEventListener("DOMContentLoaded", ()=> {
-    const rat = ratModels.value;
+    const rats = ratModels.value;
     if (rats){
-      rats.forEach("rat", ()=>{
-        rat.addEventListener("targetFound", ()=> {
+      rats.forEach(rat, ()=>{
+        rat.addEventListener("targetFound", () => {
           ratFound.value = true
           console.log("Rat found!")
         })
