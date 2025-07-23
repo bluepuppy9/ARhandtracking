@@ -28,30 +28,32 @@
     </a-entity>
   </a-scene>
   <div>
-    <TimingMinigame v-if="ratFound" />
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, useTemplateRef } from 'vue'
-import TimingMinigame from './TimingMinigame.vue'
+import { onMounted, ref } from 'vue'
 
 //RatModel reference here
 const ratModels = ref([])
 const ratFound = ref(false)
 
 onMounted(() =>{
-  window.addEventListener("DOMContentLoaded", ()=> {
-    const rats = ratModels.value;
-    if (rats){
-      rats.forEach(rat, ()=>{
-        rat.addEventListener("targetFound", () => {
-          ratFound.value = true
-          console.log("Rat found!")
+    window.addEventListener("DOMContentLoaded", ()=> {
+      const rats = ratModels.value;
+      if (rats && rats.length > 0){
+        rats.forEach((rat) =>{
+          rat.addEventListener("targetFound", () => {
+            console.log("Rat found!")
+            ratFound.value = true
+          })
+          rat.addEventListener("targetLost", () => {
+            console.log("Rat lost")
+            ratFound.value = false
+          })
         })
-      })
-    }
-  })
+      }
+    })
 })
 
 const sceneRef = ref(null)
