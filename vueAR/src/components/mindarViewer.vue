@@ -15,27 +15,27 @@
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity v-for="i in 4" :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)">
-      <a-gltf-model rotation="90 0 0" position="0 0 0.1" scale="0.5 0.5 0.5" src="#avatarModel" class="clickable" ref="ratModel">  
+      <a-gltf-model rotation="90 0 0" position="0 0 0.1" scale="0.5 0.5 0.5" src="#avatarModel" class="clickable" :ref="ratModel.push(i)">  
       </a-gltf-model>
-      <TimingMinigame v-if="ratFound === true" :rat="ratModel[i]"/>
     </a-entity>
+    <TimingMinigame v-if="ratFound === true"/>
   </a-scene>
 </template>
 
-<script setup>
-import { onMounted, ref, useTemplateRef } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import TimingMinigame from './TimingMinigame.vue';
 
 
 const ratFound = ref(false)
-const ratModel = useTemplateRef('ratModel')
+const ratModel = ref([])
 
 onMounted(()=> {
   if (ratModel){
     ratModel.value.forEach((model) => {
       model.addEventListener("click", ()=>{
         console.log("You clicked a rat!")
-        model.setAttribute("scale", "1 1 1")
+        model.setAttribute("scale", "2 2 2")
         ratFound.value = true
       })
     })
