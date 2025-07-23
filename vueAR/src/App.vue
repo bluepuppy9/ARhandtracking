@@ -10,18 +10,6 @@
   </div>
 </template>
 
-<style scoped>
-.app {
-  text-align: center;
-}
-
-.container {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
-</style>
-
 <script setup>
 import './libs/mindar/mindar-image.prod.js'
 import 'aframe'
@@ -44,3 +32,15 @@ function handleARSystems() {
   }
 }
 </script>
+
+<style scoped>
+.app {
+  text-align: center;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+</style>
