@@ -14,11 +14,12 @@
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity v-for="i in 4" :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)" :ref="el => ratModels[i - 1] = el">
+    <a-entity v-for="i in 4" :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)">
       <a-gltf-model 
+        class="clickable"
         rotation="90 0 0" 
         position="0 0 0.1" 
-        scale="0.5 0.5 0.5" 
+        scale="0.5 0.5 0.5"
         src="#avatarModel">
       </a-gltf-model>
     </a-entity>
@@ -36,17 +37,18 @@ import TimingMinigame from './TimingMinigame.vue'
 const ratModels = ref([])
 const ratFound = ref(false)
 
-onMounted(()=> {
-  window.addEventListener("DOMContentLoaded", () =>{
-    ratModels.value.forEach((model) => {
-    model.value.addEventListener("targetFound", event =>{
-      console.log("Found the rat")
-      model.setAttribute("scale", "2 2 2")
-      ratFound.value = true
-    })
+onMounted(() =>{
+  window.addEventListener("DOMContentLoaded", ()=> {
+    const rat = ratModels.value;
+    if (rats){
+      rats.forEach("rat", ()=>{
+        rat.addEventListener("targetFound", ()=> {
+          ratFound.value = true
+          console.log("Rat found!")
+        })
+      })
+    }
   })
-  })
-  
 })
 
 const sceneRef = ref(null)
