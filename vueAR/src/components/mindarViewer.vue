@@ -16,7 +16,8 @@
 
     <a-entity 
       v-for="i in 4" 
-      :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)">
+      :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)"
+      ref="targets">
       <a-gltf-model 
         class="clickable"
         ref="ratModels"
@@ -37,6 +38,8 @@ import { onMounted, ref } from 'vue'
 //RatModel reference here
 const ratModels = ref([])
 const ratFound = ref(false)
+const targets = ref([])
+
 
 onMounted(() =>{
     window.addEventListener("DOMContentLoaded", ()=> {
