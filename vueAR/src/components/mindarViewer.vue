@@ -30,8 +30,8 @@
       </a-gltf-model>
     </a-entity>
   </a-scene>
-  <div>
-    <TimingMinigame v-if="ratFound"/>
+  <div v-if="ratFound">
+    <TimingMinigame/>
   </div>
 </template>
 

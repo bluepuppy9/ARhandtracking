@@ -1,37 +1,35 @@
 <template>
-    <canvas ref="canvas" width="200" height="100">
+    <canvas ref="canvas">
     
     </canvas>
 </template>
 
 <script setup>
-    // const prop = defineProps({
-    //     rat: Object
-    // })
+import { useTemplateRef, onMounted } from 'vue';
 
-    const canvas = ref(null)
-    const ctx = canvas.value.getContext('2d')
-    //Base bar
-    ctx.fillRect(canvas.value.width / 2 - 50, canvas.value.height /2, 100, 50)
+    //set up variables
+    const canvas = useTemplateRef('canvas')
+    let ctx = null
 
-    movingBar = new component(5, 50, "white", canvas.value.width / 2 - 50, canvas.value.height / 2)
+    onMounted(() => {
+        //set canvas size
+        ctx = canvas.value.getContext("2d");
+        canvas.value.width = window.innerWidth;
+        canvas.value.height = window.innerHeight;
 
-    function createTargetZone(){
-        const red = "#ff0000"
-        ctx.fillStyle = red
-        ctx.fillRect(canvas.value.width / 2 - 30, canvas.value.height /2, 65, 50)
-        // if (rat.rarity === 1){
-        //     ctx.fillRect(canvas.value.width / 2 - 30, canvas.value.height /2, 65, 50)
-        // } else if (rat.rarity === 2){
-        //     ctx.fillRect(canvas.value.width / 2 - 20, canvas.value.height /2, 55, 50)
-        // } else if (rat.rarity === 3){
-        //     ctx.fillRect(canvas.value.width / 2 - 10, canvas.value.height /2, 50, 50)
-        // } else if (rat.rarity === 4){
-        //     ctx.fillRect(canvas.value.width / 2, canvas.value.height /2, 35, 50)
-        // } else if (rat.rarity === 5){
-        //     ctx.fillRect(canvas.value.width / 2, canvas.value.height /2, 20, 50)
-        // }
-    }
+        //create gradient for target zone
+        const gradient = ctx.createLinearGradient(0, 0, canvas.value.width, 0);
+        gradient.addColorStop(0, "white");
+        gradient.addColorStop(0.5, "red");
+        gradient.addColorStop(1, "white");
 
-    createTargetZone()
+        //set gradient to fill style
+        ctx.fillStyle = gradient;
+
+        //draw the target zone
+        ctx.fillRect(canvas.value.width / 2 - 50, canvas.value.height, 100, 50);
+
+        //make a moving bar to click on target zone
+        movingBar = new component(5, 50, "black", canvas.value.width / 2 - 50, canvas.value.height)
+    })
 </script>
