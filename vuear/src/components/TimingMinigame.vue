@@ -5,9 +5,9 @@
 </template>
 
 <script setup>
-    const rat = defineProps({
-        rat: Object
-    })
+    // const prop = defineProps({
+    //     rat: Object
+    // })
 
     const canvas = ref(null)
     const ctx = canvas.value.getContext('2d')
@@ -19,17 +19,18 @@
     function createTargetZone(){
         const red = "#ff0000"
         ctx.fillStyle = red
-        if (rat.rarity === 1){
-            ctx.fillRect(canvas.value.width / 2 - 30, canvas.value.height /2, 65, 50)
-        } else if (rat.rarity === 2){
-            ctx.fillRect(canvas.value.width / 2 - 20, canvas.value.height /2, 55, 50)
-        } else if (rat.rarity === 3){
-            ctx.fillRect(canvas.value.width / 2 - 10, canvas.value.height /2, 50, 50)
-        } else if (rat.rarity === 4){
-            ctx.fillRect(canvas.value.width / 2, canvas.value.height /2, 35, 50)
-        } else if (rat.rarity === 5){
-            ctx.fillRect(canvas.value.width / 2, canvas.value.height /2, 20, 50)
-        }
+        ctx.fillRect(canvas.value.width / 2 - 30, canvas.value.height /2, 65, 50)
+        // if (rat.rarity === 1){
+        //     ctx.fillRect(canvas.value.width / 2 - 30, canvas.value.height /2, 65, 50)
+        // } else if (rat.rarity === 2){
+        //     ctx.fillRect(canvas.value.width / 2 - 20, canvas.value.height /2, 55, 50)
+        // } else if (rat.rarity === 3){
+        //     ctx.fillRect(canvas.value.width / 2 - 10, canvas.value.height /2, 50, 50)
+        // } else if (rat.rarity === 4){
+        //     ctx.fillRect(canvas.value.width / 2, canvas.value.height /2, 35, 50)
+        // } else if (rat.rarity === 5){
+        //     ctx.fillRect(canvas.value.width / 2, canvas.value.height /2, 20, 50)
+        // }
     }
 
     createTargetZone()

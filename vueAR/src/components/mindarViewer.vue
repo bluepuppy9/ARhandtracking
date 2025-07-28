@@ -22,32 +22,53 @@
       <a-gltf-model 
         class="clickable"
         ref="ratModels"
-        rotation="90 0 0" 
-        position="0 0 0.1" 
-        scale="0.5 0.5 0.5"
+        @model-loaded="e => console.log('✅ Model loaded!', e)"
+        scale="1 1 1"
+        position="0 0 -0.5"
+        rotation="0 0 0"
         src="#avatarModel">
       </a-gltf-model>
     </a-entity>
   </a-scene>
   <div>
+    <TimingMinigame v-if="ratFound"/>
   </div>
 </template>
 
 <script setup>
 import { onMounted, ref, useTemplateRef } from 'vue'
+import TimingMinigame from './TimingMinigame.vue'
 
+//references
 const targets = useTemplateRef('targets')
-targets.value.forEach((target) => {
-  target.addEventListener('targetFound', () => {
-    console.log('Target found!')
+const ratModels = useTemplateRef('ratModels')
+
+//game bools
+const ratFound = ref(false)
+
+
+//adding event listeners to stuff
+onMounted(() => {
+  window.addEventListener("DOMContentLoaded", () =>{
+    const targetElements = targets.value;
+    targetElements.forEach((target) => {
+      target.addEventListener("targetFound", () => {
+        console.log("Target is found!")
+        ratFound.value = true;
+      })
+    })
+    const ratElements = ratModels.value;
+    ratElements.forEach((rat) => {
+      rat.addEventListener("targetFound", () =>{
+        console.log("We found a rat!")
+        
+      })
+    })
   })
-  target.addEventListener('targetLost', () => {
-    console.log('Target lost')
-  })
-});
+})
 // //RatModel reference here
-// const ratModels = useTemplateRef('ratModels')
-// const ratFound = ref(false)
+
+
 // const targets = ref([])
 
 
