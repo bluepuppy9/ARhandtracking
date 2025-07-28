@@ -11,7 +11,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.11",
     "aframe": "^1.7.1",
+    "tailwindcss": "^4.1.11",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
   },
@@ -25,7 +27,6 @@
     "globals": "^16.2.0",
     "postcss": "^8.5.6",
     "prettier": "3.5.3",
-    "tailwindcss": "^4.1.11",
     "vite": "^7.0.0",
     "vite-plugin-vue-devtools": "^7.7.7"
   }

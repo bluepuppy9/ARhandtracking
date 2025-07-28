@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="main">
     <div>
       <button @click="handleARSystems()">{{ title }}</button>
     </div>
@@ -37,15 +37,3 @@ function handleARSystems() {
 
 const started = ref(false)
 </script>
-
-<style scoped>
-.app {
-  text-align: center;
-}
-
-.container {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
-</style>
