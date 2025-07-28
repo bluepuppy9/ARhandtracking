@@ -41,23 +41,23 @@ const ratFound = ref(false)
 const targets = ref([])
 
 
-onMounted(() =>{
-    window.addEventListener("DOMContentLoaded", ()=> {
-      const rats = ratModels.value;
-      if (rats && rats.length > 0){
-        rats.forEach((rat) =>{
-          rat.addEventListener("targetFound", () => {
-            console.log("Rat found!")
-            ratFound.value = true
-          })
-          rat.addEventListener("targetLost", () => {
-            console.log("Rat lost")
-            ratFound.value = false
-          })
-        })
-      }
-    })
-})
+// onMounted(() =>{
+//     window.addEventListener("DOMContentLoaded", ()=> {
+//       const rats = ratModels.value;
+//       if (rats && rats.length > 0){
+//         rats.forEach((rat) =>{
+//           rat.addEventListener("targetFound", () => {
+//             console.log("Rat found!")
+//             ratFound.value = true
+//           })
+//           rat.addEventListener("targetLost", () => {
+//             console.log("Rat lost")
+//             ratFound.value = false
+//           })
+//         })
+//       }
+//     })
+// })
 
 const sceneRef = ref(null)
 defineExpose({
