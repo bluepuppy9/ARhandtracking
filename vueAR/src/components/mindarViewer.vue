@@ -1,7 +1,7 @@
 <template>
   <a-scene
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /targets (33).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /targets (39).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -64,10 +64,10 @@ defineExpose({
   sceneRef,
 })
 
-const UserRats = ref({
-  0: { type: 'normal', scale: 2, caught: false },
-  1: { type: 'party', scale: 2, caught: false },
-  2: { type: 'party2', scale: 1, caught: false },
+const userRats = ref({
+  0: { type: 'rat', scale: 2, caught: false },
+  1: { type: 'shiny', scale: 2, caught: false },
+  2: { type: 'rat', scale: 1, caught: false },
   3: { type: 'normal', scale: 2, caught: false },
 })
 </script>
