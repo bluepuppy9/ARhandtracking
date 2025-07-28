@@ -1,7 +1,7 @@
 <template>
   <a-scene
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /targets (39).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /bigRats.mind; maxTrack: 2; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -15,7 +15,7 @@
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity 
-      v-for="i in 4" 
+      v-for="i in 2" 
       :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)"
       ref="targets">
       <a-gltf-model 
@@ -35,10 +35,10 @@
 <script setup>
 import { onMounted, ref, useTemplateRef } from 'vue'
 
-//RatModel reference here
-const ratModels = useTemplateRef('ratModels')
-const ratFound = ref(false)
-const targets = ref([])
+// //RatModel reference here
+// const ratModels = useTemplateRef('ratModels')
+// const ratFound = ref(false)
+// const targets = ref([])
 
 
 // onMounted(() =>{
