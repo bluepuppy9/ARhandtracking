@@ -17,6 +17,7 @@
     <a-entity 
       v-for="i in 2" 
       :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)"
+      class="clickable"
       ref="targets">
       <a-gltf-model 
         class="clickable"
@@ -35,6 +36,15 @@
 <script setup>
 import { onMounted, ref, useTemplateRef } from 'vue'
 
+const targets = useTemplateRef('targets')
+targets.value.forEach((target) => {
+  target.addEventListener('targetFound', () => {
+    console.log('Target found!')
+  })
+  target.addEventListener('targetLost', () => {
+    console.log('Target lost')
+  })
+});
 // //RatModel reference here
 // const ratModels = useTemplateRef('ratModels')
 // const ratFound = ref(false)
