@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <login v-if="!isLoggedIn" />
+    <signup v-if="!isLoggedIn" />
     <button @click="handleARSystems()">{{ title }}</button>
 
     <div class="container">
@@ -12,6 +12,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import login from '../components/login.vue'
+import signup from '../components/signup.vue'
 import '../libs/mindar/mindar-image.prod.js'
 import 'aframe'
 import '../libs/mindar/mindar-image-aframe.prod.js'
