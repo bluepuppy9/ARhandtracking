@@ -39,6 +39,8 @@ import TimingMinigame from './TimingMinigame.vue'
 
 //references
 
+
+
 //game bools
 const ratFound = ref(false)
 const targets = useTemplateRef('targets')
@@ -50,7 +52,7 @@ onMounted(() => {
   targetElements.forEach((target) => {
       target.addEventListener("targetFound", () => {
         console.log("Target is found!")
-        ratFound.value = true;
+        ratFound.value = true
     })
     target.addEventListener("targetLost", () => {
       console.log("Target is lost!")

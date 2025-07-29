@@ -1,17 +1,38 @@
 <template>
-    <canvas ref="canvasBackground">
+        <div>
+            <h1>your miss rate: {{ missRate - cheeseBanaHelp }}</h1>
+            <h1>Caught Rats: {{ ratCaught }}</h1>
+        </div>
+        <canvas ref="canvasBackground">
     
-    </canvas>
+        </canvas>
+        <div>
+            <button type="submit" @click="useCheeseBana">Cheese Banana: {{ cheeseBanana }}</button>
+        </div>
+    
 </template>
 
 <script setup>
-import { useTemplateRef, onMounted } from 'vue';
 
+//To solve issue with clicking both window and button at the same time!
+//Div styling and make the button = safe zone
+import { useTemplateRef, onMounted, ref } from 'vue';
     //set up variables
     const canvasBackground = useTemplateRef('canvasBackground');
-    let barX = 0;
+    const barX = ref(0)
+    const missRate = ref(0)
+    const ratCaught = ref(0)
+
+    //cheese banana 
+    const cheeseBanana = ref(3)
+    const cheeseBanaHelp = ref(0)
 
     //functions
+    function useCheeseBana(){
+        cheeseBanaHelp.value += 5
+        cheeseBanana.value-=1
+
+    }
     function createTargetZone(){
         const ctx = canvasBackground.value.getContext("2d");
         canvasBackground.value.width = 400;
@@ -32,15 +53,15 @@ import { useTemplateRef, onMounted } from 'vue';
 
     function createBar(){
         //calculate bar movement
-        if (barX < canvasBackground.value.width){
-            barX+=5;
+        if (barX.value < canvasBackground.value.width){
+            barX.value+=5;
         } else {
-            barX = 0;
+            barX.value = 0;
         }
 
         const ctx = canvasBackground.value.getContext("2d");
         ctx.fillStyle = "black";
-        ctx.fillRect(barX, 0, 10, canvasBackground.value.height);
+        ctx.fillRect(barX.value, 0, 10, canvasBackground.value.height);
     }
 
     function drawStuff(){
@@ -48,14 +69,32 @@ import { useTemplateRef, onMounted } from 'vue';
         createBar();
     }
 
-    onMounted(() => {
-            setInterval(drawStuff, 10)
-            window.addEventListener("click", ()=> {
-                if (barX > 150 && barX < 250) {
-                    console.log("You hit the target!");
-                    gameOn.value = false
+    function calculateCatch(){
+        const barXStop = barX.value
+            if (Math.abs(barXStop) <= 200){
+                missRate.value = ((200 - Math.abs(barXStop)) / 2) - cheeseBanaHelp.value
+                if (missRate.value < 0){
+                    missRate.value = 0
                 }
-            })
-        
+            }
+            else if (Math.abs(barXStop) > 200){
+                missRate.value = ((Math.abs(barXStop) - 200) /2) - cheeseBanaHelp.value
+                if (missRate.value < 0){
+                    missRate.value = 0
+                }
+            }
+
+            //Then randomize the numbers to see if they actually caught it
+            const rateChance = Math.floor(Math.random()*101)
+            if (rateChance > missRate.value){
+                ratCaught.value +=1
+                console.log("You caught the rat!")
+            }
+            //after calculations cheese banana goes bye bye
+            cheeseBanaHelp.value = 0
+    }    
+    onMounted(() => {
+        setInterval(drawStuff, 10)
+        window.addEventListener("click", calculateCatch)
     })
 </script>
