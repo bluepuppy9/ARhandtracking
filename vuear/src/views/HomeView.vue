@@ -1,10 +1,12 @@
 <template>
   <div class="main">
     <login v-if="!isLoggedIn" />
-    <button @click="handleARSystems()">{{ title }}</button>
+    <div v-if="isLoggedIn">
+      <button @click="handleARSystems()">{{ title }}</button>
 
-    <div class="container">
-      <mindar-viewer ref="mindarViewerRef" />
+      <div class="container">
+        <mindar-viewer ref="mindarViewerRef" />
+      </div>
     </div>
   </div>
 </template>
