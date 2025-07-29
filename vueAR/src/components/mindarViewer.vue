@@ -1,13 +1,15 @@
 <template>
   <a-scene
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /targets (40).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /targets (41).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
   >
+    <a-camera mindar-image-camera></a-camera>
+
     <a-assets>
       <a-asset-item id="ratModel" src="/rat.glb" crossorigin></a-asset-item>
     </a-assets>
@@ -21,7 +23,7 @@
         rotation="90 0 0"
         position="0 0 -0.5"
         scale="0.5 0.5 0.5"
-        :src="'#' + userRats[i - 1].type + 'Model'"
+        :src="'#' + userRats[i].type + 'Model'"
       >
         <a-animation
           attribute="scale"
@@ -38,16 +40,26 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const sceneRef = ref(null)
 defineExpose({
   sceneRef,
 })
 
+const ratModel = ref(null)
+
+onMounted(() => {
+  const rat = ratModel.value
+  if (rat) {
+    rat.addEventListener('model-loaded', () => {
+      console.log('Rat model loaded')
+    })
+  }
+})
+
 const userRats = ref([
   { type: 'rat', scale: 2, caught: false },
   { type: 'shiny', scale: 2, caught: false },
-  { type: 'rat', scale: 1, caught: false },
 ])
 </script>
