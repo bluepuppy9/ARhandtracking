@@ -1,27 +1,29 @@
 <template>
   <div class="main">
     <Login v-if="!isLoggedIn" />
-
     <div v-else>
+      <div v-if="!running" class="container start-text">
+        <h1>Welcome to the AR Ratdom</h1>
+        <p>Please start the AR system to see the rats.</p>
+      </div>
+
       <div class="button-container">
-        <button @click="handleARSystems" class="start-stop-btn">
-          {{ title }}
+        <button class="startButton" :class="{ active: running }" @click="handleARSystems">
+          {{ running ? 'STOP' : 'START' }}
         </button>
-        <button @click="showRatdex = true" class="show-ratdex-btn">
+        <button @click="showRatdex = true" class="show-ratdex-btn" v-if="running">
           Show Ratdex
         </button>
       </div>
 
-      <div class="viewer-container">
+      <div class="viewer-container" v-show="running">
         <mindar-viewer ref="mindarViewerRef" />
       </div>
 
       <div v-if="showRatdex" class="ratdex-overlay">
         <div class="ratdex-wrapper">
           <Ratdex :ratdex="ratdexData" />
-          <button @click="showRatdex = false" class="close-btn">
-            Close
-          </button>
+          <button @click="showRatdex = false" class="close-btn">Close</button>
         </div>
       </div>
     </div>
@@ -39,22 +41,24 @@ import '../libs/mindar/mindar-image.prod.js'
 import 'aframe'
 import '../libs/mindar/mindar-image-aframe.prod.js'
 
+const mindarViewerRef = ref(null)
+const running = ref(false)
+const showRatdex = ref(false)
+
 const userStore = useUserStore()
 const isLoggedIn = computed(() => userStore.isLoggedIn)
-
-const title = ref('START')
-const showRatdex = ref(false)
-const mindarViewerRef = ref(null)
 
 function handleARSystems() {
   const sceneEl = mindarViewerRef.value.sceneRef
   const arSystem = sceneEl.systems['mindar-image-system']
-  if (title.value === 'START') {
+
+  if (!running.value) {
     arSystem.start()
-    title.value = 'STOP'
+    running.value = true
   } else {
     arSystem.stop()
-    title.value = 'START'
+    running.value = false
+    showRatdex.value = false // hide Ratdex on stop
   }
 }
 </script>
@@ -62,14 +66,32 @@ function handleARSystems() {
 <style scoped>
 .button-container {
   margin-bottom: 16px;
+  text-align: center;
 }
 
-.start-stop-btn {
-  margin-right: 12px;
+.start-stop-btn,
+.show-ratdex-btn,
+.close-btn {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  margin: 0.5rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: var(--primary);
+  color: var(--secondary);
+  transition: background 0.3s;
 }
 
-.viewer-container {
-  height: 100vh;
+.start-stop-btn:hover,
+.show-ratdex-btn:hover,
+.close-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.viewer-container,
+.containerMindar {
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
 }
@@ -95,10 +117,28 @@ function handleARSystems() {
   position: absolute;
   top: -40px;
   right: 0;
-  padding: 8px 12px;
   background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: 4px;
+}
+
+.startButton {
+  padding: 0.75rem;
+  background: var(--primary);
+  color: var(--secondary);
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
   cursor: pointer;
+  transition: transform 0.5s ease, top 0.5s ease;
+  box-shadow: 0 0 10px var(--primary);
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.startButton.active {
+  top: 1%;
+  transform: translate(-50%, 0);
 }
 </style>
