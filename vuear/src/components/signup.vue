@@ -78,7 +78,7 @@ function handleSubmit() {
 
 <style scoped>
 .auth-wrapper {
-  background: #000;
+  background: var(--secondary);
   min-height: 100dvh;
   display: flex;
   justify-content: center;
@@ -91,8 +91,8 @@ function handleSubmit() {
   width: 22.5rem;
   padding: 2rem;
   border-radius: 12px;
-  background: #111;
-  box-shadow: 0 0 20px rgba(255, 234, 0, 0.15);
+  background: var(--secondary-soft);
+  box-shadow: 0 0 20px var(--secondary-soft-shadow);
 }
 
 .auth-box h2 {
@@ -108,9 +108,9 @@ function handleSubmit() {
 
 .input-field {
   padding: 0.75rem;
-  border: 1px solid #444;
+  border: 1px solid var(--secondary-border);
   border-radius: 8px;
-  background: #000;
+  background: var(--secondary);
   color: var(--primary);
   outline: none;
 }

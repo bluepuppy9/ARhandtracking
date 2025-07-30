@@ -46,16 +46,6 @@ function handleARSystems() {
 </script>
 
 <style scoped>
-.container {
-  height: 100dvh;
-  width: 100vw;
-  overflow: hidden;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  background-color: black;
-  justify-content: center;
-}
 .containerMindar {
   height: 100dvh;
   width: 100vw;
@@ -65,7 +55,7 @@ function handleARSystems() {
 .startButton {
   padding: 0.75rem;
   background: var(--primary);
-  color: #000;
+  color: var(--secondary);
   border: none;
   border-radius: 0.5rem;
   font-weight: bold;
