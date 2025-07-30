@@ -1,8 +1,10 @@
 <template> 
         <div ref="top" :style="topDivStyle">
-            <div :style="textBg">
-                <h1>Your miss rate of previous hit: {{ missRate }}</h1>
-                <h1>Caught Rats: {{ ratCaught }}</h1>
+            <div :style="textBgStyle">
+                <div :style="textTransparentNo">
+                    <h1>Your miss rate of previous hit: {{ missRate }}</h1>
+                    <h1>Caught Rats: {{ ratCaught }}</h1>
+                </div>
             </div>
             <canvas v-if="ratNet > 0" ref="canvasBackground"></canvas>
         </div>
@@ -16,20 +18,17 @@
 
 <script setup>
 
-//To solve issue with clicking both window and button at the same time!
-//Div styling and make the button = safe zone
+
 import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
-    //Styling
     const buttonStyle = reactive({
         backgroundColor: 'yellow',
         color: 'black',
         borderStyle: 'black',
         borderWidth: '2px',
     })
-    const textBg = reactive({
-        backgroundColor: 'black',
+    const textBgStyle = reactive({
+        backgroundColor: `rgba(0, 0, 0, 0.5)`,
         color: 'yellow',
-        opacity: '.2',
         margin: '2%',
         borderStyle: 'solid',
         borderWidth: '2px',
@@ -45,25 +44,22 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
         color: "yellow",
         borderTop: 'solid 2px yellow',
     })
-
-    //set up variables
+    const textTransparentNo = reactive({
+        opacity: '1',
+    })
     const canvasBackground = useTemplateRef('canvasBackground');
     const top = useTemplateRef('top')
     const barX = ref(0)
     const missRate = ref(0)
     const ratCaught = ref(0)
-    //animation
-    const animationPause = ref(false)
+    
     let animationFrameId = null
+    const clickedPlay = ref(0)
 
-    //cheese banana 
     const cheeseBanana = ref(3)
     const cheeseBanaHelp = ref(0)
-
-    //nets
     const ratNet = ref(3)
 
-    //functions
     function useCheeseBana(){
         if (cheeseBanaHelp.value !== 5){
             cheeseBanaHelp.value += 5
@@ -76,16 +72,12 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
         canvasBackground.value.width = 400;
         canvasBackground.value.height = 100;
         
-        //create gradient for target zone
         const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0);
         gradient.addColorStop(0, "red");
         gradient.addColorStop(0.5, "orange");
         gradient.addColorStop(1, "red");
 
-        //set gradient to fill style
         ctx.fillStyle = gradient;
-
-        //draw the target zone
         ctx.fillRect(0, 0, canvasBackground.value.width, canvasBackground.value.height);
     }
 
@@ -109,7 +101,6 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
     }
 
     function createBar(){
-        //calculate bar movement
         if (barX.value < canvasBackground.value.width){
             barX.value+=5;
         } else {
@@ -145,27 +136,32 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
                 }
             }
 
-            //Then randomize the numbers to see if they actually caught it
             const rateChance = Math.floor(Math.random()*101)
             if (rateChance > missRate.value){
                 ratCaught.value +=1
                 console.log("You caught the rat!")
             }
-            //after calculations cheese banana goes bye bye
             cheeseBanaHelp.value = 0
             ratNet.value-=1
         }
     }
     function calculateCatch(){
         const barXStop = barX.value
-        animationPause.value = true
-        cancelAnimationFrame(animationFrameId)
-        setTimeout(animate, 500)
-        mathBehindCatch(barXStop)
+        if (clickedPlay.value === 0){
+            clickedPlay.value += 1 
+            cancelAnimationFrame(animationFrameId)
+            mathBehindCatch(barXStop)
+            setTimeout(specialAnim, 1000)
+        }
     }
     function animate(){
         drawStuff()
         animationFrameId = requestAnimationFrame(animate)
+    }
+    function specialAnim(){
+        barX.value = 0
+        animate()
+        clickedPlay.value = 0
     }
     onMounted(() => {
         animate()

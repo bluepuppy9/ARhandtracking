@@ -37,16 +37,10 @@
 import { onMounted, ref, useTemplateRef } from 'vue'
 import TimingMinigame from './TimingMinigame.vue'
 
-//references
-
-
-
-//game bools
 const ratFound = ref(false)
 const targets = useTemplateRef('targets')
 const ratModels = useTemplateRef('ratModels')
 
-//adding event listeners to stuff
 onMounted(() => {
   const targetElements = targets.value;
   targetElements.forEach((target) => {
