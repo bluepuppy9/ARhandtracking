@@ -2,7 +2,7 @@
   <div
     style="
       background-color: #111122;
-      height: 100vh;
+      height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
