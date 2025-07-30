@@ -1,14 +1,16 @@
 <template>
+    <div ref="top" :style="topDivStyle">
         <div>
-            <h1>your miss rate: {{ missRate - cheeseBanaHelp }}</h1>
+            <h1>your miss rate: {{ missRate }}</h1>
             <h1>Caught Rats: {{ ratCaught }}</h1>
         </div>
         <canvas ref="canvasBackground">
     
         </canvas>
-        <div>
-            <button type="submit" @click="useCheeseBana">Cheese Banana: {{ cheeseBanana }}</button>
-        </div>
+    </div>
+    <div id="bottom">
+        <button type="submit" @click="useCheeseBana">Cheese Banana: {{ cheeseBanana }}</button>
+    </div>
     
 </template>
 
@@ -16,9 +18,15 @@
 
 //To solve issue with clicking both window and button at the same time!
 //Div styling and make the button = safe zone
-import { useTemplateRef, onMounted, ref } from 'vue';
+import { useTemplateRef, onMounted, ref, reactive } from 'vue';
+    //Styling
+    const topDivStyle = reactive({
+        height: '80vh'
+    })
+
     //set up variables
     const canvasBackground = useTemplateRef('canvasBackground');
+    const top = useTemplateRef('top')
     const barX = ref(0)
     const missRate = ref(0)
     const ratCaught = ref(0)
@@ -95,6 +103,11 @@ import { useTemplateRef, onMounted, ref } from 'vue';
     }    
     onMounted(() => {
         setInterval(drawStuff, 10)
-        window.addEventListener("click", calculateCatch)
+        top.value.addEventListener("click", calculateCatch)
     })
 </script>
+
+<style scoped>
+
+
+</style>
