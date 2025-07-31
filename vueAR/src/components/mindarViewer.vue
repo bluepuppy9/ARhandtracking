@@ -49,12 +49,6 @@ onMounted(() => {
       ratFound.value = false;
     })
   })
-  const ratElements = ratModels.value;
-  ratElements.forEach((rat) => {
-    rat.addEventListener("targetFound", () =>{
-      console.log("We found a rat!")
-    })
-  })
 })
 
 
