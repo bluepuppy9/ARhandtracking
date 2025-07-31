@@ -12,12 +12,16 @@
 <script setup>
     import {ref} from 'vue'
 
+    const obtainedAlready = ref(false)
     const cheeseBanana = ref(0)
     const ratNets = ref(0)
     function rollingItems(){
-        const randomNumForCheeseBanana = Math.floor(Math.random() *3)
-        cheeseBanana.value += randomNumForCheeseBanana
-        calculateRatNet()
+        if (obtainedAlready.value === false){
+            const randomNumForCheeseBanana = Math.floor(Math.random() *3)
+            cheeseBanana.value += randomNumForCheeseBanana
+            calculateRatNet()
+            obtainedAlready.value = true
+        }
     }
 
     function calculateRatNet(){
