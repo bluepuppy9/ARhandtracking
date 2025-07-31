@@ -6,7 +6,7 @@
                     <h1>Caught Rats: {{ ratCaught }}</h1>
                 </div>
             </div>
-            <canvas v-if="ratNet > 0" :style='canvasRound' ref="canvasBackground"></canvas>
+            <canvas v-if="ratNet > 0" ref="canvasBackground"></canvas>
         </div>
         <div v-if="ratNet>0" :style="bottomDivStyle">
             <h1>Rat Net(s): {{ ratNet }}</h1>
@@ -20,9 +20,6 @@
 
 
 import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
-    const canvasRound = reactive({
-        borderRadius: '25px',
-    })
     const buttonStyle = reactive({
         backgroundColor: 'yellow',
         color: 'black',
@@ -32,18 +29,17 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
     const textBgStyle = reactive({
         backgroundColor: `rgba(0, 0, 0, 0.5)`,
         color: 'yellow',
-        borderRadius: '25px',
         margin: '2%',
         borderStyle: 'solid',
         borderWidth: '2px',
         borderColor: 'yellow'
     })
     const topDivStyle = reactive({
-        height: '75vh',
+        height: '80vh',
     })
 
     const bottomDivStyle = reactive({
-        height: '25vh',
+        height: '20vh',
         backgroundColor: 'black',
         color: "yellow",
         borderTop: 'solid 2px yellow',
@@ -77,9 +73,9 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
         canvasBackground.value.height = 100;
         
         const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0);
-        gradient.addColorStop(.2, "black");
-        gradient.addColorStop(0.5, "yellow");
-        gradient.addColorStop(.8, "black");
+        gradient.addColorStop(0, "red");
+        gradient.addColorStop(0.5, "orange");
+        gradient.addColorStop(1, "red");
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvasBackground.value.width, canvasBackground.value.height);
@@ -92,10 +88,10 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
         
         //create gradient for target zone
         const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0);
-        gradient.addColorStop(.2, "black");
-        gradient.addColorStop(.45, "yellow")
-        gradient.addColorStop(.55, "yellow")
-        gradient.addColorStop(.8, "black");
+        gradient.addColorStop(0, "red");
+        gradient.addColorStop(.45, "orange")
+        gradient.addColorStop(.55, "orange")
+        gradient.addColorStop(1, "red");
 
         //set gradient to fill style
         ctx.fillStyle = gradient;
@@ -112,7 +108,7 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
         }
 
         const ctx = canvasBackground.value.getContext("2d");
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         ctx.fillRect(barX.value, 0, 10, canvasBackground.value.height);
     }
 
