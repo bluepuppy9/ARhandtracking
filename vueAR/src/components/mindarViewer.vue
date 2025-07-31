@@ -2,7 +2,7 @@
   <TheShopStuff v-if="shopFound === true"/>
   <a-scene
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /targets (41).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -20,7 +20,6 @@
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
       <a-gltf-model
-        v-if="rat.type !== 'stop'"
         rotation="90 0 0"
         position="0 0 0.1"
         scale="0.1 0.1 0.1"
@@ -40,9 +39,12 @@ const targets = useTemplateRef('targets')
 
 onMounted(()=>{
   for (let i = 0; i < UserRats.value.length; i++){
-    if (UserRats.value[i] === 'stop'){
+    if (UserRats.value[i].type === 'shop'){
       targets.value[i].addEventListener('targetFound', ()=>{
         shopFound.value = true
+      })
+      targets.value[i].addEventListener('targetLost', ()=>{
+        shopFound.value = false
       })
     }
   }
@@ -57,6 +59,7 @@ defineExpose({
 
 const UserRats = ref([
   { type: 'rat', scale: 2, caught: false, id: 0 },
-  { type: 'stop', scale: 2, caught: false, id: 1 },
+  { type: 'shiny', scale: 2, caught: false, id: 1 },
+  { type: 'shop', scale: 1, caught: null, id: 2 },
 ])
 </script>
