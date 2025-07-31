@@ -112,7 +112,6 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
             const rateChance = Math.floor(Math.random()*101)
             if (rateChance > missRate.value){
                 ratCaught.value +=1
-                console.log("You caught the rat!")
             }
             cheeseBanaHelp.value = 0
             ratNet.value-=1

@@ -40,11 +40,9 @@ onMounted(() => {
   const targetElements = targets.value;
   targetElements.forEach((target) => {
       target.addEventListener("targetFound", () => {
-        console.log("Target is found!")
         ratFound.value = true
     })
     target.addEventListener("targetLost", () => {
-      console.log("Target is lost!")
       ratFound.value = false;
     })
   })
