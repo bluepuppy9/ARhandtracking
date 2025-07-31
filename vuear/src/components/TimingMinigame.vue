@@ -82,7 +82,7 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
 
         const ctx = canvasBackground.value.getContext("2d");
         ctx.fillStyle = "white";
-        ctx.fillRect(barX.value, 0, 10, canvasBackground.value.height);
+        ctx.fillRect(barX.value-2, 0, 10, canvasBackground.value.height);
     }
 
     function drawStuff(){
@@ -148,14 +148,17 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
 
 <style scoped>
     .topClickableStyle{
-        height: 75wh;
+        height: 75vh;
     }
 
     .bgForText{
+        margin-top: 15%;
+        margin-right: 2%;
+        margin-bottom: 2%;
+        margin-left: 2%;
         background-color: rgba(0, 0, 0, 0.5);
         color: var(--primary);
         border-radius: 25px;
-        margin: 2%;
         border-style: solid;
         border-width: 2px;
         border-color: var(--secondary-border);
@@ -165,10 +168,14 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
     }
 
     .buttonStyle{
-        background-color: var(--primary);
+        padding: 0.75rem;
+        background: var(--primary);
         color: var(--secondary);
-        border-style: var(--secondary-border);
-        border-width: 2px;
+        border: none;
+        border-radius: 0.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 0 10px var(--primary);
     }
 
     .bottomDivStyle{
