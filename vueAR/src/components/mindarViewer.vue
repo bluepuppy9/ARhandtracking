@@ -35,7 +35,6 @@ import TimingMinigame from './TimingMinigame.vue'
 
 const ratFound = ref(false)
 const targets = useTemplateRef('targets')
-const ratModels = useTemplateRef('ratModels')
 
 onMounted(() => {
   const targetElements = targets.value;
