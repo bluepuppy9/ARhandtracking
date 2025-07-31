@@ -1,0 +1,35 @@
+<template>
+    <div>
+        <h1>You found a station!</h1>
+        <h1>Your Net(s): {{ ratNets }}</h1>
+        <h1>Your Cheese Banana(s): {{ cheeseBanana }}</h1>
+        <div>
+            <button type="submit" @click="rollingItems">Roll for Items</button>
+        </div>
+    </div>
+</template>
+
+<script setup>
+    import {ref} from 'vue'
+
+    const cheeseBanana = ref(0)
+    const ratNets = ref(0)
+    function rollingItems(){
+        const randomNumForCheeseBanana = Math.floor(Math.random() *3)
+        cheeseBanana.value += randomNumForCheeseBanana
+        calculateRatNet()
+    }
+
+    function calculateRatNet(){
+        const number = Math.floor(Math.random()*3)
+        if (number === 0){
+            ratNets.value += 5
+        }
+        else if (number === 1){
+            ratNets.value += 6
+        }
+        else if (number === 2){
+            ratNets.value += 7
+        }
+    }
+</script>
