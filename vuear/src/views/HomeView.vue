@@ -2,17 +2,27 @@
   <div class="main">
     <Login v-if="!isLoggedIn" />
     <div v-else>
+
+      <div class="burger-menu" @click="toggleMenu">
+        &#9776;
+      </div>
+
+      <div class="overlay-menu" v-if="menuOpen">
+        <ul>
+          <li @click="openRatdex">Ratdex</li>
+          <li>Leaderboard</li>
+          <li>Log Out</li>
+        </ul>
+      </div>
+
       <div v-if="!running" class="container start-text">
         <h1>Welcome to the AR Ratdom</h1>
         <p>Please start the AR system to see the rats.</p>
       </div>
 
-      <div class="button-container">
-        <button class="startButton" :class="{ active: running }" @click="handleARSystems">
+      <div class="button-container" :class="{ active: running }">
+        <button class="startButton" @click="handleARSystems">
           {{ running ? 'STOP' : 'START' }}
-        </button>
-        <button @click="showRatdex = true" class="show-ratdex-btn" v-if="running">
-          Show Ratdex
         </button>
       </div>
 
@@ -44,6 +54,7 @@ import '../libs/mindar/mindar-image-aframe.prod.js'
 const mindarViewerRef = ref(null)
 const running = ref(false)
 const showRatdex = ref(false)
+const menuOpen = ref(false)
 
 const userStore = useUserStore()
 const isLoggedIn = computed(() => userStore.isLoggedIn)
@@ -58,33 +69,106 @@ function handleARSystems() {
   } else {
     arSystem.stop()
     running.value = false
-    showRatdex.value = false // hide Ratdex on stop
+    showRatdex.value = false
   }
+}
+
+function toggleMenu() {
+  menuOpen.value = !menuOpen.value
+}
+
+function openRatdex() {
+  showRatdex.value = true
+  menuOpen.value = false
 }
 </script>
 
 <style scoped>
-.button-container {
-  margin-bottom: 16px;
-  text-align: center;
+
+.burger-menu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+  color: var(--secondary);
+  background-color: var(--primary);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  box-shadow: 0 0 8px var(--primary);
 }
 
-.start-stop-btn,
-.show-ratdex-btn,
-.close-btn {
+.overlay-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 1rem 2rem;
+  z-index: 1000;
+  color: white;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.overlay-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.overlay-menu li {
+  margin: 1rem 0;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.overlay-menu li:hover {
+  color: var(--primary);
+}
+
+.button-container {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: top 0.5s ease, transform 0.5s ease;
+  z-index: 10;
+}
+
+.button-container.active {
+  top: 1%;
+  transform: translate(-50%, 0);
+}
+
+.startButton {
   padding: 0.75rem 1.25rem;
   font-size: 1rem;
-  margin: 0.5rem;
   cursor: pointer;
   border-radius: 0.5rem;
   border: none;
   background-color: var(--primary);
   color: var(--secondary);
+  font-weight: bold;
+  box-shadow: 0 0 10px var(--primary);
   transition: background 0.3s;
+  z-index: 1000;
 }
 
-.start-stop-btn:hover,
-.show-ratdex-btn:hover,
+.startButton:hover,
 .close-btn:hover {
   background-color: var(--primary-dark);
 }
@@ -102,11 +186,11 @@ function handleARSystems() {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #00000080;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1002;
 }
 
 .ratdex-wrapper {
@@ -117,28 +201,6 @@ function handleARSystems() {
   position: absolute;
   top: -40px;
   right: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-}
 
-.startButton {
-  padding: 0.75rem;
-  background: var(--primary);
-  color: var(--secondary);
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.5s ease, top 0.5s ease;
-  box-shadow: 0 0 10px var(--primary);
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.startButton.active {
-  top: 1%;
-  transform: translate(-50%, 0);
 }
 </style>
