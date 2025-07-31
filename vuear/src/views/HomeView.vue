@@ -32,9 +32,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import Login from '../components/login.vue'
-import MindarViewer from '../components/MindArViewer.vue'
-import Ratdex from '../components/ratdex.vue'
+import Login from '../components/Login.vue'
+import MindarViewer from '../components/MindarViewer.vue'
+import Ratdex from '../components/Ratdex.vue'
 import { useUserStore } from '../stores/userStore'
 import { ratdexData } from '@/assets/ratdexData'
 import '../libs/mindar/mindar-image.prod.js'
