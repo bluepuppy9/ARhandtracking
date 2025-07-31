@@ -59,17 +59,14 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
         canvasBackground.value.width = 400;
         canvasBackground.value.height = 100;
         
-        //create gradient for target zone
         const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0);
         gradient.addColorStop(.2, "black");
         gradient.addColorStop(.45, "yellow")
         gradient.addColorStop(.55, "yellow")
         gradient.addColorStop(.8, "black");
 
-        //set gradient to fill style
         ctx.fillStyle = gradient;
 
-        //draw the target zone
         ctx.fillRect(0, 0, canvasBackground.value.width, canvasBackground.value.height);
     }
 
