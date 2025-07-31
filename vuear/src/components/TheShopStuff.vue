@@ -1,10 +1,13 @@
 <template>
-    <div>
+    <div class="containerThing">
         <h1>You found a station!</h1>
         <h1>Your Net(s): {{ ratNets }}</h1>
         <h1>Your Cheese Banana(s): {{ cheeseBanana }}</h1>
         <div v-if="obtainedAlready === false">
             <button type="submit" @click="rollingItems">Roll for Items</button>
+        </div>
+        <div v-else>
+            <h1>You already robbed this station!</h1>
         </div>
     </div>
 </template>
@@ -37,3 +40,9 @@
         }
     }
 </script>
+
+<style scoped>
+    .containerThing{
+    margin-top: 15%
+    }
+</style>
