@@ -36,8 +36,9 @@ function handleARSystems() {
   const sceneEl = mindarViewerRef.value.sceneRef
   const arSystem = sceneEl.systems['mindar-image-system']
   if (!running.value) {
-    arSystem.start()
     running.value = true
+    arSystem.start()
+    window.dispatchEvent(new Event('resize'))
   } else {
     arSystem.stop()
     running.value = false
