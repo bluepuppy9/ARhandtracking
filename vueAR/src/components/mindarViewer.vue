@@ -4,8 +4,7 @@
   </div>
   <a-scene
     ref="sceneRef"
-    id="mindarScene"
-    mindar-image="imageTargetSrc: /bigRats.mind; maxTrack: 2; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /targets (41).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -16,18 +15,15 @@
       <a-asset-item id="avatarModel" src="/rat.glb" crossorigin></a-asset-item>
     </a-assets>
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <a-entity 
-      v-for="i in 2" 
-      :key="i" :mindar-image-target="'targetIndex: ' + (i - 1)"
-      ref="targets">
-      <a-gltf-model 
-        class="clickable"
+
+    <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
+      <a-gltf-model
         ref="ratModels"
-        @model-loaded="e => console.log('✅ Model loaded!', e)"
-        scale="1 1 1"
-        position="0 0 -0.5"
-        rotation="0 0 0"
-        src="#avatarModel">
+        rotation="90 0 0"
+        position="0 0 0.1"
+        scale="0.1 0.1 0.1"
+        :src="'#' + rat.type + 'Model'"
+      >
       </a-gltf-model>
     </a-entity>
   </a-scene>
@@ -67,10 +63,8 @@ defineExpose({
   sceneRef,
 })
 
-const userRats = ref({
-  0: { type: 'rat', scale: 2, caught: false },
-  1: { type: 'shiny', scale: 2, caught: false },
-  2: { type: 'rat', scale: 1, caught: false },
-  3: { type: 'normal', scale: 2, caught: false },
-})
+const UserRats = ref([
+  { type: 'rat', scale: 2, caught: false, id: 0 },
+  { type: 'shiny', scale: 2, caught: false, id: 1 },
+])
 </script>
