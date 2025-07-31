@@ -61,3 +61,4 @@ const UserRats = ref([
   { type: 'shiny', scale: 2, caught: false, id: 1 },
 ])
 </script>
+

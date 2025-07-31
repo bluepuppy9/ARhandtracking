@@ -1,16 +1,16 @@
 <template> 
-        <div ref="top" :style="topDivStyle">
-            <div :style="textBgStyle">
-                <div :style="textTransparentNo">
+        <div ref="top" class="topClickableStyle">
+            <div class="bgForText">
+                <div class="textNoTransparent">
                     <h1>Your miss rate of previous hit: {{ missRate }}</h1>
                     <h1>Caught Rats: {{ ratCaught }}</h1>
                 </div>
             </div>
-            <canvas v-if="ratNet > 0" :style='canvasRound' ref="canvasBackground"></canvas>
+            <canvas v-if="ratNet > 0" ref="canvasBackground" class="canvasRound"></canvas>
         </div>
-        <div v-if="ratNet>0" :style="bottomDivStyle">
+        <div v-if="ratNet>0" class="bottomDivStyle">
             <h1>Rat Net(s): {{ ratNet }}</h1>
-            <button type="submit" :style="buttonStyle" @click="useCheeseBana">Cheese Banana: {{ cheeseBanana }}</button>
+            <button type="submit" class="buttonStyle" @click="useCheeseBana">Cheese Banana: {{ cheeseBanana }}</button>
         </div>
     
     
@@ -20,37 +20,6 @@
 
 
 import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
-    const canvasRound = reactive({
-        borderRadius: '25px',
-    })
-    const buttonStyle = reactive({
-        backgroundColor: 'yellow',
-        color: 'black',
-        borderStyle: 'black',
-        borderWidth: '2px',
-    })
-    const textBgStyle = reactive({
-        backgroundColor: `rgba(0, 0, 0, 0.5)`,
-        color: 'yellow',
-        borderRadius: '25px',
-        margin: '2%',
-        borderStyle: 'solid',
-        borderWidth: '2px',
-        borderColor: 'yellow'
-    })
-    const topDivStyle = reactive({
-        height: '75vh',
-    })
-
-    const bottomDivStyle = reactive({
-        height: '25vh',
-        backgroundColor: 'black',
-        color: "yellow",
-        borderTop: 'solid 2px yellow',
-    })
-    const textTransparentNo = reactive({
-        opacity: '1',
-    })
     const canvasBackground = useTemplateRef('canvasBackground');
     const top = useTemplateRef('top')
     const barX = ref(0)
@@ -176,3 +145,41 @@ import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
         cancelAnimationFrame(animationFrameId)
     })
 </script>
+
+<style scoped>
+    .topClickableStyle{
+        height: 75wh;
+    }
+
+    .bgForText{
+        background-color: rgba(0, 0, 0, 0.5);
+        color: var(--primary);
+        border-radius: 25px;
+        margin: 2%;
+        border-style: solid;
+        border-width: 2px;
+        border-color: var(--secondary-border);
+    }
+    .canvasRound{
+        border-radius: 25px;
+    }
+
+    .buttonStyle{
+        background-color: var(--primary);
+        color: var(--secondary);
+        border-style: var(--secondary-border);
+        border-width: 2px;
+    }
+
+    .bottomDivStyle{
+        height: 25vh;
+        background-color: var(--secondary);
+        color:var(--primary);
+        border-top: solid 2px var(--secondary-border);
+    }
+
+    .textNoTransparent{
+        opacity: 1;
+    }
+
+</style>
