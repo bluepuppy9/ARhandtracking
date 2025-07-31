@@ -19,7 +19,7 @@
 <script setup>
 
 
-import { useTemplateRef, onMounted, ref, reactive, onUnmounted } from 'vue';
+import { useTemplateRef, onMounted, ref, onUnmounted } from 'vue';
     const canvasBackground = useTemplateRef('canvasBackground');
     const top = useTemplateRef('top')
     const barX = ref(0)
