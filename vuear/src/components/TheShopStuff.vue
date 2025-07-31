@@ -3,7 +3,7 @@
         <h1>You found a station!</h1>
         <h1>Your Net(s): {{ ratNets }}</h1>
         <h1>Your Cheese Banana(s): {{ cheeseBanana }}</h1>
-        <div>
+        <div v-if="obtainedAlready === false">
             <button type="submit" @click="rollingItems">Roll for Items</button>
         </div>
     </div>
