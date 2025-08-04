@@ -28,4 +28,8 @@ coverage
 *.sln
 *.sw?
 
+/automation/qrgeneration
+
+/automation/blurred_qr_codes
+
 *.tsbuildinfo
