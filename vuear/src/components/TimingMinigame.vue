@@ -10,7 +10,7 @@
         </div>
         <div v-if="ratNet>0" class="bottomDivStyle">
             <h1>Rat Net(s): {{ ratNet }}</h1>
-            <button type="submit" class="buttonStyle" @click="useCheeseBana">Cheese Banana: {{ cheeseBanana }}</button>
+            <button type="submit" class="buttonStyle" @click="cheeseBanana.useCheeseBana()">Cheese Banana: {{ cheeseBanana }}</button>
         </div>
     
     
@@ -20,27 +20,18 @@
 
 
 import { useTemplateRef, onMounted, ref, onUnmounted } from 'vue';
-    const canvasBackground = useTemplateRef('canvasBackground');
-    const top = useTemplateRef('top')
-    const barX = ref(0)
-    const missRate = ref(0)
-    const ratCaught = ref(0)
-    
-    let animationFrameId = null
-    const clickedPlay = ref(0)
 
-    const cheeseBanana = ref(3)
-    const cheeseBanaHelp = ref(0)
-    const ratNet = ref(3)
+const htmlRefs = ref({
+     canvasBackground: useTemplateRef('canvasBackground'),
+     top: useTemplateRef('top'),
 
-    function useCheeseBana(){
-        if (cheeseBanaHelp.value !== 5){
-            cheeseBanaHelp.value += 5
-            cheeseBanana.value-=1
-        }
-    }
+})
 
-    function createTargetZone(){
+const canvasItems = ref({
+    barX: ref(0),
+    animationFrameId: null,
+
+    createTargetZone(){
         const ctx = canvasBackground.value.getContext("2d");
         canvasBackground.value.width = 400;
         canvasBackground.value.height = 100;
@@ -52,9 +43,9 @@ import { useTemplateRef, onMounted, ref, onUnmounted } from 'vue';
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvasBackground.value.width, canvasBackground.value.height);
-    }
+    },
 
-    function banaHelpTargetZone(){
+    banaHelpTargetZone(){
         const ctx = canvasBackground.value.getContext("2d");
         canvasBackground.value.width = 400;
         canvasBackground.value.height = 100;
@@ -68,9 +59,9 @@ import { useTemplateRef, onMounted, ref, onUnmounted } from 'vue';
         ctx.fillStyle = gradient;
 
         ctx.fillRect(0, 0, canvasBackground.value.width, canvasBackground.value.height);
-    }
+    },
 
-    function createBar(){
+    createBar(){
         if (barX.value < canvasBackground.value.width){
             barX.value+=5;
         } else {
@@ -80,19 +71,34 @@ import { useTemplateRef, onMounted, ref, onUnmounted } from 'vue';
         const ctx = canvasBackground.value.getContext("2d");
         ctx.fillStyle = "white";
         ctx.fillRect(barX.value-2, 0, 10, canvasBackground.value.height);
-    }
-
-    function drawStuff(){
+    },
+    drawStuff(){
         if (cheeseBanaHelp.value === 0){
             createTargetZone();
         }
         else if (cheeseBanaHelp.value > 0){
             banaHelpTargetZone();
         }
-        createBar();
-    }
-    function mathBehindCatch(barXStop){
-        if (ratNet.value > 0){
+        canvasItems.createBar();
+    },
+    animate(){
+        drawStuff()
+        animationFrameId = requestAnimationFrame(animate)
+    },
+    specialAnim(){
+        barX.value = 0
+        animate()
+        clickedPlay.value = 0
+    },
+})
+const gameValues = ref({
+    missRate: ref(0),
+    ratsCaught: ref(0),
+    ratNet: ref(3),
+    clickedPlay: ref(0),
+
+    mathBehindCatch(barXStop){
+        if (gameValues.ratNet.value > 0){
             if (Math.abs(barXStop) <= 200){
                 missRate.value = (((canvasBackground.value.width/2) - Math.abs(barXStop)) / 2) - cheeseBanaHelp.value
                 if (missRate.value < 0){
@@ -113,28 +119,32 @@ import { useTemplateRef, onMounted, ref, onUnmounted } from 'vue';
             cheeseBanaHelp.value = 0
             ratNet.value-=1
         }
-    }
-    function calculateCatch(){
+    },
+    calculateCatch(){
         const barXStop = barX.value
         if (clickedPlay.value === 0){
             clickedPlay.value += 1 
             cancelAnimationFrame(animationFrameId)
-            mathBehindCatch(barXStop)
+            gameValues.value.mathBehindCatch(barXStop)
             setTimeout(specialAnim, 1000)
         }
+    },
+})
+
+const cheeseBanana = ref({
+    amount: ref(5),
+    additiononalValue: ref(0),
+
+    useCheeseBana(){
+        if (this.additiononalValue.value !== 5){
+            this.additiononalValue.value += 5
+            this.amount.value-=1
+        }
     }
-    function animate(){
-        drawStuff()
-        animationFrameId = requestAnimationFrame(animate)
-    }
-    function specialAnim(){
-        barX.value = 0
-        animate()
-        clickedPlay.value = 0
-    }
+})
     onMounted(() => {
         animate()
-        top.value.addEventListener("click", calculateCatch)
+        htmlRefs.value.top.value.addEventListener("click", gameValues.value.calculateCatch())
     })
 
     onUnmounted(()=>{
