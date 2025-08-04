@@ -5,9 +5,9 @@
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <input
-            v-model="form.email"
-            type="email"
-            placeholder="Email"
+            v-model="form.username"
+            type="username"
+            placeholder="Username"
             required
             class="input-field"
           />
@@ -52,7 +52,7 @@ const userStore = useUserStore()
 const isLogin = ref(true)
 const hovering = ref(false)
 const form = ref({
-  email: '',
+  username: '',
   password: '',
   confirmPassword: '',
 })
@@ -63,16 +63,17 @@ function toggleForm() {
 }
 
 function handleSubmit() {
-  if (!isLogin.value && form.value.password !== form.value.confirmPassword) {
-    alert("Passwords don't match")
-    return
-  }
-  if (!isLogin.value && form.value.password.length < 6) {
-    alert('Password must be at least 6 characters long')
-    return
-  }
-  userStore.handleSignin('login', form.value.email, form.value.password)
-  alert(isLogin.value ? 'Logged in successfully!' : 'Account created successfully!')
+  userStore.handleLogin(form.value.username, form.value.password)
+  //if (!isLogin.value && form.value.password !== form.value.confirmPassword) {
+  //  alert("Passwords don't match")
+  //  return
+  //}
+  //if (!isLogin.value && form.value.password.length < 6) {
+  //  alert('Password must be at least 6 characters long')
+  //  return
+  //}
+  //userStore.handleSignin('login', form.value.email, form.value.password)
+  //alert(isLogin.value ? 'Logged in successfully!' : 'Account created successfully!')
 }
 </script>
 
