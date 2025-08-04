@@ -1,7 +1,7 @@
 <template>
   <a-scene
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /targets (41).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /targets (10).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -21,7 +21,7 @@
       <a-gltf-model
         rotation="90 0 0"
         position="0 0 0.1"
-        scale="0.1 0.1 0.1"
+        scale="0.3 0.3 0.3"
         :src="'#' + rat.type + 'Model'"
       >
       </a-gltf-model>
@@ -37,8 +37,14 @@ defineExpose({
   sceneRef,
 })
 
-const UserRats = ref([
-  { type: 'rat', scale: 2, caught: false, id: 0 },
-  { type: 'shiny', scale: 2, caught: false, id: 1 },
-])
+const UserRats = ref(
+  Array.from({ length: 50 }, (_, i) => ({
+    type: Math.random() < 0.5 ? 'rat' : 'shiny',
+    scale: Math.floor(Math.random() * 5) + 1,
+    caught: false,
+    id: i,
+  })),
+)
+
+console.log(UserRats)
 </script>
