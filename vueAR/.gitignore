@@ -28,6 +28,4 @@ coverage
 *.sln
 *.sw?
 
-*.pyc
-
 *.tsbuildinfo
