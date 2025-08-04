@@ -14,6 +14,11 @@
     <a-assets>
       <a-asset-item id="avatarModel" src="/rat.glb" crossorigin></a-asset-item>
     </a-assets>
+
+    <a-assets>
+      <a-asset-item id="shinyModel" src="/shinyRat.glb" crossorigin></a-asset-item>
+    </a-assets>
+
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
