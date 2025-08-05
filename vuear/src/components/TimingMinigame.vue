@@ -64,7 +64,7 @@ const canvasItems = ref({
 
     createBar(){
         if (this.barX.value < this.canvasBackground.value.width){
-            this.barX.value+= this.speed;
+            this.barX.value += this.speed;
         } else {
             this.barX.value = 0;
         }
@@ -100,7 +100,7 @@ const gameValues = ref({
     clickedPlay: ref(0),
 
     mathBehindCatch(barXStop){
-        if (barXStop){
+        if (barXStop !== null){
             if (gameValues.value.ratNet > 0){
                 if (Math.abs(barXStop) <= 200){
                     this.missRate.value = (((canvasItems.value.canvasBackground.value.width/2) - Math.abs(barXStop)) / 2) - cheeseBanana.value.additiononalRate
@@ -117,7 +117,7 @@ const gameValues = ref({
 
                 const rateChance = Math.floor(Math.random()*101)
                 if (rateChance > this.missRate.value){
-                    ratCaught.value +=1
+                    this.ratsCaught +=1
                 }
                 cheeseBanana.value.additiononalRate = 0
                 gameValues.value.ratNet-=1
