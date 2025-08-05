@@ -101,7 +101,7 @@ const gameValues = ref({
 
     mathBehindCatch(barXStop){
         if (barXStop){
-            if (gameValues.ratNet.value > 0){
+            if (gameValues.value.ratNet > 0){
                 if (Math.abs(barXStop) <= 200){
                     this.missRate.value = (((canvasItems.value.canvasBackground.value.width/2) - Math.abs(barXStop)) / 2) - cheeseBanana.value.additiononalRate
                     if (this.missRate.value < 0){
