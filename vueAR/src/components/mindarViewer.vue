@@ -1,6 +1,7 @@
 <template>
   <div v-if="ratFound === true">
-    <TimingMinigame />
+    <!-- <TimingMinigame /> -->
+     <h1>Testing</h1>
   </div>
   <a-scene
     ref="sceneRef"

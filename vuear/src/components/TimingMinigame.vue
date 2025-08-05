@@ -9,7 +9,7 @@
             <canvas v-if="gameValues.ratNet.value > 0" ref="canvasBackground" class="canvasRound"></canvas>
             <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
         </div>
-        <div v-if="gameValues.ratNet.value >0" class="bottomDivStyle">
+        <div v-if="gameValues.ratNet.value > 0" class="bottomDivStyle">
             <h1>Rat Net(s): {{ gameValues.ratNet.value }}</h1>
             <button type="submit" class="buttonStyle" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{ cheeseBanana.amount.value }}</button>
         </div>
@@ -181,7 +181,7 @@ const cheeseBanana = {
         border-color: var(--secondary-border);
     }
     .canvasRound{
-        border-radius: 25rem;
+        border-radius: 20rem;
     }
 
     .buttonStyle{
