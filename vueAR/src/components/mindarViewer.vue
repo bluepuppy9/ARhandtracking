@@ -32,7 +32,7 @@
       >
     </a-gltf-model>
       <a-gltf-model
-        v-if="rat.type === 'shop'"
+        v-else-if="rat.type === 'shop'"
         rotation="0 0 0"
         position="0 0 0.1"
         scale="0.1 0.1 0.1"
