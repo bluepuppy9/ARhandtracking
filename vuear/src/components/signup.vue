@@ -4,34 +4,29 @@
       <h2>{{ isLogin ? 'Login' : 'Sign Up' }}</h2>
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
-          <input
-            v-model="form.email"
-            type="email"
-            placeholder="Email"
-            required
-            class="input-field"
-          />
-          <input
-            v-model="form.password"
-            type="password"
-            placeholder="Password"
-            required
-            class="input-field"
-          />
-          <input
-            v-if="!isLogin"
-            v-model="form.confirmPassword"
-            type="password"
-            placeholder="Confirm Password"
-            required
-            class="input-field"
-          />
-          <button
-            type="submit"
-            class="submit-button btn"
-            @mouseover="hovering = true"
-            @mouseleave="hovering = false"
-          >
+          <div>
+            <label for="email">
+              Email:
+            </label>
+            <input v-model="form.email" type="email" id="email" placeholder="Email" required class="input-field" />
+          </div>
+
+          <div>
+            <label for="password">
+              Password:
+            </label>
+            <input id="password" v-model="form.password" type="password" placeholder="Password" required
+              class="input-field" />
+          </div>
+
+          <div v-if="!isLogin">
+            <label for="confirm-password">
+              Confirm password:
+            </label>
+            <input id="confirm-password" v-model="form.confirmPassword" type="password" placeholder="Confirm password"
+              required class="input-field" />
+          </div>
+          <button type="submit" class="submit-button btn" @mouseover="hovering = true" @mouseleave="hovering = false">
             {{ isLogin ? 'Login' : 'Create Account' }}
           </button>
         </div>
@@ -82,7 +77,7 @@ function handleSubmit() {
   min-height: 100dvh;
   display: flex;
   justify-content: center;
-  align-items: center;
+
   color: var(--primary);
   font-family: 'Segoe UI', sans-serif;
 }
@@ -106,6 +101,16 @@ function handleSubmit() {
   gap: 1rem;
 }
 
+.form-group > * {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+label {
+  width: fit-content;
+}
+
 .input-field {
   padding: 0.75rem;
   border: 1px solid var(--secondary-border);
@@ -113,6 +118,7 @@ function handleSubmit() {
   background: var(--secondary);
   color: var(--primary);
   outline: none;
+  flex-grow: 1;
 }
 
 .switch-text {
@@ -120,6 +126,7 @@ function handleSubmit() {
   text-align: center;
   font-size: 0.9rem;
 }
+
 .switch-text a {
   color: var(--primary);
   text-decoration: underline;
