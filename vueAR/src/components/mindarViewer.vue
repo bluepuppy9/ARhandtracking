@@ -16,11 +16,24 @@
     <a-assets>
       <a-asset-item id="shinyModel" src="/shinyRat.glb" crossorigin></a-asset-item>
     </a-assets>
+
+    <a-assets>
+      <a-asset-item id="shopModel" src="/shop.glb" crossorigin></a-asset-item>
+    </a-assets>
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
       <a-gltf-model
+        v-if="rat.type === 'rat'"
         rotation="90 0 0"
+        position="0 0 0.1"
+        scale="0.1 0.1 0.1"
+        :src="'#' + rat.type + 'Model'"
+      >
+    </a-gltf-model>
+      <a-gltf-model
+        v-if="rat.type === 'shop'"
+        rotation="0 0 0"
         position="0 0 0.1"
         scale="0.1 0.1 0.1"
         :src="'#' + rat.type + 'Model'"
