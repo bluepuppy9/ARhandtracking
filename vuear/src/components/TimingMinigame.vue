@@ -6,7 +6,7 @@
                     <h1>Caught Rats: {{ gameValues.ratsCaught.value }}</h1>
                 </div>
             </div>
-            <canvas v-if="gameValues.ratNet.value > 0" ref="canvasBackground" class="canvasRound"></canvas>
+            <canvas v-if="gameValues.ratNet.value > 0" ref="canvasBackground" class="canvasRound" width="400" height="100"></canvas>
             <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
         </div>
         <div v-if="gameValues.ratNet.value > 0" class="bottomDivStyle">
@@ -168,11 +168,10 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
   }
 }
 
-// Instantiate cheeseBanana first to pass to others
 const cheeseBanana = useCheeseBanana()
-const canvasItems = useCanvasItems({}, cheeseBanana) // placeholder for now
+const canvasItems = useCanvasItems({}, cheeseBanana)
 const gameValues = useGameValues(canvasItems, cheeseBanana)
-Object.assign(canvasItems, useCanvasItems(gameValues, cheeseBanana)) // update with gameValues
+Object.assign(canvasItems, useCanvasItems(gameValues, cheeseBanana))
 
 onMounted(async () => {
   canvasItems.reset()
@@ -200,15 +199,15 @@ onUnmounted(() => {
         margin-right: 2%;
         margin-bottom: 2%;
         margin-left: 2%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0,0,0, 0.5);
         color: var(--primary);
         border-radius: 25rem;
         border-style: solid;
-        border-width: 0.5rem;
+        border-width: 0.2rem;
         border-color: var(--secondary-border);
     }
     .canvasRound{
-        border-radius: 20rem;
+        border-radius: 2rem;
     }
 
     .buttonStyle{
@@ -226,7 +225,7 @@ onUnmounted(() => {
         height: 25vh;
         background-color: var(--secondary);
         color:var(--primary);
-        border-top: solid 0.5rem var(--secondary-border);
+        border-top: solid 0.2rem var(--secondary-border);
     }
 
     .textNoTransparent{
