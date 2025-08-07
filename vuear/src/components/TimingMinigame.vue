@@ -3,51 +3,51 @@
             <div class="bg-for-text">
                 <div class="text-no-transparent">
                     <h1>Your miss rate of previous hit: {{ gameValues.missRate.value }}</h1>
-                    <h1>Caught Rats: {{ gameValues.ratsCaught.value }}</h1>
+                    <h1>Caught Rats: {{ inventory.ratsCaught }}</h1>
                 </div>
             </div>
-            <canvas v-if="gameValues.ratNet.value > 0" ref="canvasBackground" class="canvas-round" width="400" height="100"></canvas>
+            <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
             <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
         </div>
-        <div v-if="gameValues.ratNet.value > 0" class="bottom-div-style">
-            <h1>Rat Net(s): {{ gameValues.ratNet.value }}</h1>
-            <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{ cheeseBanana.amount.value }}</button>
+        <div v-if="gameValues.ratNet > 0" class="bottom-div-style">
+            <h1>Rat Net(s): {{ inventory.ratNets }}</h1>
+            <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{ inventory.cheeseBanana }}</button>
         </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, useTemplateRef } from 'vue'
-
+import { useInventoryStore} from '@/stores/inventory'
 const top = useTemplateRef('top')
 const canvasBackground = useTemplateRef('canvasBackground')
+const inventory = useInventoryStore()
 
 const useGameValues = (canvasItems, cheeseBanana) => {
   const missRate = ref(0)
-  const ratsCaught = ref(0)
-  const ratNet = ref(3)
+  const ratsCaught = inventory.ratsCaught
+  const ratNet = inventory.ratNets
   const clickedPlay = ref(0)
 
   function reset() {
     missRate.value = 0
-    ratsCaught.value = 0
-    ratNet.value = 3
     clickedPlay.value = 0
   }
 
-  function mathBehindCatch(barXStop) {
-    if (barXStop !== null && ratNet.value > 0) {
-      const canvasWidth = canvasBackground.value?.width || 400
+  function catchLogic(barXStop) {
+    if (barXStop !== null && ratNet > 0) {
+      const canvasWidth = 400
       const distanceFromCenter = Math.abs(barXStop - canvasWidth / 2)
       missRate.value = (distanceFromCenter / 2) - cheeseBanana.additiononalRate.value
       missRate.value = Math.max(missRate.value, 0)
 
       const rateChance = Math.floor(Math.random() * 101)
       if (rateChance > missRate.value) {
-        ratsCaught.value++
+        inventory.addRatsCaught()
       }
 
       cheeseBanana.additiononalRate.value = 0
-      ratNet.value --
+      inventory.useRatNet()
+      cheeseBanana.usedAlready.value = false
     }
   }
 
@@ -56,7 +56,7 @@ const useGameValues = (canvasItems, cheeseBanana) => {
     if (clickedPlay.value === 0) {
       clickedPlay.value ++
       cancelAnimationFrame(canvasItems.animationFrameId.value)
-      mathBehindCatch(barXStop)
+      catchLogic(barXStop)
       setTimeout(() => canvasItems.specialAnim(), 1000)
     }
   }
@@ -72,18 +72,19 @@ const useGameValues = (canvasItems, cheeseBanana) => {
 }
 
 const useCheeseBanana = () => {
-  const amount = ref(5)
+  const amount = inventory.cheeseBanana
   const additiononalRate = ref(0)
+  const usedAlready = ref(false)
 
-  function reset() {
-    amount.value = 5
+  function reset(){
     additiononalRate.value = 0
+    usedAlready.value = false
   }
 
   function useCheeseBana() {
-    if (additiononalRate.value !== 5 && amount.value > 0) {
-      additiononalRate.value += 5
-      amount.value --
+    if ( !usedAlready.value && inventory.useCheeseBanana()) {
+        usedAlready.value = true
+        additiononalRate.value += 5
     }
   }
 
@@ -92,6 +93,7 @@ const useCheeseBanana = () => {
     additiononalRate,
     reset,
     useCheeseBana,
+    usedAlready,
   }
 }
 
@@ -102,6 +104,8 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
   const animationFrameId = ref(null)
 
   function reset() {
+    canvasBackground.value.width = 400
+    canvasBackground.value.height = 100
     barX.value = 0
     barWidth.value = 10
     speed.value = 5
@@ -110,26 +114,22 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
 
   function createTargetZone(ctx) {
     const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0)
-    const gradientItems = {
-      0.2: 'black',
-      0.5: 'yellow',
-      0.8: 'black',
+    let gradientItems = {}
+    if (cheeseBanana.additiononalRate.value === 0) {
+      gradientItems = {
+        0.2: 'black',
+        0.5: 'yellow',
+        0.8: 'black',
+      }
+    } else {
+      gradientItems = {
+        0.2: 'black',
+        0.45: 'yellow',
+        0.55: 'yellow',
+        0.8: 'black',
+      }
     }
-    for (const [key, value] of Object.entries(gradientItems)) {
-      gradient.addColorStop(parseFloat(key), value)
-    }
-    ctx.fillStyle = gradient
-    ctx.fillRect(0, 0, canvasBackground.value.width, canvasBackground.value.height)
-  }
 
-  function banaHelpTargetZone(ctx) {
-    const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0)
-    const gradientItems = {
-      0.2: 'black',
-      0.45: 'yellow',
-      0.55: 'yellow',
-      0.8: 'black',
-    }
     for (const [key, value] of Object.entries(gradientItems)) {
       gradient.addColorStop(parseFloat(key), value)
     }
@@ -148,13 +148,7 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
   function drawStuff() {
     const ctx = canvasBackground.value.getContext('2d')
     ctx.clearRect(0, 0, canvasBackground.value.width, canvasBackground.value.height)
-
-    if (cheeseBanana.additiononalRate.value === 0) {
-      createTargetZone(ctx)
-    } else {
-      banaHelpTargetZone(ctx)
-    }
-
+    createTargetZone(ctx)
     createBar(ctx)
   }
 
@@ -179,14 +173,13 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
 }
 
 const cheeseBanana = useCheeseBanana()
-const canvasItems = useCanvasItems({}, cheeseBanana)
-const gameValues = useGameValues(canvasItems, cheeseBanana)
-Object.assign(canvasItems, useCanvasItems(gameValues, cheeseBanana))
+const gameValues = {}
+const canvasItems = useCanvasItems(gameValues, cheeseBanana)
+Object.assign(gameValues, useGameValues(canvasItems, cheeseBanana))
 
 onMounted(async () => {
   canvasItems.reset()
   gameValues.reset()
-  cheeseBanana.reset()
   await nextTick()
   canvasItems.animate()
   top.value?.addEventListener('click', gameValues.calculateCatch)

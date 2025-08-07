@@ -39,27 +39,26 @@ import TimingMinigame from './TimingMinigame.vue'
 const ratFound = ref(false)
 const targets = useTemplateRef('targets')
 
+function findingRat(){
+  ratFound.value = true
+}
+function lostRat(){
+  ratFound.value = false
+}
+
 onMounted(() => {
   const targetElements = targets.value;
   targetElements.forEach((target) => {
-      target.addEventListener("targetFound", () => {
-        ratFound.value = true
-    })
-    target.addEventListener("targetLost", () => {
-      ratFound.value = false;
-    })
+    target.addEventListener("targetFound", findingRat)
+    target.addEventListener("targetLost", lostRat)
   })
 })
 
 onUnmounted(() =>{
   const targets = targets.value;
   targets.forEach((target) => {
-    target.removeEventListener("targetFound", () => {
-      ratFound.value = true
-    })
-    target.removeEventListener("targetLost", () => {
-      ratFound.value = false;
-    })
+    target.removeEventListener("targetFound", findingRat)
+    target.removeEventListener("targetLost", lostRat)
   })
 })
 const sceneRef = useTemplateRef('sceneRef')
