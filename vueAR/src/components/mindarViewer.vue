@@ -1,6 +1,6 @@
 <template>
   <TheShopStuff v-if="shopFound"/>
-    <TimingMinigame v-if="ratFound" />
+  <TimingMinigame v-if="ratFound" />
   <a-scene
     ref="sceneRef"
     mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
@@ -11,16 +11,11 @@
     device-orientation-permission-ui="enabled: false"
   >
     <a-assets>
-      <a-asset-item id="avatar-model" src="/rat.glb" crossorigin></a-asset-item>
-    </a-assets>
-
-    <a-assets>
+      <a-asset-item id="rat-model" src="/rat.glb" crossorigin></a-asset-item>
       <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin></a-asset-item>
+      <a-asset-item id="shop-model" src="/shop.glb" crossorigin></a-asset-item>
     </a-assets>
 
-    <a-assets>
-      <a-asset-item id="shopModel" src="/shop.glb" crossorigin></a-asset-item>
-    </a-assets>
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
@@ -38,7 +33,7 @@
         rotation="0 0 0"
         position="0 0 0.1"
         scale="0.1 0.1 0.1"
-        :src="'#' + rat.type + 'Model'"
+        :src="'#' + rat.type + '-model'"
       >
       </a-gltf-model>
     </a-entity>
@@ -46,7 +41,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { onMounted, ref, useTemplateRef, onUnmounted } from 'vue'
 import TheShopStuff from './TheShopStuff.vue'
 import TimingMinigame from './TimingMinigame.vue'
 
@@ -68,7 +63,6 @@ onMounted(()=>{
 
 
 const ratFound = ref(false)
-const targets = useTemplateRef('targets')
 
 function findingRat(){
   ratFound.value = true
@@ -76,21 +70,37 @@ function findingRat(){
 function lostRat(){
   ratFound.value = false
 }
+function findingShop(){
+  shopFound.value = true
+}
+function lostShop(){
+  shopFound.value = false
+}
 
 onMounted(() => {
-  const targetElements = targets.value;
-  targetElements.forEach((target) => {
-    target.addEventListener("targetFound", findingRat)
-    target.addEventListener("targetLost", lostRat)
-  })
+  for (let i = 0; i < UserRats.value.length; i++){
+    if (UserRats.value[i].type === 'shop'){
+      targets.value[i].addEventListener('targetFound', findingShop)
+      targets.value[i].addEventListener('targetLost', lostShop)
+    }
+    else if (UserRats.value[i].type !== 'shop'){
+      targets.value[i].addEventListener("targetFound", findingRat)
+      targets.value[i].addEventListener("targetLost", lostRat)
+    }
+  }
 })
 
 onUnmounted(() =>{
-  const targets = targets.value;
-  targets.forEach((target) => {
-    target.removeEventListener("targetFound", findingRat)
-    target.removeEventListener("targetLost", lostRat)
-  })
+  for (let i = 0; i < UserRats.value.length; i++){
+    if (UserRats.value[i].type === 'shop'){
+      targets.value[i].removeEventListener('targetFound', findingShop)
+      targets.value[i].removeEventListener('targetLost', lostShop)
+    }
+    else if (UserRats.value[i].type !== 'shop'){
+      targets.value[i].removeEventListener("targetFound", findingRat)
+      targets.value[i].removeEventListener("targetLost", lostRat)
+    }
+  }
 })
 const sceneRef = useTemplateRef('sceneRef')
 defineExpose({

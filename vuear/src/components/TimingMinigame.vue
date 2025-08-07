@@ -9,7 +9,7 @@
             <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
             <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
         </div>
-        <div v-if="gameValues.ratNet > 0" class="bottom-div-style">
+        <div v-if="inventory.ratNets > 0" class="bottom-div-style">
             <h1>Rat Net(s): {{ inventory.ratNets }}</h1>
             <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{ inventory.cheeseBanana }}</button>
         </div>
@@ -96,7 +96,7 @@ const useCheeseBanana = () => {
   }
 
   function useCheeseBana() {
-    if ( !usedAlready.value && inventory.useCheeseBanana()) {
+    if ( !usedAlready.value && inventory.ratNets > 0 && inventory.useCheeseBanana()) {
         usedAlready.value = true
         additiononalRate.value += 5
     }
