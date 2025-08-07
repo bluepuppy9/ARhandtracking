@@ -1,5 +1,6 @@
 <template>
-  <TheShopStuff v-if="shopFound === true"/>
+  <TheShopStuff v-if="shopFound"/>
+    <TimingMinigame v-if="ratFound" />
   <a-scene
     ref="sceneRef"
     mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
@@ -10,11 +11,11 @@
     device-orientation-permission-ui="enabled: false"
   >
     <a-assets>
-      <a-asset-item id="ratModel" src="/rat.glb" crossorigin></a-asset-item>
+      <a-asset-item id="avatar-model" src="/rat.glb" crossorigin></a-asset-item>
     </a-assets>
 
     <a-assets>
-      <a-asset-item id="shinyModel" src="/shinyRat.glb" crossorigin></a-asset-item>
+      <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin></a-asset-item>
     </a-assets>
 
     <a-assets>
@@ -25,10 +26,11 @@
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
       <a-gltf-model
         v-if="rat.type !== 'shop'"
+        ref="ratModels"
         rotation="90 0 0"
         position="0 0 0.1"
         scale="0.1 0.1 0.1"
-        :src="'#' + rat.type + 'Model'"
+        :src="'#' + rat.type + '-model'"
       >
     </a-gltf-model>
       <a-gltf-model
@@ -46,6 +48,7 @@
 <script setup>
 import { onMounted, ref, useTemplateRef } from 'vue'
 import TheShopStuff from './TheShopStuff.vue'
+import TimingMinigame from './TimingMinigame.vue'
 
 const shopFound = ref(false)
 const targets = useTemplateRef('targets')
@@ -63,7 +66,33 @@ onMounted(()=>{
   }
 })
 
-const sceneRef = ref(null)
+
+const ratFound = ref(false)
+const targets = useTemplateRef('targets')
+
+function findingRat(){
+  ratFound.value = true
+}
+function lostRat(){
+  ratFound.value = false
+}
+
+onMounted(() => {
+  const targetElements = targets.value;
+  targetElements.forEach((target) => {
+    target.addEventListener("targetFound", findingRat)
+    target.addEventListener("targetLost", lostRat)
+  })
+})
+
+onUnmounted(() =>{
+  const targets = targets.value;
+  targets.forEach((target) => {
+    target.removeEventListener("targetFound", findingRat)
+    target.removeEventListener("targetLost", lostRat)
+  })
+})
+const sceneRef = useTemplateRef('sceneRef')
 defineExpose({
   sceneRef,
 })
@@ -76,3 +105,4 @@ const UserRats = ref([
   { type: 'shop', scale: 1, caught: null, id: 2 },
 ])
 </script>
+
