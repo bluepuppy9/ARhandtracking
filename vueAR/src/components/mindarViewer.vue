@@ -1,7 +1,5 @@
 <template>
-  <div v-if="ratFound === true">
-    <TimingMinigame />
-  </div>
+    <TimingMinigame v-if="ratFound" />
   <a-scene
     ref="sceneRef"
     mindar-image="imageTargetSrc: /targets (41).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
@@ -12,11 +10,11 @@
     device-orientation-permission-ui="enabled: false"
   >
     <a-assets>
-      <a-asset-item id="avatarModel" src="/rat.glb" crossorigin></a-asset-item>
+      <a-asset-item id="avatar-model" src="/rat.glb" crossorigin></a-asset-item>
     </a-assets>
 
     <a-assets>
-      <a-asset-item id="shinyModel" src="/shinyRat.glb" crossorigin></a-asset-item>
+      <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin></a-asset-item>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -27,7 +25,7 @@
         rotation="90 0 0"
         position="0 0 0.1"
         scale="0.1 0.1 0.1"
-        :src="'#' + rat.type + 'Model'"
+        :src="'#' + rat.type + '-model'"
       >
       </a-gltf-model>
     </a-entity>
@@ -35,7 +33,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import TimingMinigame from './TimingMinigame.vue'
 
 const ratFound = ref(false)
@@ -53,7 +51,17 @@ onMounted(() => {
   })
 })
 
-
+onUnmounted(() =>{
+  const targets = targets.value;
+  targets.forEach((target) => {
+    target.removeEventListener("targetFound", () => {
+      ratFound.value = true
+    })
+    target.removeEventListener("targetLost", () => {
+      ratFound.value = false;
+    })
+  })
+})
 const sceneRef = useTemplateRef('sceneRef')
 defineExpose({
   sceneRef,

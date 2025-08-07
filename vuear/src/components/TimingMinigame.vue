@@ -1,25 +1,25 @@
 <template> 
-        <div ref="top" class="topClickableStyle">
-            <div class="bgForText">
-                <div class="textNoTransparent">
+        <div ref="top" class="top-clickable-style">
+            <div class="bg-for-text">
+                <div class="text-no-transparent">
                     <h1>Your miss rate of previous hit: {{ gameValues.missRate.value }}</h1>
                     <h1>Caught Rats: {{ gameValues.ratsCaught.value }}</h1>
                 </div>
             </div>
-            <canvas v-if="gameValues.ratNet.value > 0" ref="canvasBackground" class="canvasRound" width="400" height="100"></canvas>
+            <canvas v-if="gameValues.ratNet.value > 0" ref="canvasBackground" class="canvas-round" width="400" height="100"></canvas>
             <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
         </div>
-        <div v-if="gameValues.ratNet.value > 0" class="bottomDivStyle">
+        <div v-if="gameValues.ratNet.value > 0" class="bottom-div-style">
             <h1>Rat Net(s): {{ gameValues.ratNet.value }}</h1>
-            <button type="submit" class="buttonStyle" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{ cheeseBanana.amount.value }}</button>
+            <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{ cheeseBanana.amount.value }}</button>
         </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, useTemplateRef } from 'vue'
 
-const top = ref(null)
-const canvasBackground = ref(null)
+const top = useTemplateRef('top')
+const canvasBackground = useTemplateRef('canvasBackground')
 
 const useGameValues = (canvasItems, cheeseBanana) => {
   const missRate = ref(0)
@@ -43,18 +43,18 @@ const useGameValues = (canvasItems, cheeseBanana) => {
 
       const rateChance = Math.floor(Math.random() * 101)
       if (rateChance > missRate.value) {
-        ratsCaught.value += 1
+        ratsCaught.value++
       }
 
       cheeseBanana.additiononalRate.value = 0
-      ratNet.value -= 1
+      ratNet.value --
     }
   }
 
   function calculateCatch() {
     const barXStop = canvasItems.barX.value
     if (clickedPlay.value === 0) {
-      clickedPlay.value += 1
+      clickedPlay.value ++
       cancelAnimationFrame(canvasItems.animationFrameId.value)
       mathBehindCatch(barXStop)
       setTimeout(() => canvasItems.specialAnim(), 1000)
@@ -83,7 +83,7 @@ const useCheeseBanana = () => {
   function useCheeseBana() {
     if (additiononalRate.value !== 5 && amount.value > 0) {
       additiononalRate.value += 5
-      amount.value -= 1
+      amount.value --
     }
   }
 
@@ -110,19 +110,29 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
 
   function createTargetZone(ctx) {
     const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0)
-    gradient.addColorStop(0.2, 'black')
-    gradient.addColorStop(0.5, 'yellow')
-    gradient.addColorStop(0.8, 'black')
+    const gradientItems = {
+      0.2: 'black',
+      0.5: 'yellow',
+      0.8: 'black',
+    }
+    for (const [key, value] of Object.entries(gradientItems)) {
+      gradient.addColorStop(parseFloat(key), value)
+    }
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, canvasBackground.value.width, canvasBackground.value.height)
   }
 
   function banaHelpTargetZone(ctx) {
     const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0)
-    gradient.addColorStop(0.2, 'black')
-    gradient.addColorStop(0.45, 'yellow')
-    gradient.addColorStop(0.55, 'yellow')
-    gradient.addColorStop(0.8, 'black')
+    const gradientItems = {
+      0.2: 'black',
+      0.45: 'yellow',
+      0.55: 'yellow',
+      0.8: 'black',
+    }
+    for (const [key, value] of Object.entries(gradientItems)) {
+      gradient.addColorStop(parseFloat(key), value)
+    }
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, canvasBackground.value.width, canvasBackground.value.height)
   }
@@ -190,11 +200,11 @@ onUnmounted(() => {
 
 
 <style scoped>
-    .topClickableStyle{
+    .top-clickable-style{
         height: 75vh;
     }
 
-    .bgForText{
+    .bg-for-text{
         margin-top: 15%;
         margin-right: 2%;
         margin-bottom: 2%;
@@ -206,11 +216,11 @@ onUnmounted(() => {
         border-width: 0.2rem;
         border-color: var(--secondary-border);
     }
-    .canvasRound{
+    .canvas-round{
         border-radius: 2rem;
     }
 
-    .buttonStyle{
+    .button-style{
         padding: 0.75rem;
         background: var(--primary);
         color: var(--secondary);
@@ -221,14 +231,14 @@ onUnmounted(() => {
         box-shadow: 0 0 10rem var(--primary);
     }
 
-    .bottomDivStyle{
+    .bottom-div-style{
         height: 25vh;
         background-color: var(--secondary);
         color:var(--primary);
         border-top: solid 0.2rem var(--secondary-border);
     }
 
-    .textNoTransparent{
+    .text-no-transparent{
         opacity: 1;
     }
 
