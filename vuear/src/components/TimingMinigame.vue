@@ -22,6 +22,20 @@ const top = useTemplateRef('top')
 const canvasBackground = useTemplateRef('canvasBackground')
 const inventory = useInventoryStore()
 
+const gradientValues = {
+  cheeseBanana: {
+    0.2: 'black',
+    0.45: 'yellow',
+    0.55: 'yellow',
+    0.8: 'black',
+  },
+  noCheeseBanana: {
+    0.2: 'black',
+    0.5: 'yellow',
+    0.8: 'black',
+  },
+}
+
 const useGameValues = (canvasItems, cheeseBanana) => {
   const missRate = ref(0)
   const ratsCaught = inventory.ratsCaught
@@ -112,24 +126,8 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
     animationFrameId.value = null
   }
 
-  function createTargetZone(ctx) {
+  function createTargetZone(ctx, gradientItems) {
     const gradient = ctx.createLinearGradient(0, 0, canvasBackground.value.width, 0)
-    let gradientItems = {}
-    if (cheeseBanana.additiononalRate.value === 0) {
-      gradientItems = {
-        0.2: 'black',
-        0.5: 'yellow',
-        0.8: 'black',
-      }
-    } else {
-      gradientItems = {
-        0.2: 'black',
-        0.45: 'yellow',
-        0.55: 'yellow',
-        0.8: 'black',
-      }
-    }
-
     for (const [key, value] of Object.entries(gradientItems)) {
       gradient.addColorStop(parseFloat(key), value)
     }
@@ -148,7 +146,7 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
   function drawStuff() {
     const ctx = canvasBackground.value.getContext('2d')
     ctx.clearRect(0, 0, canvasBackground.value.width, canvasBackground.value.height)
-    createTargetZone(ctx)
+    createTargetZone(ctx, cheeseBanana.usedAlready.value ? gradientValues.cheeseBanana : gradientValues.noCheeseBanana)
     createBar(ctx)
   }
 
