@@ -1,7 +1,7 @@
 <template>
   <a-scene
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /targets (41).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /targets (42).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -21,7 +21,7 @@
       <a-gltf-model
         rotation="90 0 0"
         position="0 0 0.1"
-        scale="0.1 0.1 0.1"
+        scale="0.5 0.5 0.5"
         :src="'#' + rat.type + 'Model'"
       >
       </a-gltf-model>

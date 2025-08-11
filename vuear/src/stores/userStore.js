@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useUserStore = defineStore('userStore', () => {
-  const isLoggedIn = ref(false)
+  const isLoggedIn = ref(true)
   const handleSignin = (type, email, password) => {
     isLoggedIn.value = !isLoggedIn.value
   }
 
   const handleLogin = (username, password) => {
-    fetch(`http://100.101.78.71:8000/api/users/${username}`, {
+    fetch(`https://100.101.65.214:8000/api/users/${username}`, {
       method: 'GET',
     })
       .then((response) => {
