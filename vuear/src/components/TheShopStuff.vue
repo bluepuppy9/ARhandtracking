@@ -8,64 +8,66 @@
         <h1 v-if="obtainedAlready">You already robbed this station!</h1>
     </div>
     <div v-if="!obtainedAlready">
-            <button type="submit" class="btn-style" @click="rollingItems">Roll for Items</button>
-        </div>
+        <button type="submit" class="btn-style" @click="rollingItems">Roll for Items</button>
+    </div>
 </template>
 
 <script setup>
-    import {ref} from 'vue'
-    import { useInventoryStore } from '@/stores/inventory'
+import { ref } from 'vue'
+import { useInventoryStore } from '@/stores/inventory'
 
-    const inventory = useInventoryStore()
+const inventory = useInventoryStore()
+const obtainedAlready = ref(false)
 
-    const obtainedAlready = ref(false)
-    function rollingItems(){
-        if (obtainedAlready.value === false){
-            const randomNumForCheeseBanana = Math.floor(Math.random() *3)
-            inventory.addCheeseBanana(randomNumForCheeseBanana)
-            calculateRatNet()
-            obtainedAlready.value = true
-        }
+function rollingItems() {
+    if (obtainedAlready.value === false) {
+        const randomNumForCheeseBanana = Math.floor(Math.random() * 3)
+        inventory.addCheeseBanana(randomNumForCheeseBanana)
+        calculateRatNet()
+        obtainedAlready.value = true
     }
+}
 
-    function calculateRatNet(){
-        const number = Math.floor(Math.random()*3)
-        if (number === 0){
-           inventory.addRatNet(5)
-        }
-        else if (number === 1){
-            inventory.addRatNet(6)
-        }
-        else if (number === 2){
-            inventory.addRatNet(7)
-        }
+function calculateRatNet() {
+    const number = Math.floor(Math.random() * 3)
+    if (number === 0) {
+        inventory.addRatNet(5)
     }
+    else if (number === 1) {
+        inventory.addRatNet(6)
+    }
+    else if (number === 2) {
+        inventory.addRatNet(7)
+    }
+}
 </script>
 
 <style scoped>
-    .container-thing{
+.container-thing {
     margin-top: 15%;
     height: 50vh;
-    }
-    .bg-text{
-        background-color: rgba(0, 0, 0, 0.5);
-        color: var(--primary);
-        text-align: center;
-        border-radius: 25rem;
-        border-style: solid;
-        border-width: 0.2rem;
-        border-color: var(--secondary-border);
-    }
-    .btn-style{
-        padding: 0.75rem;
-        background: var(--primary);
-        color: var(--secondary);
-        border: none;
-        border-radius: 0.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 0 10rem var(--primary);
-        width: 50%;
-        height: 3rem;
-    }
+}
+
+.bg-text {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--primary);
+    text-align: center;
+    border-radius: 25rem;
+    border-style: solid;
+    border-width: 0.2rem;
+    border-color: var(--secondary-border);
+}
+
+.btn-style {
+    padding: 0.75rem;
+    background: var(--primary);
+    color: var(--secondary);
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10rem var(--primary);
+    width: 50%;
+    height: 3rem;
+}
 </style>

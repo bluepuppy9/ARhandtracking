@@ -4,34 +4,11 @@
       <h2>{{ isLogin ? 'Login' : 'Sign Up' }}</h2>
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
-          <input
-            v-model="form.email"
-            type="email"
-            placeholder="Email"
-            required
-            class="input-field"
-          />
-          <input
-            v-model="form.password"
-            type="password"
-            placeholder="Password"
-            required
-            class="input-field"
-          />
-          <input
-            v-if="!isLogin"
-            v-model="form.confirmPassword"
-            type="password"
-            placeholder="Confirm Password"
-            required
-            class="input-field"
-          />
-          <button
-            type="submit"
-            class="submit-button btn"
-            @mouseover="hovering = true"
-            @mouseleave="hovering = false"
-          >
+          <input v-model="form.email" type="email" placeholder="Email" required class="input-field" />
+          <input v-model="form.password" type="password" placeholder="Password" required class="input-field" />
+          <input v-if="!isLogin" v-model="form.confirmPassword" type="password" placeholder="Confirm Password" required
+            class="input-field" />
+          <button type="submit" class="submit-button btn" @mouseover="hovering = true" @mouseleave="hovering = false">
             {{ isLogin ? 'Login' : 'Create Account' }}
           </button>
         </div>
@@ -120,6 +97,7 @@ function handleSubmit() {
   text-align: center;
   font-size: 0.9rem;
 }
+
 .switch-text a {
   color: var(--primary);
   text-decoration: underline;

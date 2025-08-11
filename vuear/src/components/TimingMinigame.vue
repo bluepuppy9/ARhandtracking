@@ -1,23 +1,24 @@
-<template> 
-        <div ref="top" class="top-clickable-style">
-            <div class="bg-for-text">
-                <div class="text-no-transparent">
-                    <h1>Your miss rate of previous hit: {{ gameValues.missRate.value }}</h1>
-                    <h1>Caught Rats: {{ inventory.ratsCaught }}</h1>
-                </div>
-            </div>
-            <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
-            <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
-        </div>
-        <div v-if="inventory.ratNets > 0" class="bottom-div-style">
-            <h1>Rat Net(s): {{ inventory.ratNets }}</h1>
-            <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{ inventory.cheeseBanana }}</button>
-        </div>
+<template>
+  <div ref="top" class="top-clickable-style">
+    <div class="bg-for-text">
+      <div class="text-no-transparent">
+        <h1>Your miss rate of previous hit: {{ gameValues.missRate.value }}</h1>
+        <h1>Caught Rats: {{ inventory.ratsCaught }}</h1>
+      </div>
+    </div>
+    <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
+    <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
+  </div>
+  <div v-if="inventory.ratNets > 0" class="bottom-div-style">
+    <h1>Rat Net(s): {{ inventory.ratNets }}</h1>
+    <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{
+      inventory.cheeseBanana }}</button>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, useTemplateRef } from 'vue'
-import { useInventoryStore} from '@/stores/inventory'
+import { useInventoryStore } from '@/stores/inventory'
 const top = useTemplateRef('top')
 const canvasBackground = useTemplateRef('canvasBackground')
 const inventory = useInventoryStore()
@@ -68,7 +69,7 @@ const useGameValues = (canvasItems, cheeseBanana) => {
   function calculateCatch() {
     const barXStop = canvasItems.barX.value
     if (clickedPlay.value === 0) {
-      clickedPlay.value ++
+      clickedPlay.value++
       cancelAnimationFrame(canvasItems.animationFrameId.value)
       catchLogic(barXStop)
       setTimeout(() => canvasItems.specialAnim(), 1000)
@@ -90,15 +91,15 @@ const useCheeseBanana = () => {
   const additiononalRate = ref(0)
   const usedAlready = ref(false)
 
-  function reset(){
+  function reset() {
     additiononalRate.value = 0
     usedAlready.value = false
   }
 
   function useCheeseBana() {
-    if ( !usedAlready.value && inventory.ratNets > 0 && inventory.useCheeseBanana()) {
-        usedAlready.value = true
-        additiononalRate.value += 5
+    if (!usedAlready.value && inventory.ratNets > 0 && inventory.useCheeseBanana()) {
+      usedAlready.value = true
+      additiononalRate.value += 5
     }
   }
 
@@ -191,46 +192,46 @@ onUnmounted(() => {
 
 
 <style scoped>
-    .top-clickable-style{
-        height: 75vh;
-    }
+.top-clickable-style {
+  height: 75vh;
+}
 
-    .bg-for-text{
-        margin-top: 15%;
-        margin-right: 2%;
-        margin-bottom: 2%;
-        margin-left: 2%;
-        background-color: rgba(0,0,0, 0.5);
-        color: var(--primary);
-        border-radius: 25rem;
-        border-style: solid;
-        border-width: 0.2rem;
-        border-color: var(--secondary-border);
-    }
-    .canvas-round{
-        border-radius: 2rem;
-    }
+.bg-for-text {
+  margin-top: 15%;
+  margin-right: 2%;
+  margin-bottom: 2%;
+  margin-left: 2%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: var(--primary);
+  border-radius: 25rem;
+  border-style: solid;
+  border-width: 0.2rem;
+  border-color: var(--secondary-border);
+}
 
-    .button-style{
-        padding: 0.75rem;
-        background: var(--primary);
-        color: var(--secondary);
-        border: none;
-        border-radius: 0.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 0 10rem var(--primary);
-    }
+.canvas-round {
+  border-radius: 2rem;
+}
 
-    .bottom-div-style{
-        height: 25vh;
-        background-color: var(--secondary);
-        color:var(--primary);
-        border-top: solid 0.2rem var(--secondary-border);
-    }
+.button-style {
+  padding: 0.75rem;
+  background: var(--primary);
+  color: var(--secondary);
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10rem var(--primary);
+}
 
-    .text-no-transparent{
-        opacity: 1;
-    }
+.bottom-div-style {
+  height: 25vh;
+  background-color: var(--secondary);
+  color: var(--primary);
+  border-top: solid 0.2rem var(--secondary-border);
+}
 
+.text-no-transparent {
+  opacity: 1;
+}
 </style>

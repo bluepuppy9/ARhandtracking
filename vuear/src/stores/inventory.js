@@ -1,22 +1,22 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useInventoryStore = defineStore('invetory', () => {
-  const cheeseBanana = ref(5)
+  const cheeseBanana = ref(1)
   const ratNets = ref(3)
   const ratsCaught = ref(0)
 
   function addCheeseBanana(amount) {
     cheeseBanana.value += amount
   }
-  function useCheeseBanana(){
+  function useCheeseBanana() {
     if (cheeseBanana.value > 0) {
       cheeseBanana.value--
       return true
     }
     return false
   }
-  function useRatNet(){
+  function useRatNet() {
     if (ratNets.value > 0) {
       ratNets.value--
       return true
