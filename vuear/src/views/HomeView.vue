@@ -1,16 +1,19 @@
 <template>
   <div class="main">
     <signup v-if="!isLoggedIn" />
+
     <div v-if="isLoggedIn">
-      <div class="containerMindar" v-show="running">
+      <div class="containerMindar" :class="{ visible: running }">
         <mindar-viewer ref="mindarViewerRef" />
       </div>
+
       <div class="container start-text">
         <div v-if="!running">
           <h1>Welcome to the AR Ratdom</h1>
-          <p>Please start the AR system to see the rats.</p>
+          <p>Scan the QR code to start the AR experience.</p>
         </div>
-        <button class="startButton" :class="{ active: running }" @click="handleARSystems()">
+
+        <button class="startButton" :class="{ active: running }" @click="toggleARVisibility">
           {{ running ? 'STOP' : 'START' }}
         </button>
       </div>
@@ -19,29 +22,34 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import signup from '../components/signup.vue'
 import '../libs/mindar/mindar-image.prod.js'
 import 'aframe'
 import '../libs/mindar/mindar-image-aframe.prod.js'
 import MindarViewer from '../components/mindarViewer.vue'
 import { useUserStore } from '../stores/userStore'
+
 const mindarViewerRef = ref(null)
 const running = ref(false)
 const userStore = useUserStore()
-
 const isLoggedIn = computed(() => userStore.isLoggedIn)
 
-function handleARSystems() {
-  const sceneEl = mindarViewerRef.value.sceneRef
-  const arSystem = sceneEl.systems['mindar-image-system']
-  if (!running.value) {
-    arSystem.start()
-    running.value = true
-  } else {
-    arSystem.stop()
-    running.value = false
-  }
+onMounted(() => {
+  setTimeout(() => {
+    const sceneEl = mindarViewerRef.value?.sceneRef
+    if (sceneEl) {
+      const arSystem = sceneEl.systems['mindar-image-system']
+      if (arSystem && !arSystem.isStarted) {
+        arSystem.start()
+        console.log('MindAR system pre-started in background')
+      }
+    }
+  }, 500)
+})
+
+function toggleARVisibility() {
+  running.value = !running.value
 }
 </script>
 
@@ -50,6 +58,14 @@ function handleARSystems() {
   height: 100dvh;
   width: 100vw;
   overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.containerMindar.visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .startButton {
