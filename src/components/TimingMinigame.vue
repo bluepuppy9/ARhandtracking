@@ -8,12 +8,15 @@
         </div>
       </div>
       <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
-      <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
+      <h1 v-else>You don't have enough rat nets! Please replunish at a center.</h1>
     </div>
     <div v-if="inventory.ratNets > 0" class="bottom-div-style">
-      <h1>Rat Net(s): {{ inventory.ratNets }}</h1>
-      <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{
-        inventory.cheeseBanana }}</button>
+      <button type="submit" class="button-style" @click="gameValues.calculateCatch">
+        Rat Net(s): {{ inventory.ratNets }}
+      </button>
+      <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">
+        Cheese Banana: {{ inventory.cheeseBanana }}
+      </button>
     </div>
   </div>
 </template>
@@ -54,7 +57,7 @@ const useGameValues = (canvasItems, cheeseBanana) => {
     if (barXStop !== null && ratNet > 0) {
       const canvasWidth = 400
       const distanceFromCenter = Math.abs(barXStop - canvasWidth / 2)
-      missRate.value = (distanceFromCenter / 2) - cheeseBanana.additiononalRate.value
+      missRate.value = distanceFromCenter / 2 - cheeseBanana.additiononalRate.value
       missRate.value = Math.max(missRate.value, 0)
 
       const rateChance = Math.floor(Math.random() * 101)
@@ -139,9 +142,7 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
   }
 
   function createBar(ctx) {
-    barX.value = barX.value < canvasBackground.value.width
-      ? barX.value + speed.value
-      : 0
+    barX.value = barX.value < canvasBackground.value.width ? barX.value + speed.value : 0
     ctx.fillStyle = 'white'
     ctx.fillRect(barX.value - 2, 0, barWidth.value, canvasBackground.value.height)
   }
@@ -149,7 +150,10 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
   function drawStuff() {
     const ctx = canvasBackground.value.getContext('2d')
     ctx.clearRect(0, 0, canvasBackground.value.width, canvasBackground.value.height)
-    createTargetZone(ctx, cheeseBanana.usedAlready.value ? gradientValues.cheeseBanana : gradientValues.noCheeseBanana)
+    createTargetZone(
+      ctx,
+      cheeseBanana.usedAlready.value ? gradientValues.cheeseBanana : gradientValues.noCheeseBanana,
+    )
     createBar(ctx)
   }
 
@@ -192,68 +196,100 @@ onUnmounted(() => {
 })
 </script>
 
-
 <style scoped>
-.wrapper {
-  outline: solid 2px green;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+html,
+body {
   margin: 0;
   padding: 0;
+  overflow: hidden !important;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+  -webkit-overflow-scrolling: none !important;
+}
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden !important;
+  z-index: 1000;
   box-sizing: border-box;
+  -webkit-overflow-scrolling: none !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+  user-select: none !important;
 }
 
 .top-clickable-style {
-  flex: 1;
+  position: relative;
+  height: 75vh;
   width: 100%;
-  overflow-y: auto;
   box-sizing: border-box;
-  outline: 2px solid red;
+  overflow: hidden !important;
+  user-select: none;
+  pointer-events: auto;
+  z-index: 9999;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
 }
-
-.bg-for-text {
-  outline: 2px solid blue;
-  margin-top: 15%;
-  margin-right: 2%;
-  margin-bottom: 2%;
-  margin-left: 2%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: var(--primary);
-  border-radius: 25rem;
-  border-style: solid;
-  border-width: 0.2rem;
-  border-color: var(--secondary-border);
-}
-
+/* Canvas */
 .canvas-round {
   border-radius: 2rem;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   height: 100px;
   display: block;
   margin: 0 auto;
+  pointer-events: none;
+  box-sizing: border-box;
 }
 
+.bottom-div-style {
+  position: relative;
+  height: 20vh;
+  width: 100%;
+  box-sizing: border-box;
+  outline: 2px solid gray;
+  background-color: var(--secondary);
+  color: var(--primary);
+  border-top: solid 0.2rem var(--secondary-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden !important;
+  max-width: 100vw;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+
+.bg-for-text {
+  margin: 15% 2% 2% 2%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: var(--primary);
+  border-radius: 2rem;
+  border: 0.2rem solid var(--secondary-border);
+  box-sizing: border-box;
+  max-width: 96%;
+}
+
+/* Button */
 .button-style {
-  padding: 0.75rem;
+  margin: 0.2rem;
+  padding: 0.75rem 1rem;
   background: var(--primary);
   color: var(--secondary);
   border: none;
   border-radius: 0.5rem;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 0 10rem var(--primary);
-}
-
-.bottom-div-style {
-  height: 25vh;
-  width: 100%;
-  outline: 2px solid gray;
-  background-color: var(--secondary);
-  color: var(--primary);
-  border-top: solid 0.2rem var(--secondary-border);
-  box-sizing: border-box;
+  box-shadow: 0 0 1rem var(--primary);
+  white-space: nowrap;
 }
 
 .text-no-transparent {
