@@ -1,8 +1,12 @@
 <template>
-  <TheShopStuff v-if="shopFound" />
-  <TimingMinigame v-if="ratFound" />
-  <a-scene ref="sceneRef"
-    mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+  <div v-show="shopFound">
+    <TheShopStuff />
+  </div>
+  <div v-show="ratFound">
+    <TimingMinigame />
+  </div>
+  <a-scene class="arContainer" ref="sceneRef"
+    mindar-image="imageTargetSrc: /test.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB" embedded renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
     <a-assets>
@@ -12,9 +16,13 @@
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-entity mindar-image-target="targetIndex: 1">
+      <a-gltf-model rotation="0 0 0" position="0 0 -1" scale="0.5 0.5 0.5" src="#rat-model"></a-gltf-model>
+      <!-- model for testing purposes delete later-->
+    </a-entity>
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
-      <a-gltf-model :rotation="rat.type === 'shop' ? '0 0 0' : '90 0 0'" position="0 0 0.1" scale="0.1 0.1 0.1"
+      <a-gltf-model :rotation="rat.type === 'shop' ? '0 0 0' : '0 0 0'" position="0 0 0.1" scale="0.1 0.1 0.1"
         :src="'#' + rat.type + '-model'">
       </a-gltf-model>
     </a-entity>
@@ -31,7 +39,9 @@ const targets = useTemplateRef('targets')
 const ratFound = ref(false)
 
 function findingRat() {
+  console.log('found rat!')
   ratFound.value = true
+  document.querySelector('a-gltf-model').object3D.visible
 }
 function lostRat() {
   ratFound.value = false
@@ -44,6 +54,7 @@ function lostShop() {
 }
 
 onMounted(() => {
+  console.log(sceneRef.value.systems['mindar-image-system'])
   for (let i = 0; i < UserRats.value.length; i++) {
     if (UserRats.value[i].type === 'shop') {
       targets.value[i].addEventListener('targetFound', findingShop)
@@ -77,3 +88,9 @@ const UserRats = ref([
   { type: 'shop', scale: 1, caught: null, id: 2 },
 ])
 </script>
+
+<style>
+.arContainer {
+  overflow: hidden;
+}
+</style>

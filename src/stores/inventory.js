@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const useInventoryStore = defineStore('invetory', () => {
+export const useInventoryStore = defineStore('inventory', () => {
   const cheeseBanana = ref(1)
   const ratNets = ref(3)
   const ratsCaught = ref(0)
