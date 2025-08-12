@@ -1,18 +1,20 @@
 <template>
-  <div ref="top" class="top-clickable-style">
-    <div class="bg-for-text">
-      <div class="text-no-transparent">
-        <h1>Your miss rate of previous hit: {{ gameValues.missRate.value }}</h1>
-        <h1>Caught Rats: {{ inventory.ratsCaught }}</h1>
+  <div class="wrapper">
+    <div ref="top" class="top-clickable-style">
+      <div class="bg-for-text">
+        <div class="text-no-transparent">
+          <h1>Your miss rate of previous hit: {{ gameValues.missRate.value }}</h1>
+          <h1>Caught Rats: {{ inventory.ratsCaught }}</h1>
+        </div>
       </div>
+      <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
+      <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
     </div>
-    <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
-    <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
-  </div>
-  <div v-if="inventory.ratNets > 0" class="bottom-div-style">
-    <h1>Rat Net(s): {{ inventory.ratNets }}</h1>
-    <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{
-      inventory.cheeseBanana }}</button>
+    <div v-if="inventory.ratNets > 0" class="bottom-div-style">
+      <h1>Rat Net(s): {{ inventory.ratNets }}</h1>
+      <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{
+        inventory.cheeseBanana }}</button>
+    </div>
   </div>
 </template>
 
@@ -192,12 +194,27 @@ onUnmounted(() => {
 
 
 <style scoped>
+.wrapper {
+  outline: solid 2px green;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .top-clickable-style {
-  height: 75vh;
+  flex: 1;
   width: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  outline: 2px solid red;
 }
 
 .bg-for-text {
+  outline: 2px solid blue;
   margin-top: 15%;
   margin-right: 2%;
   margin-bottom: 2%;
@@ -212,6 +229,10 @@ onUnmounted(() => {
 
 .canvas-round {
   border-radius: 2rem;
+  width: 400px;
+  height: 100px;
+  display: block;
+  margin: 0 auto;
 }
 
 .button-style {
@@ -226,11 +247,13 @@ onUnmounted(() => {
 }
 
 .bottom-div-style {
-  width: 100%;
   height: 25vh;
+  width: 100%;
+  outline: 2px solid gray;
   background-color: var(--secondary);
   color: var(--primary);
   border-top: solid 0.2rem var(--secondary-border);
+  box-sizing: border-box;
 }
 
 .text-no-transparent {

@@ -1,8 +1,8 @@
 <template>
-  <div v-show="shopFound">
+  <div v-show="shopFound" class="sizing">
     <TheShopStuff />
   </div>
-  <div v-show="ratFound">
+  <div v-show="ratFound" class="sizing">
     <TimingMinigame />
   </div>
   <a-scene class="arContainer" ref="sceneRef"
@@ -18,7 +18,7 @@
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
     <a-entity mindar-image-target="targetIndex: 1">
       <a-gltf-model rotation="0 0 0" position="0 0 -1" scale="0.5 0.5 0.5" src="#rat-model"></a-gltf-model>
-      <!-- model for testing purposes delete later-->
+      <!-- model for testing purposes delete later -->
     </a-entity>
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
@@ -91,6 +91,13 @@ const UserRats = ref([
 
 <style>
 .arContainer {
+  overflow: hidden;
+}
+
+.sizing {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   overflow: hidden;
 }
 </style>
