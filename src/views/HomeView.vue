@@ -53,6 +53,7 @@ function handleARSystems() {
 }
 
 .startButton {
+  z-index: 200000;
   padding: 0.75rem;
   background: var(--primary);
   color: var(--secondary);
