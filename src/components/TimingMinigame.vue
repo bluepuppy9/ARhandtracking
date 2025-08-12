@@ -194,6 +194,7 @@ onUnmounted(() => {
 <style scoped>
 .top-clickable-style {
   height: 75vh;
+  width: 100%;
 }
 
 .bg-for-text {
@@ -225,6 +226,7 @@ onUnmounted(() => {
 }
 
 .bottom-div-style {
+  width: 100%;
   height: 25vh;
   background-color: var(--secondary);
   color: var(--primary);
