@@ -6,6 +6,7 @@
       <h1>Your Cheese Banana(s): {{ inventory.cheeseBanana }}</h1>
     </div>
     <h1 v-if="obtainedAlready">You already robbed this station!</h1>
+    <h1 v-if="obtainedAlready">Time Remaining: {{ timer }}</h1>
   </div>
   <div v-if="!obtainedAlready">
     <button type="submit" class="btn-style" @click="rollingItems">Roll for Items</button>
@@ -18,13 +19,27 @@ import { useInventoryStore } from '@/stores/inventory'
 
 const inventory = useInventoryStore()
 const obtainedAlready = ref(false)
+const timer = ref(0)
+
+function startTimer() {
+  obtainedAlready.value = true
+  timer.value = 60
+  setInterval(() => {
+    if (timer.value > 0) {
+      timer.value -= 1
+    }
+    else if (timer.value === 0) {
+      obtainedAlready.value = false
+    }
+  }, 1000)
+}
 
 function rollingItems() {
   if (obtainedAlready.value === false) {
     const randomNumForCheeseBanana = Math.floor(Math.random() * 3)
     inventory.addCheeseBanana(randomNumForCheeseBanana)
     calculateRatNet()
-    obtainedAlready.value = true
+    startTimer()
   }
 }
 
