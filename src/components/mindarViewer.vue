@@ -22,8 +22,8 @@
     </a-entity>
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
-      <a-gltf-model :rotation="rat.type === 'shop' ? '0 0 0' : '0 0 0'" position="0 0 0.1"
-        :scale="rat.type === 'shop' ? '0.01 0.01 0.01' : '0.1 0.1 0.1'" :src="'#' + rat.type + '-model'">
+      <a-gltf-model :rotation="rat.type === 'shop' ? '0 0 0' : '0 0 0'" position="0 0 0.1" scale="0.1 0.1 0.1"
+        :src="'#' + rat.type + '-model'">
       </a-gltf-model>
     </a-entity>
   </a-scene>
