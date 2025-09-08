@@ -24,11 +24,10 @@ const timer = ref(0)
 function startTimer() {
   obtainedAlready.value = true
   timer.value = 10
-  let countDown = setInterval(() => {
+  const countDown = setInterval(() => {
     if (timer.value > 1) {
       timer.value -= 1
-    }
-    else if (timer.value === 1) {
+    } else if (timer.value === 1) {
       obtainedAlready.value = false
       clearInterval(countDown)
     }
