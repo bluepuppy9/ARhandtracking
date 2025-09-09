@@ -5,11 +5,12 @@
   <div v-show="ratFound">
     <TimingMinigame />
   </div>
+  <h1 v-if="assetsLoaded"> Assets have loaded</h1>
   <a-scene class="arContainer" ref="sceneRef"
     mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB" embedded renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
-    <a-assets>
+    <a-assets ref="assets">
       <a-asset-item id="rat-model" src="/rat.glb" crossorigin></a-asset-item>
       <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin></a-asset-item>
       <a-asset-item id="shop-model" src="/shop.glb" crossorigin></a-asset-item>
@@ -22,8 +23,8 @@
     </a-entity>
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
-      <a-gltf-model :rotation="rat.type === 'shop' ? '0 270 0' : '0 0 0'" position="0 0 0.1" scale="0.1 0.1 0.1"
-        :src="'#' + rat.type + '-model'">
+      <a-gltf-model :rotation="rat.type === 'shop' ? '0 270 0' : '0 0 0'" position="0 0 0.1"
+        :scale="rat.type === 'shop' ? '0.05 0.05 0.05' : '0.1 0.1 0.1'" :src="'#' + rat.type + '-model'">
       </a-gltf-model>
     </a-entity>
   </a-scene>
@@ -34,9 +35,19 @@ import { onMounted, ref, useTemplateRef, onUnmounted } from 'vue'
 import TheShopStuff from './TheShopStuff.vue'
 import TimingMinigame from './TimingMinigame.vue'
 
+const assets = useTemplateRef('assets')
+const assetsLoaded = ref(false)
+function checkAssets() {
+  console.log("assets loaded", assets.value)
+  assetsLoaded.value = true
+}
+
+
 const shopFound = ref(false)
 const targets = useTemplateRef('targets')
 const ratFound = ref(false)
+
+
 
 function findingRat() {
   console.log('found rat!')
@@ -55,6 +66,8 @@ function lostShop() {
 
 onMounted(() => {
   console.log(sceneRef.value.systems['mindar-image-system'])
+  assets.value.addEventListener('loaded', checkAssets)
+
   for (let i = 0; i < UserRats.value.length; i++) {
     if (UserRats.value[i].type === 'shop') {
       targets.value[i].addEventListener('targetFound', findingShop)
@@ -67,6 +80,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  assets.value.removeEventListener('loaded', checkAssets)
   for (let i = 0; i < UserRats.value.length; i++) {
     if (UserRats.value[i].type === 'shop') {
       targets.value[i].removeEventListener('targetFound', findingShop)
