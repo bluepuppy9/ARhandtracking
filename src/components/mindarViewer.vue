@@ -5,7 +5,7 @@
   <div v-show="ratFound">
     <TimingMinigame />
   </div>
-  <h1 v-if="assetsLoaded"> Assets have loaded</h1>
+  <h1 v-if="ratVisible">Rats visible</h1>
   <a-scene class="arContainer" ref="sceneRef"
     mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
     color-space="sRGB" embedded renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
@@ -17,13 +17,12 @@
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <a-entity mindar-image-target="targetIndex: 100">
+    <!-- <a-entity mindar-image-target="targetIndex: 100">
       <a-gltf-model rotation="0 0 0" position="0 0 -1" scale="0.5 0.5 0.5" src="#rat-model"></a-gltf-model>
-      <!-- model for testing purposes delete later -->
-    </a-entity>
+    </a-entity> -->
 
     <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
-      <a-gltf-model :rotation="rat.type === 'shop' ? '0 270 0' : '0 0 0'" position="0 0 0.1"
+      <a-gltf-model :rotation="rat.type === 'shop' ? '0 270 0' : '0 0 0'" position="0 0 0.1" ref="ratModels"
         :scale="rat.type === 'shop' ? '0.05 0.05 0.05' : '0.1 0.1 0.1'" :src="'#' + rat.type + '-model'">
       </a-gltf-model>
     </a-entity>
@@ -35,24 +34,22 @@ import { onMounted, ref, useTemplateRef, onUnmounted } from 'vue'
 import TheShopStuff from './TheShopStuff.vue'
 import TimingMinigame from './TimingMinigame.vue'
 
-const assets = useTemplateRef('assets')
-const assetsLoaded = ref(false)
-function checkAssets() {
-  console.log("assets loaded", assets.value)
-  assetsLoaded.value = true
-}
-
 
 const shopFound = ref(false)
 const targets = useTemplateRef('targets')
 const ratFound = ref(false)
-
-
+const ratVisible = ref(false)
+const ratModels = useTemplateRef('ratModels')
 
 function findingRat() {
   console.log('found rat!')
   ratFound.value = true
-  document.querySelector('a-gltf-model').object3D.visible
+  // const ratModel = document.querySelector('a-gltf-model')
+  // ratModel.object3D.visible
+  ratModels.value.forEach(rat => {
+    rat.object3D.visible = true
+  });
+  ratVisible.value = true
 }
 function lostRat() {
   ratFound.value = false
@@ -66,7 +63,6 @@ function lostShop() {
 
 onMounted(() => {
   console.log(sceneRef.value.systems['mindar-image-system'])
-  assets.value.addEventListener('loaded', checkAssets)
 
   for (let i = 0; i < UserRats.value.length; i++) {
     if (UserRats.value[i].type === 'shop') {
@@ -80,7 +76,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  assets.value.removeEventListener('loaded', checkAssets)
   for (let i = 0; i < UserRats.value.length; i++) {
     if (UserRats.value[i].type === 'shop') {
       targets.value[i].removeEventListener('targetFound', findingShop)
