@@ -40,7 +40,6 @@ const targets = useTemplateRef('targets')
 const ratFound = ref(false)
 const ratVisible = ref(false)
 const ratModels = useTemplateRef('ratModels')
-
 function findingRat() {
   console.log('found rat!')
   ratFound.value = true
@@ -63,7 +62,6 @@ function lostShop() {
 
 onMounted(() => {
   console.log(sceneRef.value.systems['mindar-image-system'])
-
   for (let i = 0; i < UserRats.value.length; i++) {
     if (UserRats.value[i].type === 'shop') {
       targets.value[i].addEventListener('targetFound', findingShop)
