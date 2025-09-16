@@ -3,7 +3,7 @@
     <signup v-if="!isLoggedIn" />
     <div v-if="isLoggedIn">
       <div class="containerMindar" v-show="running">
-        <mindar-viewer ref="mindarViewerRef" />
+        <mindar-viewer ref="mindarViewerRef" @assetsLoaded="true" />
       </div>
       <div class="container start-text">
         <div v-if="!running">

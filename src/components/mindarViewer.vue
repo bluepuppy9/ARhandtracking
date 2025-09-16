@@ -9,11 +9,8 @@
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
   >
-    <a-assets>
+    <a-assets ref="assets">
       <a-asset-item id="avatar-model" src="/rat.glb" crossorigin></a-asset-item>
-    </a-assets>
-
-    <a-assets>
       <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin></a-asset-item>
     </a-assets>
 
@@ -38,7 +35,7 @@ import TimingMinigame from './TimingMinigame.vue'
 
 const ratFound = ref(false)
 const targets = useTemplateRef('targets')
-
+const assetsLoaded = ref(false)
 function findingRat(){
   ratFound.value = true
 }
@@ -47,6 +44,10 @@ function lostRat(){
 }
 
 onMounted(() => {
+  const assets = useTemplateRef('assets').value;
+  assets.addEventListener('loaded', () => {
+    assetsLoaded.value = true;
+  });
   const targetElements = targets.value;
   targetElements.forEach((target) => {
     target.addEventListener("targetFound", findingRat)
@@ -67,7 +68,7 @@ defineExpose({
 })
 
 const UserRats = ref([
-  { type: 'rat', scale: 2, caught: false, id: 0 },
+  { type: 'avatar', scale: 2, caught: false, id: 0 },
   { type: 'shiny', scale: 2, caught: false, id: 1 },
 ])
 </script>
