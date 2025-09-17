@@ -35,7 +35,6 @@ import TimingMinigame from './TimingMinigame.vue'
 
 const ratFound = ref(false)
 const targets = useTemplateRef('targets')
-const assetsLoaded = ref(false)
 function findingRat(){
   ratFound.value = true
 }
@@ -44,10 +43,6 @@ function lostRat(){
 }
 
 onMounted(() => {
-  const assets = useTemplateRef('assets').value;
-  assets.addEventListener('loaded', () => {
-    assetsLoaded.value = true;
-  });
   const targetElements = targets.value;
   targetElements.forEach((target) => {
     target.addEventListener("targetFound", findingRat)

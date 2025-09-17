@@ -3,7 +3,7 @@
     <signup v-if="!isLoggedIn" />
     <div v-if="isLoggedIn">
       <div class="containerMindar" v-show="running">
-        <mindar-viewer ref="mindarViewerRef" @assetsLoaded="true" />
+        <mindar-viewer ref="mindarViewerRef" />
       </div>
       <div class="container start-text">
         <div v-if="!running">
@@ -20,7 +20,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import signup from '../components/signup.vue'
+import signup from '../components/Signup.vue'
 import '../libs/mindar/mindar-image.prod.js'
 import 'aframe'
 import '../libs/mindar/mindar-image-aframe.prod.js'
@@ -29,7 +29,6 @@ import { useUserStore } from '../stores/userStore'
 const mindarViewerRef = ref(null)
 const running = ref(false)
 const userStore = useUserStore()
-
 const isLoggedIn = computed(() => userStore.isLoggedIn)
 
 function handleARSystems() {
@@ -37,7 +36,10 @@ function handleARSystems() {
   const arSystem = sceneEl.systems['mindar-image-system']
   if (!running.value) {
     arSystem.start()
-    running.value = true
+    sceneEl.addEventListener('arReady', () => {
+      console.log('AR is ready')
+      running.value = true
+    })
   } else {
     arSystem.stop()
     running.value = false
