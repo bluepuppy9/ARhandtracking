@@ -36,11 +36,8 @@ function handleARSystems() {
   const arSystem = sceneEl.systems['mindar-image-system']
   if (!running.value) {
     arSystem.start()
-    sceneEl.addEventListener('arReady', () => {
-      console.log('AR is ready')
-      running.value = true
-    })
-  } else {
+    running.value = true
+  } else if (running.value) {
     arSystem.stop()
     running.value = false
   }

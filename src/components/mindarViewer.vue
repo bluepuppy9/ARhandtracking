@@ -1,5 +1,5 @@
 <template>
-    <TimingMinigame v-if="ratFound" />
+  <TimingMinigame v-if="ratFound" />
   <a-scene
     ref="sceneRef"
     mindar-image="imageTargetSrc: /targets (41).mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
@@ -10,13 +10,20 @@
     device-orientation-permission-ui="enabled: false"
   >
     <a-assets ref="assets">
-      <a-asset-item id="avatar-model" src="/rat.glb" crossorigin></a-asset-item>
-      <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin></a-asset-item>
+      <a-asset-item id="avatar-model" src="/rat.glb" crossorigin ref="assetone"></a-asset-item>
+      <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin ref="assettwo"></a-asset-item>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
+    <a-entity
+      v-for="(rat, i) in UserRats"
+      :key="i"
+      :mindar-image-target="'targetIndex: ' + i"
+      ref="targets"
+      animation="property: visible; to: true; startEvents: materialtextureloaded"
+    >
+      >
       <a-gltf-model
         ref="ratModels"
         rotation="90 0 0"
@@ -35,26 +42,28 @@ import TimingMinigame from './TimingMinigame.vue'
 
 const ratFound = ref(false)
 const targets = useTemplateRef('targets')
-function findingRat(){
+const assets = useTemplateRef('assets')
+const assetChildren = assets.children
+function findingRat() {
   ratFound.value = true
 }
-function lostRat(){
+function lostRat() {
   ratFound.value = false
 }
 
 onMounted(() => {
-  const targetElements = targets.value;
+  const targetElements = targets.value
   targetElements.forEach((target) => {
-    target.addEventListener("targetFound", findingRat)
-    target.addEventListener("targetLost", lostRat)
+    target.addEventListener('targetFound', findingRat)
+    target.addEventListener('targetLost', lostRat)
   })
 })
 
-onUnmounted(() =>{
-  const targets = targets.value;
+onUnmounted(() => {
+  const targets = targets.value
   targets.forEach((target) => {
-    target.removeEventListener("targetFound", findingRat)
-    target.removeEventListener("targetLost", lostRat)
+    target.removeEventListener('targetFound', findingRat)
+    target.removeEventListener('targetLost', lostRat)
   })
 })
 const sceneRef = useTemplateRef('sceneRef')
@@ -67,4 +76,3 @@ const UserRats = ref([
   { type: 'shiny', scale: 2, caught: false, id: 1 },
 ])
 </script>
-
