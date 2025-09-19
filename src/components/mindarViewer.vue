@@ -6,10 +6,16 @@
     <TimingMinigame />
   </div>
   <h1 v-if="ratVisible">Rats visible</h1>
-  <a-scene class="arContainer" ref="sceneRef"
+  <a-scene
+    class="arContainer"
+    ref="sceneRef"
     mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
-    color-space="sRGB" embedded renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false">
+    color-space="sRGB"
+    embedded
+    renderer="colorManagement: true, physicallyCorrectLights"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+  >
     <a-assets ref="assets">
       <a-asset-item id="rat-model" src="/rat.glb" crossorigin></a-asset-item>
       <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin></a-asset-item>
@@ -21,9 +27,19 @@
       <a-gltf-model rotation="0 0 0" position="0 0 -1" scale="0.5 0.5 0.5" src="#rat-model"></a-gltf-model>
     </a-entity> -->
 
-    <a-entity v-for="(rat, i) in UserRats" :key="i" :mindar-image-target="'targetIndex: ' + i" ref="targets">
-      <a-gltf-model :rotation="rat.type === 'shop' ? '0 270 0' : '0 0 0'" position="0 0 0.1" ref="ratModels"
-        :scale="rat.type === 'shop' ? '0.05 0.05 0.05' : '0.1 0.1 0.1'" :src="'#' + rat.type + '-model'">
+    <a-entity
+      v-for="(rat, i) in UserRats"
+      :key="i"
+      :mindar-image-target="'targetIndex: ' + i"
+      ref="targets"
+    >
+      <a-gltf-model
+        :rotation="rat.type === 'shop' ? '0 270 0' : '0 0 0'"
+        position="0 0 0.1"
+        ref="ratModels"
+        :scale="rat.type === 'shop' ? '0.05 0.05 0.05' : '0.1 0.1 0.1'"
+        :src="'#' + rat.type + '-model'"
+      >
       </a-gltf-model>
     </a-entity>
   </a-scene>
@@ -34,7 +50,6 @@ import { onMounted, ref, useTemplateRef, onUnmounted } from 'vue'
 import TheShopStuff from './TheShopStuff.vue'
 import TimingMinigame from './TimingMinigame.vue'
 
-
 const shopFound = ref(false)
 const targets = useTemplateRef('targets')
 const ratFound = ref(false)
@@ -43,12 +58,8 @@ const ratModels = useTemplateRef('ratModels')
 function findingRat() {
   console.log('found rat!')
   ratFound.value = true
-  // const ratModel = document.querySelector('a-gltf-model')
-  // ratModel.object3D.visible
-  ratModels.value.forEach(rat => {
-    rat.object3D.visible = true
-  });
-  ratVisible.value = true
+  const ratModel = document.querySelector('a-gltf-model')
+  ratModel.object3D.visible
 }
 function lostRat() {
   ratFound.value = false
