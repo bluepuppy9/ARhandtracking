@@ -11,12 +11,26 @@
       <h1 v-else>You don't have enough rat nets! Please replunish at a center.</h1>
     </div>
     <div v-if="inventory.ratNets > 0" class="bottom-div-style">
-      <button type="submit" class="button-style" @click="gameValues.calculateCatch">
-        Rat Net(s): {{ inventory.ratNets }}
-      </button>
-      <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">
-        Cheese Banana: {{ inventory.cheeseBanana }}
-      </button>
+      <div class="bg-for-btns">
+        <div>
+          <button
+            type="submit"
+            class="button-style"
+            id="net-img"
+            @click="gameValues.calculateCatch"
+          ></button>
+          <h1>Amount Left:</h1>
+          <h1>{{ inventory.ratNets }}</h1>
+        </div>
+        <button
+          type="submit"
+          class="button-style"
+          id="cheesebanana-img"
+          @click="cheeseBanana.useCheeseBana"
+        >
+          Cheese Banana: {{ inventory.cheeseBanana }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -294,5 +308,17 @@ body {
 
 .text-no-transparent {
   opacity: 1;
+}
+
+.bg-for-btns {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 2rem;
+  border: 0.2rem solid var(--secondary-border);
+  box-sizing: border-box;
+  padding: 0.5rem;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 </style>
