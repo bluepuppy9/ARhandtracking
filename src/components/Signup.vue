@@ -72,7 +72,7 @@ function handleSubmit() {
     return
   }
   userStore.handleSignin('login', form.value.email, form.value.password)
-  alert(isLogin.value ? 'Logged in successfully!' : 'Account created successfully!')
+  //alert(isLogin.value ? 'Logged in successfully!' : 'Account created successfully!')
 }
 </script>
 
