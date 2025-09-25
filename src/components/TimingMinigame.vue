@@ -1,35 +1,35 @@
 <template>
   <div class="wrapper">
     <div ref="top" class="top-clickable-style">
-      <div class="bg-for-text">
-        <div class="text-no-transparent">
-          <h1>Your miss rate of previous hit: {{ gameValues.missRate.value }}</h1>
-          <h1>Caught Rats: {{ inventory.ratsCaught }}</h1>
-        </div>
-      </div>
-      <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
-      <h1 v-else>You don't have enough rat nets! Please replunish at a center.</h1>
+      <canvas v-show="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
+      <h1 v-show="inventory.ratNets === 0">
+        You don't have enough rat nets! Please replunish at a center.
+      </h1>
     </div>
     <div v-if="inventory.ratNets > 0" class="bottom-div-style">
       <div class="bg-for-btns">
-        <div>
-          <button
-            type="submit"
-            class="button-style"
-            id="net-img"
-            @click="gameValues.calculateCatch"
-          ></button>
-          <h1>Amount Left:</h1>
-          <h1>{{ inventory.ratNets }}</h1>
+        <div class="btn-div-case">
+          <div class="button-div">
+            <button type="submit" class="button-style" @click="gameValues.calculateCatch">
+              <img src="" alt="NET IMG" />
+            </button>
+            <div class="btn-case-text">
+              <h1>Amount Left:</h1>
+              <p>{{ inventory.ratNets }}</p>
+            </div>
+          </div>
         </div>
-        <button
-          type="submit"
-          class="button-style"
-          id="cheesebanana-img"
-          @click="cheeseBanana.useCheeseBana"
-        >
-          Cheese Banana: {{ inventory.cheeseBanana }}
-        </button>
+        <div class="btn-div-case">
+          <div class="button-div">
+            <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">
+              <img src="" alt="NET IMG" />
+            </button>
+            <div class="btn-case-text">
+              <h1>Amount Left:</h1>
+              <p>{{ inventory.cheeseBanana }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -44,15 +44,15 @@ const inventory = useInventoryStore()
 
 const gradientValues = {
   cheeseBanana: {
-    0.2: 'black',
-    0.45: 'yellow',
-    0.55: 'yellow',
-    0.8: 'black',
+    0.2: '#FAE5BF',
+    0.45: '#EFAB2C',
+    0.55: '#EFAB2C',
+    0.8: '#FAE5BF',
   },
   noCheeseBanana: {
-    0.2: 'black',
-    0.5: 'yellow',
-    0.8: 'black',
+    0.2: '#FAE5BF',
+    0.5: '#EFAB2C',
+    0.8: '#FAE5BF',
   },
 }
 
@@ -157,7 +157,7 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
 
   function createBar(ctx) {
     barX.value = barX.value < canvasBackground.value.width ? barX.value + speed.value : 0
-    ctx.fillStyle = 'white'
+    ctx.fillStyle = 'black'
     ctx.fillRect(barX.value - 2, 0, barWidth.value, canvasBackground.value.height)
   }
 
@@ -252,14 +252,13 @@ body {
   touch-action: none !important;
   overscroll-behavior: none !important;
 }
-/* Canvas */
 .canvas-round {
   border-radius: 2rem;
   width: 100%;
   max-width: 400px;
   height: 100px;
   display: block;
-  margin: 0 auto;
+  margin: 15% auto;
   pointer-events: none;
   box-sizing: border-box;
 }
@@ -272,7 +271,6 @@ body {
   outline: 2px solid gray;
   background-color: var(--secondary);
   color: var(--primary);
-  border-top: solid 0.2rem var(--secondary-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -280,6 +278,28 @@ body {
   max-width: 100vw;
   touch-action: none !important;
   overscroll-behavior: none !important;
+}
+.btn-div-case {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 45%;
+  color: var(--primary);
+  justify-content: space-around;
+}
+.button-div {
+  display: flex;
+  align-items: center;
+  width: 40%;
+  margin: 0.5rem;
+  justify-content: space-around;
+}
+
+.btn-case-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 0.5rem;
 }
 
 .bg-for-text {
@@ -294,6 +314,8 @@ body {
 
 /* Button */
 .button-style {
+  width: 50%;
+  height: 50%;
   margin: 0.2rem;
   padding: 0.75rem 1rem;
   background: var(--primary);
@@ -313,10 +335,9 @@ body {
 .bg-for-btns {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 2rem;
-  border: 0.2rem solid var(--secondary-border);
   box-sizing: border-box;
   padding: 0.5rem;
-  width: 50%;
+  width: 80%;
   display: flex;
   align-items: center;
   justify-content: space-around;
