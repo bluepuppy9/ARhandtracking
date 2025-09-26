@@ -1,15 +1,18 @@
 <template>
-  <div class="container-thing">
-    <div class="bg-text">
-      <h1>You found a station!</h1>
-      <h1>Your Net(s): {{ inventory.ratNets }}</h1>
-      <h1>Your Cheese Banana(s): {{ inventory.cheeseBanana }}</h1>
+  <div class="entire-div">
+    <div class="container-thing">
+      <div class="bg-text">
+        <h1>
+          You found a station! You have {{ inventory.ratNets }} nets and
+          {{ inventory.cheeseBanana }} cheese bananas.
+        </h1>
+      </div>
+      <h1 v-if="obtainedAlready">You already robbed this station!</h1>
+      <h1 v-if="obtainedAlready">Time Remaining: {{ timer }}</h1>
     </div>
-    <h1 v-if="obtainedAlready">You already robbed this station!</h1>
-    <h1 v-if="obtainedAlready">Time Remaining: {{ timer }}</h1>
-  </div>
-  <div v-if="!obtainedAlready">
-    <button type="submit" class="btn-style" @click="rollingItems">Roll for Items</button>
+    <div v-if="!obtainedAlready">
+      <button type="submit" class="btn-style" @click="rollingItems">Roll for Items</button>
+    </div>
   </div>
 </template>
 
@@ -56,6 +59,10 @@ function calculateRatNet() {
 </script>
 
 <style scoped>
+.entire-div {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
 .container-thing {
   margin-top: 15%;
   height: 50vh;
@@ -64,12 +71,12 @@ function calculateRatNet() {
 }
 
 .bg-text {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: var(--primary);
+  background-color: white;
+  width: 90%;
+  color: var(--base-text);
   text-align: center;
-  border-radius: 25rem;
-  border-style: solid;
-  border-width: 0.2rem;
+  text-wrap: wrap;
+  align-self: center;
   border-color: var(--secondary-border);
   position: relative;
   z-index: 10001;

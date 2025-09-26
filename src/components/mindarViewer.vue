@@ -1,4 +1,7 @@
 <template>
+  <div v-show="!shopFound && (!ratFound || inventory.ratNets === 0)">
+    <TheBottomBar />
+  </div>
   <div v-show="shopFound">
     <TheShopStuff />
   </div>
@@ -49,6 +52,9 @@
 import { onMounted, ref, useTemplateRef, onUnmounted } from 'vue'
 import TheShopStuff from './TheShopStuff.vue'
 import TimingMinigame from './TimingMinigame.vue'
+import TheBottomBar from './TheBottomBar.vue'
+import { useInventoryStore } from '@/stores/inventory'
+const inventory = useInventoryStore()
 
 const shopFound = ref(false)
 const targets = useTemplateRef('targets')

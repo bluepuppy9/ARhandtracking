@@ -242,7 +242,7 @@ body {
 
 .top-clickable-style {
   position: relative;
-  height: 75vh;
+  height: 70%;
   width: 100%;
   box-sizing: border-box;
   overflow: hidden !important;
@@ -264,11 +264,12 @@ body {
 }
 
 .bottom-div-style {
+  display: flex;
+
   position: relative;
-  height: 20vh;
+  height: 25%;
   width: 100%;
   box-sizing: border-box;
-  outline: 2px solid gray;
   background-color: var(--secondary);
   color: var(--primary);
   display: flex;
