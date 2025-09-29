@@ -334,7 +334,6 @@ body {
 }
 
 .bg-for-btns {
-  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 2rem;
   box-sizing: border-box;
   padding: 0.5rem;
