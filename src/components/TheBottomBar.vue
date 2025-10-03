@@ -5,9 +5,7 @@
       <div class="bg-for-btns">
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" class="button-style">
-              <img src="" alt="NET IMG" />
-            </button>
+            <button type="submit" class="button-style" id="net-img"></button>
             <div class="btn-case-text">
               <h1>Amount Left:</h1>
               <p>{{ inventory.ratNets }}</p>
@@ -16,9 +14,7 @@
         </div>
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" class="button-style">
-              <img src="" alt="CheeseBanana IMG" />
-            </button>
+            <button type="submit" class="button-style" id="cheese-banana-img"></button>
             <div class="btn-case-text">
               <h1>Amount Left:</h1>
               <p>{{ inventory.cheeseBanana }}</p>
@@ -116,5 +112,13 @@ const inventory = useInventoryStore()
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+
+#cheese-banana-img {
+  background-image: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/c7fbf158828933.5a0b0fa992bc1.jpg';
+}
+
+#net-img {
+  background-image: 'https://static.vecteezy.com/system/resources/thumbnails/044/762/861/small_2x/catching-butterfly-net-illustration-png.png';
 }
 </style>
