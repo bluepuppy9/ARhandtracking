@@ -5,7 +5,7 @@
       <div class="bg-for-btns">
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" class="button-style">
+            <button type="submit" disabled class="button-style" @click="gameValues.calculateCatch">
               <img src="" alt="NET IMG" />
             </button>
             <div class="btn-case-text">
@@ -16,7 +16,7 @@
         </div>
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" class="button-style">
+            <button type="submit" disabled class="button-style" @click="cheeseBanana.useCheeseBana">
               <img src="" alt="CheeseBanana IMG" />
             </button>
             <div class="btn-case-text">
@@ -68,7 +68,6 @@ const inventory = useInventoryStore()
   flex-direction: row;
   align-items: center;
   width: 45%;
-  height: 100%;
   color: var(--primary);
   justify-content: space-around;
 }
@@ -76,24 +75,33 @@ const inventory = useInventoryStore()
   display: flex;
   align-items: center;
   width: 40%;
-  height: 100%;
   margin: 0.5rem;
   justify-content: space-around;
 }
 
 .btn-case-text {
-  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: 0.5rem;
 }
+
+.bg-for-text {
+  margin: 15% 2% 2% 2%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: var(--primary);
+  border-radius: 2rem;
+  border: 0.2rem solid var(--secondary-border);
+  box-sizing: border-box;
+  max-width: 96%;
+}
+
 .button-style {
   width: 50%;
-  height: 100%;
+  height: 50%;
   margin: 0.2rem;
   padding: 0.75rem 1rem;
-  background: gray;
+  background: var(--primary);
   color: var(--secondary);
   border: none;
   border-radius: 0.5rem;
@@ -108,7 +116,7 @@ const inventory = useInventoryStore()
 }
 
 .bg-for-btns {
-  background-color: var(--primary);
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 2rem;
   box-sizing: border-box;
   padding: 0.5rem;

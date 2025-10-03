@@ -106,10 +106,10 @@ function calculateRatNet() {
 .btn-style {
   width: 80%;
   border-radius: 1rem;
-  border: var(--base-text) solid 0.2rem;
+  border: #d37d27 solid 0.2rem;
   padding: 0.75rem;
   background: #fae5bf;
-  color: var(--base-text);
+  color: #d37d27;
   z-index: 10002;
 }
 .bottom-div-style {

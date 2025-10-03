@@ -6,7 +6,7 @@
         <mindar-viewer ref="mindarViewerRef" />
       </div>
       <div class="container start-text">
-        <div v-if="!running" class="start-text-div">
+        <div v-if="!running">
           <h1>Welcome to the AR Ratdom</h1>
           <p>Please start the AR system to see the rats.</p>
         </div>
@@ -20,7 +20,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import signup from '../components/Signup.vue'
+import signup from '../components/signup.vue'
 import '../libs/mindar/mindar-image.prod.js'
 import 'aframe'
 import '../libs/mindar/mindar-image-aframe.prod.js'
@@ -46,17 +46,6 @@ function handleARSystems() {
 </script>
 
 <style scoped>
-.main {
-  overflow: hidden;
-  touch-action: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  color: var(--base-text);
-}
-
 .containerMindar {
   height: 100dvh;
   width: 100vw;
@@ -66,16 +55,16 @@ function handleARSystems() {
 .startButton {
   z-index: 200000;
   padding: 0.75rem;
-  background: #fae5bf;
-  color: var(--base-text);
+  background: var(--primary);
+  color: var(--secondary);
   border: none;
-  box-shadow: 0px 5px 5px var(--base-text);
   border-radius: 0.5rem;
   font-weight: bold;
   cursor: pointer;
   transition:
     transform 0.5s ease,
     top 0.5s ease;
+  box-shadow: 0 0 10px var(--primary);
   position: absolute;
   top: 60%;
   left: 50%;
@@ -85,9 +74,5 @@ function handleARSystems() {
 .startButton.active {
   top: 1%;
   transform: translate(-50%, 0);
-}
-
-.start-text-div {
-  text-align: left;
 }
 </style>
