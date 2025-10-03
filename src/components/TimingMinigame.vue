@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <div ref="top" class="top-clickable-style">
+      <h1 class="text-color">You found a rat!</h1>
       <canvas v-show="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
       <h1 v-show="inventory.ratNets === 0">
         You don't have enough rat nets! Please replunish at a center.
@@ -22,7 +23,7 @@
         <div class="btn-div-case">
           <div class="button-div">
             <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">
-              <img src="" alt="NET IMG" />
+              <img src="" alt="Cheese Banana IMG" />
             </button>
             <div class="btn-case-text">
               <h1>Amount Left:</h1>
@@ -241,6 +242,7 @@ body {
 }
 
 .top-clickable-style {
+  padding-top: 15%;
   position: relative;
   height: 70%;
   width: 100%;
@@ -292,28 +294,18 @@ body {
   display: flex;
   align-items: center;
   width: 40%;
+  height: 100%;
   margin: 0.5rem;
   justify-content: space-around;
 }
 
 .btn-case-text {
+  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: 0.5rem;
 }
-
-.bg-for-text {
-  margin: 15% 2% 2% 2%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: var(--primary);
-  border-radius: 2rem;
-  border: 0.2rem solid var(--secondary-border);
-  box-sizing: border-box;
-  max-width: 96%;
-}
-
-/* Button */
 .button-style {
   width: 50%;
   height: 50%;
@@ -334,6 +326,7 @@ body {
 }
 
 .bg-for-btns {
+  background-color: var(--primary);
   border-radius: 2rem;
   box-sizing: border-box;
   padding: 0.5rem;
@@ -341,5 +334,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+.text-color {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 90%;
+  margin: 0 auto;
+  color: var(--base-text);
+  text-align: center;
 }
 </style>
