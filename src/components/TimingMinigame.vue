@@ -11,9 +11,12 @@
       <div class="bg-for-btns">
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" class="button-style" @click="gameValues.calculateCatch">
-              <img src="" alt="NET IMG" />
-            </button>
+            <button
+              type="submit"
+              class="button-style"
+              id="net-img"
+              @click="gameValues.calculateCatch"
+            ></button>
             <div class="btn-case-text">
               <h1>Amount Left:</h1>
               <p>{{ inventory.ratNets }}</p>
@@ -22,9 +25,12 @@
         </div>
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">
-              <img src="" alt="Cheese Banana IMG" />
-            </button>
+            <button
+              type="submit"
+              class="button-style"
+              id="cheese-banana-img"
+              @click="cheeseBanana.useCheeseBana"
+            ></button>
             <div class="btn-case-text">
               <h1>Amount Left:</h1>
               <p>{{ inventory.cheeseBanana }}</p>
@@ -293,7 +299,7 @@ body {
 .button-div {
   display: flex;
   align-items: center;
-  width: 40%;
+  width: 50%;
   height: 100%;
   margin: 0.5rem;
   justify-content: space-around;
@@ -307,18 +313,23 @@ body {
   margin-left: 0.5rem;
 }
 .button-style {
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
+  min-height: 4rem;
+  min-width: 4rem;
   margin: 0.2rem;
-  padding: 0.75rem 1rem;
-  background: var(--primary);
+  padding: 1rem 1.25rem;
+  background: gray;
   color: var(--secondary);
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 1rem var(--primary);
   white-space: nowrap;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .text-no-transparent {
@@ -343,5 +354,13 @@ body {
   margin: 0 auto;
   color: var(--base-text);
   text-align: center;
+}
+
+#cheese-banana-img {
+  background-image: url('@/assets/images/cheeseBanana.png');
+}
+
+#net-img {
+  background-image: url('@/assets/images/ratNet.png');
 }
 </style>

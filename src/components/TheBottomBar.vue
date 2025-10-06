@@ -5,7 +5,7 @@
       <div class="bg-for-btns">
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" class="button-style" id="net-img"></button>
+            <button type="submit" id="net-img" class="button-style"></button>
             <div class="btn-case-text">
               <h1>Amount Left:</h1>
               <p>{{ inventory.ratNets }}</p>
@@ -14,7 +14,7 @@
         </div>
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" class="button-style" id="cheese-banana-img"></button>
+            <button id="cheese-banana-img" type="submit" class="button-style"></button>
             <div class="btn-case-text">
               <h1>Amount Left:</h1>
               <p>{{ inventory.cheeseBanana }}</p>
@@ -71,7 +71,7 @@ const inventory = useInventoryStore()
 .button-div {
   display: flex;
   align-items: center;
-  width: 40%;
+  width: 50%; /* Increased from 40% */
   height: 100%;
   margin: 0.5rem;
   justify-content: space-around;
@@ -85,18 +85,23 @@ const inventory = useInventoryStore()
   margin-left: 0.5rem;
 }
 .button-style {
-  width: 50%;
+  width: 100%;
   height: 100%;
+  min-height: 4rem;
+  min-width: 4rem;
   margin: 0.2rem;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
   background: gray;
   color: var(--secondary);
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 1rem var(--primary);
   white-space: nowrap;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .text-no-transparent {
@@ -113,12 +118,11 @@ const inventory = useInventoryStore()
   align-items: center;
   justify-content: space-around;
 }
-
 #cheese-banana-img {
-  background-image: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/c7fbf158828933.5a0b0fa992bc1.jpg';
+  background-image: url('@/assets/images/cheeseBanana.png');
 }
 
 #net-img {
-  background-image: 'https://static.vecteezy.com/system/resources/thumbnails/044/762/861/small_2x/catching-butterfly-net-illustration-png.png';
+  background-image: url('@/assets/images/ratNet.png');
 }
 </style>
