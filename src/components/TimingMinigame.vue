@@ -266,7 +266,7 @@ body {
   max-width: 400px;
   height: 100px;
   display: block;
-  margin: 15% auto;
+  margin: 5% auto;
   pointer-events: none;
   box-sizing: border-box;
 }

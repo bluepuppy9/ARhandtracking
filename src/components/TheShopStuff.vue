@@ -130,12 +130,13 @@ function calculateRatNet() {
 
 .bg-div {
   width: 80%;
-  height: 50%;
+  height: 47%;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--primary);
-  border-radius: 1rem;
+  border-radius: 2rem;
+  padding: 0.5rem;
 }
 .white-text {
   color: white;
