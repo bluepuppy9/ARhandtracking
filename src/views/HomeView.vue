@@ -64,12 +64,14 @@ function handleARSystems() {
 }
 
 .startButton {
+  font-family: var(--sub-title-font);
   z-index: 200000;
   padding: 0.75rem;
   background: #fae5bf;
   color: var(--base-text);
   border: none;
-  box-shadow: 0px 5px 5px var(--base-text);
+  box-shadow: 0px 4px 7px 0px #d37d27;
+
   border-radius: 0.5rem;
   font-weight: bold;
   cursor: pointer;
@@ -89,5 +91,21 @@ function handleARSystems() {
 
 .start-text-div {
   text-align: left;
+  h1 {
+    font-family: var(--title-font);
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 3rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+  }
+  p {
+    font-family: var(--sub-title-font);
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 1.2rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+  }
 }
 </style>
