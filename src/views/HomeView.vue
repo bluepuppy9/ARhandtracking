@@ -7,7 +7,7 @@
       </div>
       <div class="container start-text">
         <div v-if="!running" class="start-text-div">
-          <h1>Welcome to the AR Ratdom</h1>
+          <h1>Welcome to the AR Ratdom.</h1>
           <p>Please start the AR system to see the rats.</p>
         </div>
         <button class="startButton" :class="{ active: running }" @click="handleARSystems()">
@@ -65,6 +65,13 @@ function handleARSystems() {
 
 .startButton {
   font-family: var(--sub-title-font);
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 2.2rem;
+  line-height: 100%;
+  letter-spacing: 10%;
+
+  width: 20%;
   z-index: 200000;
   padding: 0.75rem;
   background: #fae5bf;
@@ -72,7 +79,7 @@ function handleARSystems() {
   border: none;
   box-shadow: 0px 4px 7px 0px #d37d27;
 
-  border-radius: 0.5rem;
+  border-radius: 1.2rem;
   font-weight: bold;
   cursor: pointer;
   transition:
@@ -91,20 +98,28 @@ function handleARSystems() {
 
 .start-text-div {
   text-align: left;
+  position: absolute;
+  top: 35%;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   h1 {
     font-family: var(--title-font);
     font-weight: 400;
     font-style: Regular;
-    font-size: 3rem;
-    line-height: 100%;
+    font-size: 2.8rem;
+    line-height: 130%;
     letter-spacing: 0%;
   }
   p {
+    margin: 5% auto;
     font-family: var(--sub-title-font);
     font-weight: 400;
     font-style: Regular;
-    font-size: 1.2rem;
-    line-height: 100%;
+    font-size: 1.4rem;
+    line-height: 120%;
     letter-spacing: 0%;
   }
 }

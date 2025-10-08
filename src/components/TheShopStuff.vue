@@ -97,6 +97,7 @@ function calculateRatNet() {
   padding: 1rem;
   width: 90%;
   color: var(--base-text);
+  font-family: var(--title-font);
   text-align: left;
   text-wrap: wrap;
   position: relative;
@@ -110,6 +111,7 @@ function calculateRatNet() {
   padding: 0.75rem;
   background: #fae5bf;
   color: var(--base-text);
+  font-family: var(--btn-font);
   z-index: 10002;
 }
 .bottom-div-style {
@@ -129,6 +131,8 @@ function calculateRatNet() {
 }
 
 .bg-div {
+  font-family: var(--title-font);
+  font-size: 1.3rem;
   width: 80%;
   height: 47%;
   display: flex;

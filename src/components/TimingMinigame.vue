@@ -18,8 +18,8 @@
               @click="gameValues.calculateCatch"
             ></button>
             <div class="btn-case-text">
-              <h1>Amount Left:</h1>
-              <p>{{ inventory.ratNets }}</p>
+              <p>Amount Left:</p>
+              <h1>{{ inventory.ratNets }}</h1>
             </div>
           </div>
         </div>
@@ -32,8 +32,8 @@
               @click="cheeseBanana.useCheeseBana"
             ></button>
             <div class="btn-case-text">
-              <h1>Amount Left:</h1>
-              <p>{{ inventory.cheeseBanana }}</p>
+              <p>Amount Left:</p>
+              <h1>{{ inventory.cheeseBanana }}</h1>
             </div>
           </div>
         </div>
@@ -299,7 +299,6 @@ body {
 .button-div {
   display: flex;
   align-items: center;
-  width: 50%;
   height: 100%;
   margin: 0.5rem;
   justify-content: space-around;
@@ -311,14 +310,26 @@ body {
   flex-direction: column;
   align-items: center;
   margin-left: 0.5rem;
+  h1 {
+    text-align: center;
+    font-family: var(--title-font);
+  }
+  p {
+    font-family: var(--sub-title-font);
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 1.2rem;
+    line-height: 120%;
+    letter-spacing: 0%;
+  }
 }
 .button-style {
   width: 100%;
   height: 100%;
-  min-height: 4rem;
-  min-width: 4rem;
+  min-height: 7rem;
+  min-width: 7rem;
   margin: 0.2rem;
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   background: gray;
   color: var(--secondary);
   border: none;
