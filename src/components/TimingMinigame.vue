@@ -363,6 +363,7 @@ body {
   padding: 1rem;
   width: 90%;
   margin: 0 auto;
+  font-family: var(--title-font);
   color: var(--base-text);
   text-align: center;
 }
