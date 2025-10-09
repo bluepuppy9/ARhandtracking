@@ -12,7 +12,7 @@
   <a-scene
     class="arContainer"
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /targets (41).mind; maxTrack: 4; autoStart: true; uiLoading: no; uiError: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001; warmupTolerance: 5; missTolerance: 5;"
+    mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: true; uiLoading: no; uiError: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001; warmupTolerance: 5; missTolerance: 5;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, useTemplateRef, onUnmounted } from 'vue'
+import { ref, useTemplateRef, onUnmounted, onMounted, nextTick } from 'vue'
 import TheShopStuff from './TheShopStuff.vue'
 import TimingMinigame from './TimingMinigame.vue'
 import TheBottomBar from './TheBottomBar.vue'
@@ -62,7 +62,6 @@ const shopFound = ref(false)
 const targets = useTemplateRef('targets')
 const ratFound = ref(false)
 const ratVisible = ref(false)
-const ratModels = useTemplateRef('ratModels')
 function findingRat() {
   console.log('found rat!')
   ratFound.value = true
@@ -72,9 +71,8 @@ function findingRat() {
 function lostRat() {
   ratFound.value = false
 }
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
-const sceneRef = ref(null)
+const sceneRef = useTemplateRef('sceneRef')
 
 // Track which targets are found
 const targetsFound = ref(new Set())
@@ -97,6 +95,7 @@ function handleTargetFound(event) {
     console.log(`Target ${targetIndex} found`)
     targetsFound.value.add(parseInt(targetIndex))
     event.target.setAttribute('visible', true)
+    ratFound.value = true
   } catch (error) {
     console.error('Error in handleTargetFound:', error)
   }
