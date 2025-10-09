@@ -20,7 +20,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import signup from '../components/signup.vue'
+import signup from '../components/Signup.vue'
 import '../libs/mindar/mindar-image.prod.js'
 import 'aframe'
 import '../libs/mindar/mindar-image-aframe.prod.js'
@@ -29,7 +29,6 @@ import { useUserStore } from '../stores/userStore'
 const mindarViewerRef = ref(null)
 const running = ref(false)
 const userStore = useUserStore()
-
 const isLoggedIn = computed(() => userStore.isLoggedIn)
 
 function handleARSystems() {
@@ -38,7 +37,7 @@ function handleARSystems() {
   if (!running.value) {
     arSystem.start()
     running.value = true
-  } else {
+  } else if (running.value) {
     arSystem.stop()
     running.value = false
   }
