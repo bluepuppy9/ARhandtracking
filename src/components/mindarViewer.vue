@@ -76,6 +76,11 @@ const sceneRef = useTemplateRef('sceneRef')
 const targetsFound = ref(new Set())
 
 function handleTargetFound(event) {
+  //this thing not running for some reason :(
+  //ain't console logging despite finding the target
+  //pretty sure ratAndStop connected properly
+  //Event Listeners say it attached...
+  //me confused
   console.log('Target found event:', event)
   try {
     const targetAttr = event.target.getAttribute('mindar-image-target')
@@ -136,6 +141,7 @@ function handleTargetLost(event) {
     console.error('Error in handleTargetLost:', error)
   }
 }
+
 onMounted(async () => {
   await nextTick()
   // console.log(sceneRef.value.systems['mindar-image-system'])
@@ -153,15 +159,15 @@ onMounted(async () => {
       console.log('Scene loaded successfully')
 
       const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
-      console.log(`Found ${targetElements.length} target elements`)
+      console.log(`Found ${targetElements.length} target elements`) //gets target elements correctly :thumbsup:
 
       targetElements.forEach((target, index) => {
-        target.setAttribute('visible', false)
+        target.value.setAttribute('visible', false)
 
-        target.addEventListener('targetFound', handleTargetFound)
-        target.addEventListener('targetLost', handleTargetLost)
+        target.value.addEventListener('targetFound', handleTargetFound)
+        target.value.addEventListener('targetLost', handleTargetLost)
 
-        console.log(`Set up listeners for target ${index}`)
+        console.log(`Set up listeners for target ${index}`) //confirms listeners are set :thumbsup:
       })
 
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
