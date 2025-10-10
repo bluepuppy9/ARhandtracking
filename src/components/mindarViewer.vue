@@ -8,7 +8,6 @@
   <div v-show="ratFound">
     <TimingMinigame />
   </div>
-  <h1 v-if="ratVisible">Rats visible</h1>
   <a-scene
     class="arContainer"
     ref="sceneRef"
@@ -59,18 +58,17 @@ import { useInventoryStore } from '@/stores/inventory'
 const inventory = useInventoryStore()
 
 const shopFound = ref(false)
-const targets = useTemplateRef('targets')
+// const targets = useTemplateRef('targets')
 const ratFound = ref(false)
-const ratVisible = ref(false)
-function findingRat() {
-  console.log('found rat!')
-  ratFound.value = true
-  const ratModel = document.querySelector('a-gltf-model')
-  ratModel.object3D.visible
-}
-function lostRat() {
-  ratFound.value = false
-}
+// function findingRat() {
+//   console.log('found rat!')
+//   ratFound.value = true
+//   const ratModel = document.querySelector('a-gltf-model')
+//   ratModel.object3D.visible
+// }
+// function lostRat() {
+//   ratFound.value = false
+// }
 
 const sceneRef = useTemplateRef('sceneRef')
 
@@ -95,7 +93,11 @@ function handleTargetFound(event) {
     console.log(`Target ${targetIndex} found`)
     targetsFound.value.add(parseInt(targetIndex))
     event.target.setAttribute('visible', true)
-    ratFound.value = true
+    if (UserRats.value[targetIndex + 1].type === 'shop') {
+      shopFound.value = true
+    } else if (UserRats.value[targetIndex + 1].type === 'rat') {
+      ratFound.value = true
+    }
   } catch (error) {
     console.error('Error in handleTargetFound:', error)
   }
@@ -106,19 +108,6 @@ function findingShop() {
 function lostShop() {
   shopFound.value = false
 }
-
-onMounted(() => {
-  console.log(sceneRef.value.systems['mindar-image-system'])
-  for (let i = 0; i < UserRats.value.length; i++) {
-    if (UserRats.value[i].type === 'shop') {
-      targets.value[i].addEventListener('targetFound', findingShop)
-      targets.value[i].addEventListener('targetLost', lostShop)
-    } else if (UserRats.value[i].type !== 'shop') {
-      targets.value[i].addEventListener('targetFound', findingRat)
-      targets.value[i].addEventListener('targetLost', lostRat)
-    }
-  }
-})
 
 function handleTargetLost(event) {
   console.log('Target lost event:', event)
@@ -138,13 +127,27 @@ function handleTargetLost(event) {
     console.log(`Target ${targetIndex} lost`)
     targetsFound.value.delete(parseInt(targetIndex))
     event.target.setAttribute('visible', false)
+    if (UserRats.value[targetIndex + 1].type === 'shop') {
+      shopFound.value = false
+    } else if (UserRats.value[targetIndex + 1].type === 'rat') {
+      ratFound.value = false
+    }
   } catch (error) {
     console.error('Error in handleTargetLost:', error)
   }
 }
 onMounted(async () => {
   await nextTick()
-
+  // console.log(sceneRef.value.systems['mindar-image-system'])
+  // for (let i = 0; i < UserRats.value.length; i++) {
+  //   if (UserRats.value[i].type === 'shop') {
+  //     targets.value[i].addEventListener('targetFound', findingShop)
+  //     targets.value[i].addEventListener('targetLost', lostShop)
+  //   } else if (UserRats.value[i].type !== 'shop') {
+  //     targets.value[i].addEventListener('targetFound', findingRat)
+  //     targets.value[i].addEventListener('targetLost', lostRat)
+  //   }
+  // }
   if (sceneRef.value) {
     sceneRef.value.addEventListener('loaded', async () => {
       console.log('Scene loaded successfully')
@@ -230,13 +233,13 @@ onMounted(async () => {
 
 onUnmounted(() => {
   for (let i = 0; i < UserRats.value.length; i++) {
-    if (UserRats.value[i].type === 'shop') {
-      targets.value[i].removeEventListener('targetFound', findingShop)
-      targets.value[i].removeEventListener('targetLost', lostShop)
-    } else if (UserRats.value[i].type !== 'shop') {
-      targets.value[i].removeEventListener('targetFound', findingRat)
-      targets.value[i].removeEventListener('targetLost', lostRat)
-    }
+    // if (UserRats.value[i].type === 'shop') {
+    //   targets.value[i].removeEventListener('targetFound', findingShop)
+    //   targets.value[i].removeEventListener('targetLost', lostShop)
+    // } else if (UserRats.value[i].type !== 'shop') {
+    //   targets.value[i].removeEventListener('targetFound', findingRat)
+    //   targets.value[i].removeEventListener('targetLost', lostRat)
+    // }
     if (sceneRef.value) {
       const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
       targetElements.forEach((target) => {
