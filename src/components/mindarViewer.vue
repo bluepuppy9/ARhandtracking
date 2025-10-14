@@ -81,6 +81,7 @@ function handleTargetFound(event) {
   //pretty sure ratAndStop connected properly
   //Event Listeners say it attached...
   //me confused
+  //unless attached to wrong object?
   console.log('Target found event:', event)
   try {
     const targetAttr = event.target.getAttribute('mindar-image-target')
@@ -107,12 +108,12 @@ function handleTargetFound(event) {
     console.error('Error in handleTargetFound:', error)
   }
 }
-function findingShop() {
-  shopFound.value = true
-}
-function lostShop() {
-  shopFound.value = false
-}
+// function findingShop() {
+//   shopFound.value = true
+// }
+// function lostShop() {
+//   shopFound.value = false
+// }
 
 function handleTargetLost(event) {
   console.log('Target lost event:', event)
