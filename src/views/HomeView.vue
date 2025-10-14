@@ -29,6 +29,7 @@ import { useUserStore } from '../stores/userStore'
 const mindarViewerRef = ref(null)
 const running = ref(false)
 const userStore = useUserStore()
+
 const isLoggedIn = computed(() => userStore.isLoggedIn)
 
 function handleARSystems() {
@@ -37,7 +38,7 @@ function handleARSystems() {
   if (!running.value) {
     arSystem.start()
     running.value = true
-  } else if (running.value) {
+  } else {
     arSystem.stop()
     running.value = false
   }
