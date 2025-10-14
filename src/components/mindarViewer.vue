@@ -11,12 +11,13 @@
   <a-scene
     class="arContainer"
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: true; uiLoading: no; uiError: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001; warmupTolerance: 5; missTolerance: 5;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
+    camera="active: true"
   >
     <a-assets ref="assets">
       <a-asset-item id="rat-model" src="/rat.glb" crossorigin></a-asset-item>
@@ -32,8 +33,9 @@
     <a-entity
       v-for="(rat, i) in UserRats"
       :key="i"
-      :mindar-image-target="'targetIndex: ' + i"
+      :mindar-image-target="'targetIndex: ' + (i - 1)"
       ref="targets"
+      visible="false"
     >
       <a-gltf-model
         :rotation="rat.type === 'shop' ? '0 270 0' : '0 0 0'"
@@ -58,49 +60,203 @@ const inventory = useInventoryStore()
 const shopFound = ref(false)
 // const targets = useTemplateRef('targets')
 const ratFound = ref(false)
-const ratVisible = ref(false)
-const ratModels = useTemplateRef('ratModels')
-function findingRat() {
-  console.log('found rat!')
-  ratFound.value = true
-  const ratModel = document.querySelector('a-gltf-model')
-  ratModel.object3D.visible
+// function findingRat() {
+//   console.log('found rat!')
+//   ratFound.value = true
+//   const ratModel = document.querySelector('a-gltf-model')
+//   ratModel.object3D.visible
+// }
+// function lostRat() {
+//   ratFound.value = false
+// }
+
+const sceneRef = useTemplateRef('sceneRef')
+
+// Track which targets are found
+const targetsFound = ref(new Set())
+
+function handleTargetFound(event) {
+  //this thing not running for some reason :(
+  //ain't console logging despite finding the target
+  //pretty sure ratAndStop connected properly
+  //Event Listeners say it attached...
+  //me confused
+  //unless attached to wrong object?
+  console.log('Target found event:', event)
+  try {
+    const targetAttr = event.target.getAttribute('mindar-image-target')
+    console.log('Target attribute:', targetAttr)
+
+    let targetIndex
+    if (targetAttr && typeof targetAttr === 'string' && targetAttr.includes(': ')) {
+      targetIndex = targetAttr.split(': ')[1]
+    } else {
+      targetIndex =
+        event.detail?.targetIndex ??
+        Array.from(event.target.parentNode.children).indexOf(event.target)
+    }
+
+    console.log(`Target ${targetIndex} found`)
+    targetsFound.value.add(parseInt(targetIndex))
+    event.target.setAttribute('visible', true)
+    if (UserRats.value[targetIndex + 1].type === 'shop') {
+      shopFound.value = true
+    } else if (UserRats.value[targetIndex + 1].type === 'rat') {
+      ratFound.value = true
+    }
+  } catch (error) {
+    console.error('Error in handleTargetFound:', error)
+  }
 }
-function lostRat() {
-  ratFound.value = false
-}
-function findingShop() {
-  shopFound.value = true
-}
-function lostShop() {
-  shopFound.value = false
+// function findingShop() {
+//   shopFound.value = true
+// }
+// function lostShop() {
+//   shopFound.value = false
+// }
+
+function handleTargetLost(event) {
+  console.log('Target lost event:', event)
+  try {
+    const targetAttr = event.target.getAttribute('mindar-image-target')
+    console.log('Target attribute:', targetAttr)
+
+    let targetIndex
+    if (targetAttr && typeof targetAttr === 'string' && targetAttr.includes(': ')) {
+      targetIndex = targetAttr.split(': ')[1]
+    } else {
+      targetIndex =
+        event.detail?.targetIndex ??
+        Array.from(event.target.parentNode.children).indexOf(event.target)
+    }
+
+    console.log(`Target ${targetIndex} lost`)
+    targetsFound.value.delete(parseInt(targetIndex))
+    event.target.setAttribute('visible', false)
+    if (UserRats.value[targetIndex + 1].type === 'shop') {
+      shopFound.value = false
+    } else if (UserRats.value[targetIndex + 1].type === 'rat') {
+      ratFound.value = false
+    }
+  } catch (error) {
+    console.error('Error in handleTargetLost:', error)
+  }
 }
 
-onMounted(() => {
-  console.log(sceneRef.value.systems['mindar-image-system'])
-  for (let i = 0; i < UserRats.value.length; i++) {
-    if (UserRats.value[i].type === 'shop') {
-      targets.value[i].addEventListener('targetFound', findingShop)
-      targets.value[i].addEventListener('targetLost', lostShop)
-    } else if (UserRats.value[i].type !== 'shop') {
-      targets.value[i].addEventListener('targetFound', findingRat)
-      targets.value[i].addEventListener('targetLost', lostRat)
-    }
+onMounted(async () => {
+  await nextTick()
+  // console.log(sceneRef.value.systems['mindar-image-system'])
+  // for (let i = 0; i < UserRats.value.length; i++) {
+  //   if (UserRats.value[i].type === 'shop') {
+  //     targets.value[i].addEventListener('targetFound', findingShop)
+  //     targets.value[i].addEventListener('targetLost', lostShop)
+  //   } else if (UserRats.value[i].type !== 'shop') {
+  //     targets.value[i].addEventListener('targetFound', findingRat)
+  //     targets.value[i].addEventListener('targetLost', lostRat)
+  //   }
+  // }
+  if (sceneRef.value) {
+    sceneRef.value.addEventListener('loaded', async () => {
+      console.log('Scene loaded successfully')
+
+      const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
+      console.log(`Found ${targetElements.length} target elements`) //gets target elements correctly :thumbsup:
+
+      targetElements.forEach((target, index) => {
+        target.value.setAttribute('visible', false)
+
+        target.value.addEventListener('targetFound', handleTargetFound)
+        target.value.addEventListener('targetLost', handleTargetLost)
+
+        console.log(`Set up listeners for target ${index}`) //confirms listeners are set :thumbsup:
+      })
+
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      )
+
+      if (isMobile) {
+        console.log('Mobile device detected - applying mobile optimizations')
+
+        setTimeout(async () => {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                facingMode: 'environment',
+                width: { ideal: 640, max: 1280 },
+                height: { ideal: 480, max: 720 },
+                frameRate: { ideal: 30, max: 30 },
+              },
+            })
+
+            stream.getTracks().forEach((track) => track.stop())
+            console.log('Mobile camera permission granted')
+
+            const mindARSystem = sceneRef.value.systems['mindar-image-system']
+            if (mindARSystem) {
+              console.log('Reinitializing MindAR for mobile')
+              await mindARSystem.start()
+            }
+
+            const canvas = sceneRef.value.canvas
+            if (canvas) {
+              const rect = canvas.getBoundingClientRect()
+              canvas.style.width = '100%'
+              canvas.style.height = '100%'
+
+              if (sceneRef.value.renderer) {
+                sceneRef.value.renderer.setSize(rect.width, rect.height, false)
+              }
+
+              const touchEvent = new TouchEvent('touchstart', {
+                bubbles: true,
+                cancelable: true,
+                touches: [
+                  new Touch({
+                    identifier: 0,
+                    target: canvas,
+                    clientX: canvas.width / 2,
+                    clientY: canvas.height / 2,
+                  }),
+                ],
+              })
+              canvas.dispatchEvent(touchEvent)
+            }
+          } catch (error) {
+            console.error('Mobile camera setup failed:', error)
+            setTimeout(() => {
+              window.dispatchEvent(new Event('resize'))
+            }, 1000)
+          }
+        }, 2000)
+      }
+    })
+
+    sceneRef.value.addEventListener('arError', (event) => {
+      console.error('AR Error:', event.detail)
+    })
   }
 })
 
 onUnmounted(() => {
   for (let i = 0; i < UserRats.value.length; i++) {
-    if (UserRats.value[i].type === 'shop') {
-      targets.value[i].removeEventListener('targetFound', findingShop)
-      targets.value[i].removeEventListener('targetLost', lostShop)
-    } else if (UserRats.value[i].type !== 'shop') {
-      targets.value[i].removeEventListener('targetFound', findingRat)
-      targets.value[i].removeEventListener('targetLost', lostRat)
+    // if (UserRats.value[i].type === 'shop') {
+    //   targets.value[i].removeEventListener('targetFound', findingShop)
+    //   targets.value[i].removeEventListener('targetLost', lostShop)
+    // } else if (UserRats.value[i].type !== 'shop') {
+    //   targets.value[i].removeEventListener('targetFound', findingRat)
+    //   targets.value[i].removeEventListener('targetLost', lostRat)
+    // }
+    if (sceneRef.value) {
+      const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
+      targetElements.forEach((target) => {
+        target.removeEventListener('targetFound', handleTargetFound)
+        target.removeEventListener('targetLost', handleTargetLost)
+      })
     }
   }
 })
-const sceneRef = useTemplateRef('sceneRef')
+
 defineExpose({
   sceneRef,
 })
