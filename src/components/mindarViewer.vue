@@ -19,7 +19,7 @@
     device-orientation-permission-ui="enabled: false"
     camera="active: true"
   >
-    <a-assets ref="assets">
+    <a-assets>
       <a-asset-item id="rat-model" src="/rat.glb" crossorigin></a-asset-item>
       <a-asset-item id="shiny-model" src="/shinyRat.glb" crossorigin></a-asset-item>
       <a-asset-item id="shop-model" src="/shop.glb" crossorigin></a-asset-item>
@@ -33,8 +33,7 @@
     <a-entity
       v-for="(rat, i) in UserRats"
       :key="i"
-      :mindar-image-target="'targetIndex: ' + (i - 1)"
-      ref="targets"
+      :mindar-image-target="'targetIndex: ' + i"
       visible="false"
     >
       <a-gltf-model
@@ -56,7 +55,7 @@ import TimingMinigame from './TimingMinigame.vue'
 import TheBottomBar from './TheBottomBar.vue'
 import { useInventoryStore } from '@/stores/inventory'
 const inventory = useInventoryStore()
-
+const testing = ref(false)
 const shopFound = ref(false)
 // const targets = useTemplateRef('targets')
 const ratFound = ref(false)
@@ -79,9 +78,8 @@ function handleTargetFound(event) {
   //this thing not running for some reason :(
   //ain't console logging despite finding the target
   //pretty sure ratAndStop connected properly
-  //Event Listeners say it attached...
-  //me confused
-  //unless attached to wrong object?
+  //Event Listeners say it attached
+  testing.value = true //this thing not true
   console.log('Target found event:', event)
   try {
     const targetAttr = event.target.getAttribute('mindar-image-target')
@@ -99,9 +97,9 @@ function handleTargetFound(event) {
     console.log(`Target ${targetIndex} found`)
     targetsFound.value.add(parseInt(targetIndex))
     event.target.setAttribute('visible', true)
-    if (UserRats.value[targetIndex + 1].type === 'shop') {
+    if (UserRats.value[targetIndex - 1].type === 'shop') {
       shopFound.value = true
-    } else if (UserRats.value[targetIndex + 1].type === 'rat') {
+    } else if (UserRats.value[targetIndex - 1].type === 'rat') {
       ratFound.value = true
     }
   } catch (error) {
@@ -143,6 +141,7 @@ function handleTargetLost(event) {
   }
 }
 
+//whole onMounted thing works properly
 onMounted(async () => {
   await nextTick()
   // console.log(sceneRef.value.systems['mindar-image-system'])
@@ -163,14 +162,13 @@ onMounted(async () => {
       console.log(`Found ${targetElements.length} target elements`) //gets target elements correctly :thumbsup:
 
       targetElements.forEach((target, index) => {
-        target.value.setAttribute('visible', false)
+        target.setAttribute('visible', false)
 
-        target.value.addEventListener('targetFound', handleTargetFound)
-        target.value.addEventListener('targetLost', handleTargetLost)
+        target.addEventListener('targetFound', handleTargetFound)
+        target.addEventListener('targetLost', handleTargetLost)
 
         console.log(`Set up listeners for target ${index}`) //confirms listeners are set :thumbsup:
       })
-
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent,
       )
