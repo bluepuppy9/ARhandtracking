@@ -97,9 +97,9 @@ function handleTargetFound(event) {
     console.log(`Target ${targetIndex} found`)
     targetsFound.value.add(parseInt(targetIndex))
     event.target.setAttribute('visible', true)
-    if (UserRats.value[targetIndex - 1].type === 'shop') {
+    if (UserRats.value[targetIndex].type === 'shop') {
       shopFound.value = true
-    } else if (UserRats.value[targetIndex - 1].type === 'rat') {
+    } else if (UserRats.value[targetIndex].type === 'rat') {
       ratFound.value = true
     }
   } catch (error) {
