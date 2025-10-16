@@ -26,10 +26,6 @@
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <!-- <a-entity mindar-image-target="targetIndex: 100">
-      <a-gltf-model rotation="0 0 0" position="0 0 -1" scale="0.5 0.5 0.5" src="#rat-model"></a-gltf-model>
-    </a-entity> -->
-
     <a-entity
       v-for="(rat, i) in UserRats"
       :key="i"
@@ -44,6 +40,7 @@
         :src="'#' + rat.type + '-model'"
       >
       </a-gltf-model>
+      <!-- very jitterly :3 idk why -->
     </a-entity>
   </a-scene>
 </template>
@@ -122,7 +119,6 @@ function handleTargetLost(event) {
   }
 }
 
-//whole onMounted thing works properly
 onMounted(async () => {
   await nextTick()
   if (sceneRef.value) {
@@ -130,7 +126,7 @@ onMounted(async () => {
       console.log('Scene loaded successfully')
 
       const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
-      console.log(`Found ${targetElements.length} target elements`) //gets target elements correctly :thumbsup:
+      console.log(`Found ${targetElements.length} target elements`)
 
       targetElements.forEach((target, index) => {
         target.setAttribute('visible', false)
@@ -138,7 +134,7 @@ onMounted(async () => {
         target.addEventListener('targetFound', handleTargetFound)
         target.addEventListener('targetLost', handleTargetLost)
 
-        console.log(`Set up listeners for target ${index}`) //confirms listeners are set :thumbsup:
+        console.log(`Set up listeners for target ${index}`)
       })
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent,
@@ -208,14 +204,12 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  for (let i = 0; i < UserRats.value.length; i++) {
-    if (sceneRef.value) {
-      const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
-      targetElements.forEach((target) => {
-        target.removeEventListener('targetFound', handleTargetFound)
-        target.removeEventListener('targetLost', handleTargetLost)
-      })
-    }
+  if (sceneRef.value) {
+    const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
+    targetElements.forEach((target) => {
+      target.removeEventListener('targetFound', handleTargetFound)
+      target.removeEventListener('targetLost', handleTargetLost)
+    })
   }
 })
 
