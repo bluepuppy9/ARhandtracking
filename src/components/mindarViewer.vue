@@ -45,7 +45,7 @@
   </a-scene>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, useTemplateRef, onUnmounted, onMounted, nextTick } from 'vue'
 import TheShopStuff from './TheShopStuff.vue'
 import TimingMinigame from './TimingMinigame.vue'
@@ -59,11 +59,9 @@ const sceneRef = useTemplateRef('sceneRef')
 
 const targetsFound = ref(new Set())
 function handleTargetFound(event) {
-  console.log('Target found event:', event)
   try {
-    const targetAttr = event.target.getAttribute('mindar-image-target')
-    console.log('Target attribute:', targetAttr)
-    let targetIndex
+    const targetAttr: string = event.target.getAttribute('mindar-image-target')
+    let targetIndex: string
     if (targetAttr && typeof targetAttr === 'string' && targetAttr.includes(': ')) {
       targetIndex = targetAttr.split(': ')[1]
     } else {
@@ -72,7 +70,6 @@ function handleTargetFound(event) {
         Array.from(event.target.parentNode.children).indexOf(event.target)
     }
 
-    console.log(`Target ${targetIndex} found`)
     targetsFound.value.add(parseInt(targetIndex))
     event.target.setAttribute('visible', true)
     if (UserRats.value[parseInt(targetIndex) - 2].type === 'shop') {
@@ -86,12 +83,9 @@ function handleTargetFound(event) {
 }
 
 function handleTargetLost(event) {
-  console.log('Target lost event:', event)
   try {
-    const targetAttr = event.target.getAttribute('mindar-image-target')
-    console.log('Target attribute:', targetAttr)
-
-    let targetIndex
+    const targetAttr: string = event.target.getAttribute('mindar-image-target')
+    let targetIndex: string
     if (targetAttr && typeof targetAttr === 'string' && targetAttr.includes(': ')) {
       targetIndex = targetAttr.split(': ')[1]
     } else {
@@ -100,7 +94,6 @@ function handleTargetLost(event) {
         Array.from(event.target.parentNode.children).indexOf(event.target)
     }
 
-    console.log(`Target ${targetIndex} lost`)
     targetsFound.value.delete(parseInt(targetIndex))
     event.target.setAttribute('visible', false)
     if (UserRats.value[parseInt(targetIndex) - 2].type === 'shop') {
@@ -118,26 +111,18 @@ onMounted(async () => {
   await nextTick()
   if (sceneRef.value) {
     sceneRef.value.addEventListener('loaded', async () => {
-      console.log('Scene loaded successfully')
-
       const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
-      console.log(`Found ${targetElements.length} target elements`)
 
-      targetElements.forEach((target, index) => {
+      targetElements.forEach((target) => {
         target.setAttribute('visible', false)
 
         target.addEventListener('targetFound', handleTargetFound)
         target.addEventListener('targetLost', handleTargetLost)
-
-        console.log(`Set up listeners for target ${index}`)
       })
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent,
-      )
+      const isMobile: boolean =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 
       if (isMobile) {
-        console.log('Mobile device detected - applying mobile optimizations')
-
         setTimeout(async () => {
           try {
             const stream = await navigator.mediaDevices.getUserMedia({
@@ -150,11 +135,9 @@ onMounted(async () => {
             })
 
             stream.getTracks().forEach((track) => track.stop())
-            console.log('Mobile camera permission granted')
 
             const mindARSystem = sceneRef.value.systems['mindar-image-system']
             if (mindARSystem) {
-              console.log('Reinitializing MindAR for mobile')
               await mindARSystem.start()
             }
 
