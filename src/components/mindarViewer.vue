@@ -11,7 +11,7 @@
   <a-scene
     class="arContainer"
     ref="sceneRef"
-    mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: true; uiLoading: no; uiError: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001; warmupTolerance: 5; missTolerance: 5;"
+    mindar-image="imageTargetSrc: /ratAndStop.mind; maxTrack: 4; autoStart: true; uiLoading: no; uiError: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 1000; warmupTolerance: 5; missTolerance: 5;"
     color-space="sRGB"
     embedded
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -58,14 +58,11 @@ const ratFound = ref(false)
 const sceneRef = useTemplateRef('sceneRef')
 
 const targetsFound = ref(new Set())
-const targetIndexShow = ref(null)
-const targetAttributes = ref([])
 function handleTargetFound(event) {
   console.log('Target found event:', event)
   try {
     const targetAttr = event.target.getAttribute('mindar-image-target')
     console.log('Target attribute:', targetAttr)
-    targetAttributes.value.push('Target attriubute:', targetAttr)
     let targetIndex
     if (targetAttr && typeof targetAttr === 'string' && targetAttr.includes(': ')) {
       targetIndex = targetAttr.split(': ')[1]
@@ -78,7 +75,6 @@ function handleTargetFound(event) {
     console.log(`Target ${targetIndex} found`)
     targetsFound.value.add(parseInt(targetIndex))
     event.target.setAttribute('visible', true)
-    targetIndexShow.value = targetIndex
     if (UserRats.value[parseInt(targetIndex) - 2].type === 'shop') {
       shopFound.value = true
     } else if (UserRats.value[parseInt(targetIndex) - 2].type === 'rat') {
@@ -105,7 +101,6 @@ function handleTargetLost(event) {
     }
 
     console.log(`Target ${targetIndex} lost`)
-    targetIndexShow.value = null
     targetsFound.value.delete(parseInt(targetIndex))
     event.target.setAttribute('visible', false)
     if (UserRats.value[parseInt(targetIndex) - 2].type === 'shop') {

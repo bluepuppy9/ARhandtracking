@@ -360,6 +360,9 @@ body {
 .text-color {
   background-color: white;
   border-radius: 1rem;
+  border-color: var(--secondary);
+  border-style: solid;
+  border-width: 0.2rem;
   padding: 1rem;
   width: 90%;
   margin: 0 auto;
