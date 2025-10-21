@@ -7,8 +7,8 @@
       </div>
       <div class="container start-text">
         <div v-if="!running" class="start-text-div">
-          <h1>Welcome to the AR Ratdom.</h1>
-          <p>Please start the AR system to see the rats.</p>
+          <h1 class="title-heading">Welcome to the AR Ratdom.</h1>
+          <p class="mini-text">Please start the AR system to see the rats.</p>
         </div>
         <button class="startButton" :class="{ active: running }" @click="handleARSystems()">
           {{ running ? 'STOP' : 'START' }}
@@ -104,22 +104,22 @@ function handleARSystems() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  h1 {
-    font-family: var(--title-font);
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 2.8rem;
-    line-height: 130%;
-    letter-spacing: 0%;
-  }
-  p {
-    margin: 5% auto;
-    font-family: var(--sub-title-font);
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 1.4rem;
-    line-height: 120%;
-    letter-spacing: 0%;
-  }
+}
+.heading {
+  font-family: var(--title-font);
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 2.8rem;
+  line-height: 130%;
+  letter-spacing: 0%;
+}
+.mini-text {
+  margin: 5% auto;
+  font-family: var(--sub-title-font);
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 1.4rem;
+  line-height: 120%;
+  letter-spacing: 0%;
 }
 </style>

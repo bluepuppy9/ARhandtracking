@@ -1,7 +1,7 @@
 <template>
   <div class="entire-div">
     <div class="container-thing">
-      <div class="bg-text">
+      <div class="white-bubble-text">
         <h1>
           You found a station! You have {{ inventory.ratNets }} nets and
           {{ inventory.cheeseBanana }} cheese bananas.
@@ -81,6 +81,7 @@ function calculateRatNet() {
   flex-direction: column;
 }
 .container-thing {
+  padding-top: 15%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,20 +89,6 @@ function calculateRatNet() {
   height: 70%;
   position: relative;
   z-index: 10000;
-}
-
-.bg-text {
-  margin-top: 15%;
-  background-color: white;
-  border-radius: 1rem;
-  padding: 1rem;
-  width: 90%;
-  color: var(--base-text);
-  font-family: var(--title-font);
-  text-align: left;
-  text-wrap: wrap;
-  position: relative;
-  z-index: 10001;
 }
 
 .btn-style {

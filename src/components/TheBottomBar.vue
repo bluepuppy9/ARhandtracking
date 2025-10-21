@@ -5,7 +5,7 @@
       <div class="bg-for-btns">
         <div class="btn-div-case">
           <div class="button-div">
-            <button type="submit" id="net-img" class="button-style"></button>
+            <button type="submit" id="net-img" class="ui-button-style"></button>
             <div class="btn-case-text">
               <p>Amount Left:</p>
               <h1>{{ inventory.ratNets }}</h1>
@@ -14,7 +14,7 @@
         </div>
         <div class="btn-div-case">
           <div class="button-div">
-            <button id="cheese-banana-img" type="submit" class="button-style"></button>
+            <button id="cheese-banana-img" type="submit" class="ui-button-style"></button>
             <div class="btn-case-text">
               <p>Amount Left:</p>
               <h1>{{ inventory.cheeseBanana }}</h1>
@@ -76,59 +76,10 @@ const inventory = useInventoryStore()
   justify-content: space-around;
 }
 
-.btn-case-text {
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 0.5rem;
-  h1 {
-    text-align: center;
-    font-family: var(--title-font);
-  }
-  p {
-    font-family: var(--sub-title-font);
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 1.2rem;
-    line-height: 120%;
-    letter-spacing: 0%;
-  }
-}
-.button-style {
-  width: 100%;
-  height: 100%;
-  min-height: 7rem;
-  min-width: 7rem;
-  margin: 0.2rem;
-  padding: 1.25rem 1.5rem;
-  background: gray;
-  color: var(--secondary);
-  border: none;
-  border-radius: 0.75rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 1rem var(--primary);
-  white-space: nowrap;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .text-no-transparent {
   opacity: 1;
 }
 
-.bg-for-btns {
-  background-color: var(--primary);
-  border-radius: 2rem;
-  box-sizing: border-box;
-  padding: 0.5rem;
-  width: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
 #cheese-banana-img {
   background-image: url('@/assets/images/cheeseBanana.png');
 }

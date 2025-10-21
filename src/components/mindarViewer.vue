@@ -1,11 +1,11 @@
 <template>
-  <div v-show="!shopFound && (!ratFound || inventory.ratNets === 0)">
+  <div v-show="!isShopFound && (!isRatFound || inventory.ratNets === 0)">
     <TheBottomBar />
   </div>
-  <div v-show="shopFound">
+  <div v-show="isShopFound">
     <TheShopStuff />
   </div>
-  <div v-show="ratFound">
+  <div v-show="isRatFound">
     <TimingMinigame />
   </div>
   <a-scene
@@ -27,17 +27,17 @@
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
     <a-entity
-      v-for="(rat, i) in UserRats"
+      v-for="(rat, i) in userRats"
       :key="i"
       :mindar-image-target="'targetIndex: ' + i"
       visible="false"
     >
       <a-gltf-model
-        :rotation="rat.type === 'shop' ? '0 270 0' : '0 0 0'"
+        :rotation="rat.ratType === 'shop' ? '0 270 0' : '0 0 0'"
         position="0 0 0.1"
         ref="ratModels"
-        :scale="rat.type === 'shop' ? '0.05 0.05 0.05' : '0.1 0.1 0.1'"
-        :src="'#' + rat.type + '-model'"
+        :scale="rat.ratType === 'shop' ? '0.05 0.05 0.05' : '0.1 0.1 0.1'"
+        :src="'#' + rat.ratType + '-model'"
       >
       </a-gltf-model>
       <!-- very jitterly :3 idk why -->
@@ -52,8 +52,8 @@ import TimingMinigame from './TimingMinigame.vue'
 import TheBottomBar from './TheBottomBar.vue'
 import { useInventoryStore } from '@/stores/inventory'
 const inventory = useInventoryStore()
-const shopFound = ref(false)
-const ratFound = ref(false)
+const isShopFound = ref(false)
+const isRatFound = ref(false)
 
 const sceneRef = useTemplateRef('sceneRef')
 
@@ -72,14 +72,12 @@ function handleTargetFound(event) {
 
     targetsFound.value.add(parseInt(targetIndex))
     event.target.setAttribute('visible', true)
-    if (UserRats.value[parseInt(targetIndex) - 2].type === 'shop') {
-      shopFound.value = true
-    } else if (UserRats.value[parseInt(targetIndex) - 2].type === 'rat') {
-      ratFound.value = true
+    if (userRats.value[parseInt(targetIndex) - 2].ratType === 'shop') {
+      isShopFound.value = true
+    } else if (userRats.value[parseInt(targetIndex) - 2].ratType === 'rat') {
+      isRatFound.value = true
     }
-  } catch (error) {
-    console.error('Error in handleTargetFound:', error)
-  }
+  } catch (error) {}
 }
 
 function handleTargetLost(event) {
@@ -96,109 +94,100 @@ function handleTargetLost(event) {
 
     targetsFound.value.delete(parseInt(targetIndex))
     event.target.setAttribute('visible', false)
-    if (UserRats.value[parseInt(targetIndex) - 2].type === 'shop') {
+    if (userRats.value[parseInt(targetIndex) - 2].ratType === 'shop') {
       //unsure of -2 works if targetIndex expanded, might need to change so it properly reflects the targetindex in the future
-      shopFound.value = false
-    } else if (UserRats.value[parseInt(targetIndex) - 2].type === 'rat') {
-      ratFound.value = false
+      isShopFound.value = false
+    } else if (userRats.value[parseInt(targetIndex) - 2].ratType === 'rat') {
+      isRatFound.value = false
     }
-  } catch (error) {
-    console.error('Error in handleTargetLost:', error)
-  }
+  } catch (error) {}
 }
 
 onMounted(async () => {
   await nextTick()
-  if (sceneRef.value) {
-    sceneRef.value.addEventListener('loaded', async () => {
-      const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
+  if (!sceneRef.value) return
+  sceneRef.value.addEventListener('loaded', async () => {
+    const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
 
-      targetElements.forEach((target) => {
-        target.setAttribute('visible', false)
+    targetElements.forEach((target) => {
+      target.setAttribute('visible', false)
 
-        target.addEventListener('targetFound', handleTargetFound)
-        target.addEventListener('targetLost', handleTargetLost)
-      })
-      const isMobile: boolean =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      target.addEventListener('targetFound', handleTargetFound)
+      target.addEventListener('targetLost', handleTargetLost)
+    })
+    const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    )
 
-      if (isMobile) {
-        setTimeout(async () => {
-          try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-              video: {
-                facingMode: 'environment',
-                width: { ideal: 640, max: 1280 },
-                height: { ideal: 480, max: 720 },
-                frameRate: { ideal: 30, max: 30 },
-              },
-            })
+    if (isMobile) {
+      setTimeout(async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: 'environment',
+              width: { ideal: 640, max: 1280 },
+              height: { ideal: 480, max: 720 },
+              frameRate: { ideal: 30, max: 30 },
+            },
+          })
 
-            stream.getTracks().forEach((track) => track.stop())
+          stream.getTracks().forEach((track) => track.stop())
 
-            const mindARSystem = sceneRef.value.systems['mindar-image-system']
-            if (mindARSystem) {
-              await mindARSystem.start()
-            }
-
-            const canvas = sceneRef.value.canvas
-            if (canvas) {
-              const rect = canvas.getBoundingClientRect()
-              canvas.style.width = '100%'
-              canvas.style.height = '100%'
-
-              if (sceneRef.value.renderer) {
-                sceneRef.value.renderer.setSize(rect.width, rect.height, false)
-              }
-
-              const touchEvent = new TouchEvent('touchstart', {
-                bubbles: true,
-                cancelable: true,
-                touches: [
-                  new Touch({
-                    identifier: 0,
-                    target: canvas,
-                    clientX: canvas.width / 2,
-                    clientY: canvas.height / 2,
-                  }),
-                ],
-              })
-              canvas.dispatchEvent(touchEvent)
-            }
-          } catch (error) {
-            console.error('Mobile camera setup failed:', error)
-            setTimeout(() => {
-              window.dispatchEvent(new Event('resize'))
-            }, 1000)
+          const mindARSystem = sceneRef.value.systems['mindar-image-system']
+          if (mindARSystem) {
+            await mindARSystem.start()
           }
-        }, 2000)
-      }
-    })
 
-    sceneRef.value.addEventListener('arError', (event) => {
-      console.error('AR Error:', event.detail)
-    })
-  }
+          const canvas = sceneRef.value.canvas
+          if (canvas) {
+            const rect = canvas.getBoundingClientRect()
+            canvas.style.width = '100%'
+            canvas.style.height = '100%'
+
+            if (!sceneRef.value.renderer) return
+            sceneRef.value.renderer.setSize(rect.width, rect.height, false)
+
+            const touchEvent = new TouchEvent('touchstart', {
+              bubbles: true,
+              cancelable: true,
+              touches: [
+                new Touch({
+                  identifier: 0,
+                  target: canvas,
+                  clientX: canvas.width / 2,
+                  clientY: canvas.height / 2,
+                }),
+              ],
+            })
+            canvas.dispatchEvent(touchEvent)
+          }
+        } catch (error) {
+          setTimeout(() => {
+            window.dispatchEvent(new Event('resize'))
+          }, 1000)
+        }
+      }, 2000)
+    }
+  })
 })
 
 onUnmounted(() => {
-  if (sceneRef.value) {
-    const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
-    targetElements.forEach((target) => {
-      target.removeEventListener('targetFound', handleTargetFound)
-      target.removeEventListener('targetLost', handleTargetLost)
-    })
-  }
+  if (!sceneRef.value) return
+  const targetElements = sceneRef.value.querySelectorAll('[mindar-image-target]')
+  targetElements.forEach((target) => {
+    target.removeEventListener('targetFound', handleTargetFound)
+    target.removeEventListener('targetLost', handleTargetLost)
+  })
 })
 
 defineExpose({
   sceneRef,
 })
 
-const UserRats = ref([
-  { type: 'rat', scale: 2, caught: false, id: 0 },
-  { type: 'shiny', scale: 2, caught: false, id: 1 },
-  { type: 'shop', scale: 1, caught: null, id: 2 },
+const userRats = ref([
+  { ratType: 'rat', scale: 2, caught: false, id: 0 },
+  { ratType: 'shiny', scale: 2, caught: false, id: 1 },
+  { ratType: 'shop', scale: 1, caught: null, id: 2 },
 ])
 </script>
 

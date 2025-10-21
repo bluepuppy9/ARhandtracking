@@ -1,7 +1,7 @@
 <template>
-  <div class="wrapper">
+  <div class="total-container">
     <div ref="top" class="top-clickable-style">
-      <h1 class="text-color">You found a rat!</h1>
+      <h1 class="white-bubble-text">You found a rat!</h1>
       <canvas v-show="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
       <h1 v-show="inventory.ratNets === 0">
         You don't have enough rat nets! Please replunish at a center.
@@ -13,7 +13,7 @@
           <div class="button-div">
             <button
               type="submit"
-              class="button-style"
+              class="ui-button-style"
               id="net-img"
               @click="gameValues.calculateCatch"
             ></button>
@@ -27,7 +27,7 @@
           <div class="button-div">
             <button
               type="submit"
-              class="button-style"
+              class="ui-button-style"
               id="cheese-banana-img"
               @click="cheeseBanana.useCheeseBana"
             ></button>
@@ -232,7 +232,7 @@ body {
   -webkit-overflow-scrolling: none !important;
 }
 
-.wrapper {
+.total-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -304,71 +304,8 @@ body {
   justify-content: space-around;
 }
 
-.btn-case-text {
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 0.5rem;
-  h1 {
-    text-align: center;
-    font-family: var(--title-font);
-  }
-  p {
-    font-family: var(--sub-title-font);
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 1.2rem;
-    line-height: 120%;
-    letter-spacing: 0%;
-  }
-}
-.button-style {
-  width: 100%;
-  height: 100%;
-  min-height: 7rem;
-  min-width: 7rem;
-  margin: 0.2rem;
-  padding: 1.25rem 1.5rem;
-  background: gray;
-  color: var(--secondary);
-  border: none;
-  border-radius: 0.75rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 1rem var(--primary);
-  white-space: nowrap;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .text-no-transparent {
   opacity: 1;
-}
-
-.bg-for-btns {
-  background-color: var(--primary);
-  border-radius: 2rem;
-  box-sizing: border-box;
-  padding: 0.5rem;
-  width: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-.text-color {
-  background-color: white;
-  border-radius: 1rem;
-  border-color: var(--secondary);
-  border-style: solid;
-  border-width: 0.2rem;
-  padding: 1rem;
-  width: 90%;
-  margin: 0 auto;
-  font-family: var(--title-font);
-  color: var(--base-text);
-  text-align: center;
 }
 
 #cheese-banana-img {
