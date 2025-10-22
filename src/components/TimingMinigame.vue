@@ -247,19 +247,6 @@ body {
   user-select: none !important;
 }
 
-.top-clickable-style {
-  padding-top: 15%;
-  position: relative;
-  height: 70%;
-  width: 100%;
-  box-sizing: border-box;
-  overflow: hidden !important;
-  user-select: none;
-  pointer-events: auto;
-  z-index: 9999;
-  touch-action: none !important;
-  overscroll-behavior: none !important;
-}
 .canvas-round {
   border-radius: 2rem;
   width: 100%;
@@ -269,39 +256,6 @@ body {
   margin: 5% auto;
   pointer-events: none;
   box-sizing: border-box;
-}
-
-.bottom-div-style {
-  display: flex;
-
-  position: relative;
-  height: 25%;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: var(--secondary);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden !important;
-  max-width: 100vw;
-  touch-action: none !important;
-  overscroll-behavior: none !important;
-}
-.btn-div-case {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 45%;
-  color: var(--primary);
-  justify-content: space-around;
-}
-.button-div {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  margin: 0.5rem;
-  justify-content: space-around;
 }
 
 .text-no-transparent {

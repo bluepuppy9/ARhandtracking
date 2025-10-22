@@ -33,47 +33,8 @@ const inventory = useInventoryStore()
 </script>
 
 <style scoped>
-.total-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden !important;
-  touch-action: none !important;
-}
 .top-div {
   height: 70%;
-}
-.bottom-div-style {
-  display: flex;
-  position: relative;
-  height: 25%;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: var(--secondary);
-  color: var(--primary);
-  align-items: center;
-  justify-content: center;
-  overflow: hidden !important;
-  max-width: 100vw;
-  touch-action: none !important;
-  overscroll-behavior: none !important;
-}
-.btn-div-case {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 45%;
-  height: 100%;
-  color: var(--primary);
-  justify-content: space-around;
-}
-.button-div {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  margin: 0.5rem;
-  justify-content: space-around;
 }
 
 .text-no-transparent {

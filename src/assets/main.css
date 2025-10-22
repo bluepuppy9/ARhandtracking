@@ -56,6 +56,64 @@
     letter-spacing: 0%;
   }
 }
+.total-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden !important;
+  z-index: 1000;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: none !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+  user-select: none !important;
+}
+
+.btn-div-case {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 45%;
+  color: var(--primary);
+  justify-content: space-around;
+}
+.button-div {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0.5rem;
+  justify-content: space-around;
+}
+.top-clickable-style {
+  padding-top: 15%;
+  position: relative;
+  height: 70%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden !important;
+  user-select: none;
+  pointer-events: auto;
+  z-index: 9999;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+.bottom-div-style {
+  display: flex;
+  position: relative;
+  height: 25%;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--secondary);
+  color: var(--primary);
+  align-items: center;
+  justify-content: center;
+  overflow: hidden !important;
+  max-width: 100vw;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
 .ui-button-style {
   width: 100%;
   height: 100%;

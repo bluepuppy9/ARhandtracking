@@ -101,21 +101,6 @@ function calculateRatNet() {
   font-family: var(--btn-font);
   z-index: 10002;
 }
-.bottom-div-style {
-  display: flex;
-  position: relative;
-  height: 25%;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: var(--secondary);
-  color: var(--primary);
-  align-items: center;
-  justify-content: center;
-  overflow: hidden !important;
-  max-width: 100vw;
-  touch-action: none !important;
-  overscroll-behavior: none !important;
-}
 
 .bg-div {
   font-family: var(--title-font);
