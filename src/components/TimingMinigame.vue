@@ -1,38 +1,65 @@
-<template> 
-        <div ref="top" class="top-clickable-style">
-            <div class="bg-for-text">
-                <div class="text-no-transparent">
-                    <h1>Your miss rate of previous hit: {{ gameValues.missRate.value }}</h1>
-                    <h1>Caught Rats: {{ inventory.ratsCaught }}</h1>
-                </div>
+<template>
+  <div class="total-container">
+    <div ref="top" class="top-clickable-style">
+      <h1 class="white-bubble-text">You found a rat!</h1>
+      <canvas v-show="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
+      <h1 v-show="inventory.ratNets === 0">
+        You don't have enough rat nets! Please replunish at a center.
+      </h1>
+    </div>
+    <div v-if="inventory.ratNets > 0" class="bottom-div-style">
+      <div class="bg-for-btns">
+        <div class="btn-div-case">
+          <div class="button-div">
+            <button
+              type="submit"
+              class="ui-button-style"
+              id="net-img"
+              @click="gameValues.calculateCatch"
+            ></button>
+            <div class="btn-case-text">
+              <p>Amount Left:</p>
+              <h1>{{ inventory.ratNets }}</h1>
             </div>
-            <canvas v-if="inventory.ratNets > 0" ref="canvasBackground" class="canvas-round"></canvas>
-            <h1 v-else> You don't have enough rat nets! Please replunish at a center.</h1>
+          </div>
         </div>
-        <div v-if="gameValues.ratNet > 0" class="bottom-div-style">
-            <h1>Rat Net(s): {{ inventory.ratNets }}</h1>
-            <button type="submit" class="button-style" @click="cheeseBanana.useCheeseBana">Cheese Banana: {{ inventory.cheeseBanana }}</button>
+        <div class="btn-div-case">
+          <div class="button-div">
+            <button
+              type="submit"
+              class="ui-button-style"
+              id="cheese-banana-img"
+              @click="cheeseBanana.useCheeseBana"
+            ></button>
+            <div class="btn-case-text">
+              <p>Amount Left:</p>
+              <h1>{{ inventory.cheeseBanana }}</h1>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, useTemplateRef } from 'vue'
-import { useInventoryStore} from '@/stores/inventory'
+import { useInventoryStore } from '@/stores/inventory'
 const top = useTemplateRef('top')
 const canvasBackground = useTemplateRef('canvasBackground')
 const inventory = useInventoryStore()
 
 const gradientValues = {
   cheeseBanana: {
-    0.2: 'black',
-    0.45: 'yellow',
-    0.55: 'yellow',
-    0.8: 'black',
+    0.2: '#FAE5BF',
+    0.45: '#EFAB2C',
+    0.55: '#EFAB2C',
+    0.8: '#FAE5BF',
   },
   noCheeseBanana: {
-    0.2: 'black',
-    0.5: 'yellow',
-    0.8: 'black',
+    0.2: '#FAE5BF',
+    0.5: '#EFAB2C',
+    0.8: '#FAE5BF',
   },
 }
 
@@ -51,7 +78,7 @@ const useGameValues = (canvasItems, cheeseBanana) => {
     if (barXStop !== null && ratNet > 0) {
       const canvasWidth = 400
       const distanceFromCenter = Math.abs(barXStop - canvasWidth / 2)
-      missRate.value = (distanceFromCenter / 2) - cheeseBanana.additiononalRate.value
+      missRate.value = distanceFromCenter / 2 - cheeseBanana.additiononalRate.value
       missRate.value = Math.max(missRate.value, 0)
 
       const rateChance = Math.floor(Math.random() * 101)
@@ -68,7 +95,7 @@ const useGameValues = (canvasItems, cheeseBanana) => {
   function calculateCatch() {
     const barXStop = canvasItems.barX.value
     if (clickedPlay.value === 0) {
-      clickedPlay.value ++
+      clickedPlay.value++
       cancelAnimationFrame(canvasItems.animationFrameId.value)
       catchLogic(barXStop)
       setTimeout(() => canvasItems.specialAnim(), 1000)
@@ -90,15 +117,15 @@ const useCheeseBanana = () => {
   const additiononalRate = ref(0)
   const usedAlready = ref(false)
 
-  function reset(){
+  function reset() {
     additiononalRate.value = 0
     usedAlready.value = false
   }
 
   function useCheeseBana() {
-    if ( !usedAlready.value && inventory.useCheeseBanana()) {
-        usedAlready.value = true
-        additiononalRate.value += 5
+    if (!usedAlready.value && inventory.ratNets > 0 && inventory.useCheeseBanana()) {
+      usedAlready.value = true
+      additiononalRate.value += 5
     }
   }
 
@@ -136,17 +163,18 @@ const useCanvasItems = (gameValues, cheeseBanana) => {
   }
 
   function createBar(ctx) {
-    barX.value = barX.value < canvasBackground.value.width
-      ? barX.value + speed.value
-      : 0
-    ctx.fillStyle = 'white'
+    barX.value = barX.value < canvasBackground.value.width ? barX.value + speed.value : 0
+    ctx.fillStyle = 'black'
     ctx.fillRect(barX.value - 2, 0, barWidth.value, canvasBackground.value.height)
   }
 
   function drawStuff() {
     const ctx = canvasBackground.value.getContext('2d')
     ctx.clearRect(0, 0, canvasBackground.value.width, canvasBackground.value.height)
-    createTargetZone(ctx, cheeseBanana.usedAlready.value ? gradientValues.cheeseBanana : gradientValues.noCheeseBanana)
+    createTargetZone(
+      ctx,
+      cheeseBanana.usedAlready.value ? gradientValues.cheeseBanana : gradientValues.noCheeseBanana,
+    )
     createBar(ctx)
   }
 
@@ -189,48 +217,56 @@ onUnmounted(() => {
 })
 </script>
 
-
 <style scoped>
-    .top-clickable-style{
-        height: 75vh;
-    }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+  -webkit-overflow-scrolling: none !important;
+}
 
-    .bg-for-text{
-        margin-top: 15%;
-        margin-right: 2%;
-        margin-bottom: 2%;
-        margin-left: 2%;
-        background-color: rgba(0,0,0, 0.5);
-        color: var(--primary);
-        border-radius: 25rem;
-        border-style: solid;
-        border-width: 0.2rem;
-        border-color: var(--secondary-border);
-    }
-    .canvas-round{
-        border-radius: 2rem;
-    }
+.total-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden !important;
+  z-index: 1000;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: none !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+  user-select: none !important;
+}
 
-    .button-style{
-        padding: 0.75rem;
-        background: var(--primary);
-        color: var(--secondary);
-        border: none;
-        border-radius: 0.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 0 10rem var(--primary);
-    }
+.canvas-round {
+  border-radius: 2rem;
+  width: 100%;
+  max-width: 400px;
+  height: 100px;
+  display: block;
+  margin: 5% auto;
+  pointer-events: none;
+  box-sizing: border-box;
+}
 
-    .bottom-div-style{
-        height: 25vh;
-        background-color: var(--secondary);
-        color:var(--primary);
-        border-top: solid 0.2rem var(--secondary-border);
-    }
+.text-no-transparent {
+  opacity: 1;
+}
 
-    .text-no-transparent{
-        opacity: 1;
-    }
+#cheese-banana-img {
+  background-image: url('@/assets/images/cheeseBanana.png');
+}
 
+#net-img {
+  background-image: url('@/assets/images/ratNet.png');
+}
 </style>

@@ -55,3 +55,5 @@ bin/                    # Custom build outputs
 *.pdb
 *.so
 *.dylib
+
+.env
